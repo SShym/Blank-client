@@ -20,7 +20,9 @@ const EmailVerify = () => {
 	useEffect(() => {
 		const verifyEmail = async () => {
 			try {
-				await axios.get(serverURL + `/${param.id}/verify/${param.token}`)
+				await axios.interceptors.response.use(response => {
+					return response.headers['content-type'] === 'application/json' ? response : Promise.reject(response);
+				  }, error => Promise.reject(error)).get(serverURL + `/${param.id}/verify/${param.token}`)
 				.then((res) => {
 					console.log(res)
 					if (param.token) {
