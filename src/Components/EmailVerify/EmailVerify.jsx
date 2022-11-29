@@ -14,16 +14,27 @@ const EmailVerify = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	console.log(param)
+	const API = axios.create({ 
+		baseURL: 'https://vvv.herokuapp.com' 
+	});
+	
+	API.interceptors.request.use((req) => {
+	  if (localStorage.getItem('profile')) {
+		req.headers.authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
+	  }
+	
+	  return req;
+	});
+
 
 	useEffect(() => {
 		const verifyEmail = async () => {
 			try {
-				await axios.get(`https://sanar.netlify.app/${param.id}/verify/${param.token}`)
+				await API.get(`https://sanar.netlify.app/${param.id}/verify/${param.token}`)
 				.then((res) => {
+					console.log(res)
 					if (param.token) {
 						const decodedToken = decode(param.token);
-						console.log('1')
 						if (decodedToken.exp * 1000 < new Date().getTime()) {
 							setValidUrl('Registration link timed out, please try again')
 						} else {
