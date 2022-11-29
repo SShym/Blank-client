@@ -22,7 +22,7 @@ const EmailVerify = () => {
 					console.log(res)
 					if (param.token) {
 						const decodedToken = decode(param.token);
-					
+						console.log('1')
 						if (decodedToken.exp * 1000 < new Date().getTime()) {
 							setValidUrl('Registration link timed out, please try again')
 						} else {
