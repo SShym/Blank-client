@@ -6,6 +6,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { decode } from "jsonwebtoken";
 import mainPng from '../../png/main.png';
+require('dotenv').config();
 
 const EmailVerify = () => {
 	const [validUrl, setValidUrl] = useState('');
@@ -14,23 +15,12 @@ const EmailVerify = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const API = axios.create({ 
-		baseURL: 'https://vvv.herokuapp.com' 
-	});
-	
-	API.interceptors.request.use((req) => {
-	  if (localStorage.getItem('profile')) {
-		req.headers.authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
-	  }
-	
-	  return req;
-	});
-
+	console.log(process.env.siteURL)
 
 	useEffect(() => {
 		const verifyEmail = async () => {
 			try {
-				await API.get(`https://sanar.netlify.app/${param.id}/verify/${param.token}`)
+				await axios.get(`${process.env.siteURL}/${param.id}/verify/${param.token}`)
 				.then((res) => {
 					console.log(res)
 					if (param.token) {
