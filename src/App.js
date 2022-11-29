@@ -7,11 +7,13 @@ import AuthPage from './Components/AuthPage/AuthPage';
 import EmailVerify from './Components/EmailVerify/EmailVerify';
 import Settings from './Components/Settings/Settings'
 import { useSelector } from 'react-redux';
+import { HashRouter } from 'react-router-dom';
 
 function App() {
   const error = useSelector(state => state.appReducer.error);
 
   return (
+    <HashRouter>
       <div className="App">
         <div className="wrap">
           {error && <div className='error-message'>{error}</div>}
@@ -25,6 +27,7 @@ function App() {
           <Spin />
         </div>
       </div>
+      </HashRouter>
   );
 }
 
