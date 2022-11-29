@@ -14,12 +14,13 @@ const EmailVerify = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
+	console.log(param)
+
 	useEffect(() => {
 		const verifyEmail = async () => {
 			try {
 				await axios.get(`https://sanar.netlify.app/${param.id}/verify/${param.token}`)
 				.then((res) => {
-					console.log(param.token)
 					if (param.token) {
 						const decodedToken = decode(param.token);
 						console.log('1')
