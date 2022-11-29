@@ -2,11 +2,7 @@
   "name": "mini-messenger",
   "version": "0.1.0",
   "private": true,
-  "proxy": {
-    "/:id/verify/:token": {
-        "target": "https://vvv.herokuapp.com/"
-    }
-  },
+  "proxy": "https://vvv.herokuapp.com/",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
