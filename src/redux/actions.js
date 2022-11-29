@@ -174,6 +174,32 @@ export const verifyMail = (formData, setVerifyStatus) => async (dispatch) => {
     }
 };
 
+export const verifyMailOnRedirect = (formData, navigate, decode, setValidUrl) => async (dispatch) => {
+    try {
+        await API.get(`/${formData.id}/verify/${formData.token}`)
+        .then((res) => {
+            console.log(res)
+            if (formData.token) {
+                const decodedToken = decode(formData.token);
+            
+                if (decodedToken.exp * 1000 < new Date().getTime()) {
+                    setValidUrl('Registration link timed out, please try again')
+                } else {
+                    setValidUrl('Email verified successfully')
+                    setTimeout(() => {
+                        dispatch(signin({
+                            email: res.data.user.email,
+                            password: res.data.user.password,
+                        }, navigate));
+                    }, 3000);
+                };
+            }
+        })
+    } catch (error) {
+      dispatch(errorOn(error.response.data.message));
+    }
+};
+
 export const deleteSchema = (formData, navigate) => async (dispatch) => {
     try {
         await API.post(`/delete/${formData.id}`, formData).then((res) => {

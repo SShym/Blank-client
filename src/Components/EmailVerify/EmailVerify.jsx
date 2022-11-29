@@ -1,7 +1,7 @@
 import './EmailVerify.css'
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { signin } from "../../redux/actions";
+import { verifyEmailOnLoad } from "../../redux/actions";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { decode } from "jsonwebtoken";
@@ -26,30 +26,15 @@ const EmailVerify = () => {
 	  return req;
 	});
 
-	console.log(API)
+	const formData = {
+		id: param.id,
+		token: param.token
+	}
 
 	useEffect(() => {
 		const verifyEmail = async () => {
 			try {
-				await API.get(`/${param.id}/verify/${param.token}`)
-				.then((res) => {
-					console.log(res)
-					if (param.token) {
-						const decodedToken = decode(param.token);
-					
-						if (decodedToken.exp * 1000 < new Date().getTime()) {
-							setValidUrl('Registration link timed out, please try again')
-						} else {
-							setValidUrl('Email verified successfully')
-							setTimeout(() => {
-								dispatch(signin({
-									email: res.data.user.email,
-									password: res.data.user.password,
-								}, navigate));
-							}, 3000);
-						};
-					}
-				})
+				dispatch(verifyEmailOnLoad(formData, navigate, decode, setValidUrl));
 			} catch (error) {
 				setValidUrl('error');
 			}
