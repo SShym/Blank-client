@@ -31,7 +31,7 @@ const EmailVerify = () => {
 	useEffect(() => {
 		const verifyEmail = async () => {
 			try {
-				await API.get(`https://sanar.netlify.app/${param.id}/verify/${param.token}`)
+				await API.get(`/${param.id}/verify/${param.token}`)
 				.then((res) => {
 					console.log(res)
 					if (param.token) {
