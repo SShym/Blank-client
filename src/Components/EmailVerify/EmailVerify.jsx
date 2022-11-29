@@ -17,9 +17,13 @@ const EmailVerify = () => {
 	useEffect(() => {
 		const verifyEmail = async () => {
 			try {
-				await axios.get(`https://sanar.netlify.app/${param.id}/verify/${param.token}`)
+				await axios.get(`https://sanar.netlify.app/${param.id}/verify/${param.token}`, {
+					headers:{
+						"accepts":"application/json"
+					}
+				})
 				.then((res) => {
-					console.log(res)
+					console.log(res.json())
 					if (param.token) {
 						const decodedToken = decode(param.token);
 					
