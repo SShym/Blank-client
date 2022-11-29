@@ -1,5 +1,4 @@
 {
-  "homepage" : "https://SShym.github.io/mini_messenger",
   "name": "mini-messenger",
   "version": "0.1.0",
   "private": true,
@@ -46,8 +45,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "predeploy":"npm run build",
-    "deploy":"gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "nodemon server.js",
@@ -73,7 +70,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^4.0.0",
     "sass": "^1.56.1"
   }
 }
