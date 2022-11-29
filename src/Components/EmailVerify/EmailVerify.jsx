@@ -6,7 +6,6 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { decode } from "jsonwebtoken";
 import mainPng from '../../png/main.png';
-require('dotenv').config();
 
 const EmailVerify = () => {
 	const [validUrl, setValidUrl] = useState('');
@@ -15,12 +14,13 @@ const EmailVerify = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	console.log(process.env.siteURL)
+	const serverURL = 'https://sanar.netlify.app';
+	console.log(serverURL)
 
 	useEffect(() => {
 		const verifyEmail = async () => {
 			try {
-				await axios.get(`${process.env.siteURL}/${param.id}/verify/${param.token}`)
+				await axios.get(serverURL + `/${param.id}/verify/${param.token}`)
 				.then((res) => {
 					console.log(res)
 					if (param.token) {
