@@ -1,7 +1,7 @@
 import './EmailVerify.css'
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { verifyEmailOnLoad } from "../../redux/actions";
+import { verifyMailOnLoad } from "../../redux/actions";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { decode } from "jsonwebtoken";
@@ -34,7 +34,7 @@ const EmailVerify = () => {
 	useEffect(() => {
 		const verifyEmail = async () => {
 			try {
-				dispatch(verifyEmailOnLoad(formData, navigate, decode, setValidUrl));
+				dispatch(verifyMailOnLoad(formData, navigate, decode, setValidUrl));
 			} catch (error) {
 				setValidUrl('error');
 			}

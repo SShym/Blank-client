@@ -174,7 +174,7 @@ export const verifyMail = (formData, setVerifyStatus) => async (dispatch) => {
     }
 };
 
-export const verifyMailOnRedirect = (formData, navigate, decode, setValidUrl) => async (dispatch) => {
+export const verifyMailOnLoad = (formData, navigate, decode, setValidUrl) => async (dispatch) => {
     try {
         await API.get(`/${formData.id}/verify/${formData.token}`)
         .then((res) => {
