@@ -14,19 +14,15 @@ const EmailVerify = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const serverURL = 'https://sanar.netlify.app';
-	console.log(serverURL)
-
 	useEffect(() => {
 		const verifyEmail = async () => {
 			try {
-				await axios.interceptors.response.use(response => {
-					return response.headers['content-type'] === 'application/json' ? response : Promise.reject(response);
-				  }, error => Promise.reject(error)).get(serverURL + `/${param.id}/verify/${param.token}`)
+				await axios.get(`https://sanar.netlify.app/${param.id}/verify/${param.token}`)
 				.then((res) => {
 					console.log(res)
 					if (param.token) {
 						const decodedToken = decode(param.token);
+					
 						if (decodedToken.exp * 1000 < new Date().getTime()) {
 							setValidUrl('Registration link timed out, please try again')
 						} else {
