@@ -1,0 +1,89 @@
+.none{
+  display: none;
+}
+
+.comments-item-img-preview{
+  border: 2px solid white;
+  width: 100%;
+}
+
+.comments-item-img-preview-wrap{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: none;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  padding: 25px;
+}
+
+.comments-item-close-svg{
+  cursor: pointer;
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid;
+  background-color: white;
+  margin: 15px;
+  top: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+}
+
+.comments-item-create-input-border0 {
+  position: relative;
+  border: 1px solid black;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: none;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  padding: 10px 40px;
+}
+
+.comments-item-create-input {
+  position: relative;
+  border: 1px solid black;
+  border-radius: 10px;
+  background: none;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  padding: 10px 40px;
+}
+
+.comments-item-select-img{
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.comments-item-select-img + label {
+    font-size: 1.25em;
+    font-weight: 700;
+}
+
+.comments-item-select-img-svg{
+  position: absolute;
+  top: 27px;
+  left: 25px;
+  cursor: pointer;
+  margin-left: 4px;
+  width: 30px;
+  height: 30px;
+}
+
+.comments-item-disabled{
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  width: 38px;
+  height: 38px;
+}
+

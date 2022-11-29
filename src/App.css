@@ -1,0 +1,52 @@
+.App {
+  font-size: 18px;
+}
+
+.wrap {
+  position: relative;
+  max-width: 800px;
+  margin: 25px auto 0;
+}
+
+input {
+  width: 100%;
+  border: 0;
+  padding: 10px 0;
+  outline: none;
+  resize: vertical;
+}
+
+.loader-wrapper{
+  border: 1px solid red;
+  height: 100%;
+}
+
+.loader-styles {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999999;
+}
+
+.error-message {
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: absolute;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid black;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  white-space: nowrap;
+  transform: translate(-50%, -70%);
+  font-size: 13px;
+  font-weight: bold;
+  color: white;
+  background: red;
+  padding: 10px 20px;
+}
+
+

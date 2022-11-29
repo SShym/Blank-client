@@ -1,0 +1,19 @@
+.navbar-wrap{
+    border-top: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    padding: 4px 4px;
+    background-color: rgb(248, 248, 248);
+    margin: 0px 20px 0px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-link{
+    text-decoration: none;
+    color: black;
+    border: none;
+}

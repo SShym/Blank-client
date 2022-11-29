@@ -1,0 +1,126 @@
+.settings-wrap{
+    height: 500px;
+    flex-basis: calc(33.333% - 40px);
+    flex-grow: 1;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.settings-block{
+    font-size: 20px;
+    border: 1px solid black;
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.settings-confirm-mail button{
+    border: 1px solid red;
+    color: red;
+}
+
+.pick{
+    display: flex;
+    align-items: center;
+    border-left: 1px solid white;
+    padding-left: 10px;
+    color: white;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.settings-block-one{
+    padding: 10px;
+    cursor: pointer;
+    background-color: rgb(46, 46, 46);
+    flex-basis: 20%;
+}
+
+.settings-block-one div{
+    margin-bottom: 5px;
+}
+
+.settings-block-user-name{
+    font-weight: bold;
+    color: rgb(0, 110, 110);
+}
+
+.settings-block-user-email{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.settings-block-two-general{
+    display: flex;
+    flex-grow: 1;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;  
+    height: 100%;
+}
+
+.settings-block-two-settings{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.change-theme-block{
+    display: flex;
+    align-items: center;
+}
+
+.delete-profile-block{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.settings-block-two-general-two{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 100%;
+    height: 100%;
+}
+
+.settings-block-two-general-two button{
+    white-space: nowrap;
+    width: 110px;
+    height: 33px;
+}
+
+.settings-avatar{
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+}
+
+.settings-confirm-mail{
+    margin-top: 10px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid;
+    color: red;
+}
+
+.settings-block-media{
+    flex-direction: column;
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+    .delete-profile-block{
+        display:'flex';
+        align-items: center;
+    }
+    .settings-block-two-settings{
+        align-items: center;
+    }
+}
