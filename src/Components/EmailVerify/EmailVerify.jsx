@@ -17,7 +17,7 @@ const EmailVerify = () => {
 	useEffect(() => {
 		const verifyEmail = async () => {
 			try {
-				await axios.get(`http://localhost:3000/${param.id}/verify/${param.token}`)
+				await axios.get(`https://sanar.netlify.app/${param.id}/verify/${param.token}`)
 				.then((res) => {
 					console.log(res)
 					if (param.token) {
