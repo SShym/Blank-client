@@ -1,6 +1,6 @@
 {
   "homepage" : "https://SShym.github.io/mini-messenger",
-  "name": "redux-example",
+  "name": "mini-messenger",
   "version": "0.1.0",
   "private": true,
   "proxy": "https://vvv.herokuapp.com/",
