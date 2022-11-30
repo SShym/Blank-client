@@ -196,7 +196,7 @@ export const verifyMailOnLoad = (formData, navigate, decode, setValidUrl) => asy
             }
         })
     } catch (error) {
-      dispatch(errorOn(error.response.data.message));
+        setValidUrl('error');
     }
 };
 

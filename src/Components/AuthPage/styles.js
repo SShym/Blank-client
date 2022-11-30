@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import mainPng from '../../png/main.png'
 
 export default makeStyles((theme) => ({
   root: {
@@ -12,34 +11,8 @@ export default makeStyles((theme) => ({
     width:'80px',
     height:'80px'
   },
-  verifyMail: {
-    zIndex:'777',
-    display:'flex',
-    flexDirection:'column',
-    alignItems:'center',
-    justifyContent:'center',
-    textAlign:'center',
-    position:'absolute',
-    width:'100%',
-    height:'100%',
-    backgroundColor: 'rgb(24, 247, 98)',
-    fontSize:'15px',
-    padding:'5px 15px',
-    border:'1px solid',
-    animation: `$myEffect 1500ms`
-  },
   verifyMailText:{
     userSelect:'none'
-  },
-  "@keyframes myEffect": {
-    "0%": {
-      opacity: 0,
-      transform: "translateY(0%)"
-    },
-    "100%": {
-      opacity: 1,
-      transform: "translateY(0)"
-    }
   },
   confirmMail: {
     margin: theme.spacing(1),

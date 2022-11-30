@@ -126,6 +126,30 @@ export const PageBackground = styled.div`
   }
 `;
 
+export const EmailVerifyBackground = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+  min-height: 550px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background-image: url(${(props) => props.theme.pageBackground});
+  padding: 20px;
+  border: 1px solid ${(props) => props.theme.border};
+  flex-basis: calc(33.333% - 40px);
+  flex-grow: 1;
+  flex-shrink: 0;
+  margin: 0px 20px 20px 20px;
+  position: relative;
+
+  .SuccessVerificationEmail{
+    text-align: center;
+    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'rgba(125, 125, 124 , 1)'};
+    font-weight: bold;
+  }
+`;
+
 export const NavbarAvatar = styled.div`
   transition: all 0.5s;
   background-color: ${(props) => props.theme.avatarBackground};
@@ -171,13 +195,13 @@ export const FormComments = styled.div`
 
 export const CommentsPage = styled.div`
   .single-comment-without-profileImg{
-    background-color: ${(props) => props.theme.theme === 'light' ? 'rgb(238, 238, 238)' : 'gray'};
+    background-color: ${(props) => props.theme.theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(125, 125, 124 , 0.7)'};
     color: ${(props) => props.theme.theme === 'light' ? 'black' : 'black'};
     border: 1px solid black;
   }
 
   .single-comment{
-    background-color: ${(props) => props.theme.theme === 'light' ? 'rgba(255, 255, 255, 0.836)' : 'gray'};
+    background-color: ${(props) => props.theme.theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(125, 125, 124, 0.85)'};
   }
 
   .single-comment-edit, .single-comment-delete{
@@ -185,7 +209,7 @@ export const CommentsPage = styled.div`
   }
 
   .single-comment-changed-status-true, .single-comment-time-create{
-    color: ${(props) => props.theme.theme === 'light' ? 'rgba(73, 64, 64, 0.479)' : 'rgb(38, 38, 38)'
+    color: ${(props) => props.theme.theme === 'light' ? 'rgba(73, 64, 64, 0.479)' : 'rgb(38, 38, 38)'};
   }
 `;
 
@@ -198,6 +222,7 @@ export const PageAuth = styled.div`
     borderBottomRightRadius: 3px;
     borderBottomLeftRadius: 3px;
   }
+
   .authpage-papper {
     position: relative;
     display: flex;
@@ -206,26 +231,54 @@ export const PageAuth = styled.div`
     padding: 0px 20px;
     border-radius: 5px;
     background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(117, 118, 120)'};
-  
+
+    .authpage-verifyMail-wrap{
+      z-index: 777;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: ${(props) => props.theme.theme === 'light' ? 'rgb(24, 247, 98)' : 'rgb(24, 150, 28)'};
+      font-size: 15px;
+      padding: 5px 15px;
+      border: 1px solid;
+      animation: 1500ms myEffect;
+    }
+
+    @keyframes myEffect {
+      0% {
+        opacity: 0;
+        transform: translateY(0%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .authpage-btnBlock button{
-      font-family: 'Georgia';
-      background-color: black;
-      color: rgb(158, 154, 148);
-      font-weight: bold;
+      font-family: ${(props) => props.theme.theme === 'light' ? '' : 'Georgia'};
+      background-color: ${(props) => props.theme.theme === 'light' ? '#1976d2' : 'black'};
+      color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(158, 154, 148)'};
+      font-weight: ${(props) => props.theme.theme === 'light' ? '300' : 'bold'};
     }
     
     .authpage-google-button{
-      font-family: 'Georgia';
-      background-color: black;
-      color: rgb(158, 154, 148);
+      font-family: ${(props) => props.theme.theme === 'light' ? '' : 'Georgia'};
+      background-color: ${(props) => props.theme.theme === 'light' ? '#1976d2' : 'black'};
+      color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(158, 154, 148)'};
+      font-weight: ${(props) => props.theme.theme === 'light' ? '300' : 'bold'};
       margin-bottom: 10px;
-      font-weight: bold;
     }
     
     .authpage-avatar{
       margin: 20px 0px 5px 0px;
-      background-color: rgb(61, 67, 71);
-      color: gray;
+      background-color: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(61, 67, 71)'};
+      color: ${(props) => props.theme.theme === 'light' ? '' : 'gray'};
     }
   }
 `;

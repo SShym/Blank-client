@@ -68,14 +68,14 @@ const SignUp = () => {
           <Container component="main" maxWidth="xs">
             <Paper className="authpage-papper" elevation={3}>
               {verifyStatus &&
-                <div className={classes.verifyMail}>
+                <div className="authpage-verifyMail-wrap">
                   <img className={classes.successSvg} src={successSvg}  alt="" />
                   <h4 className={classes.verifyMailText}>An Email sent to your account, please verify</h4>
                 </div>
               }
               <Avatar className='authpage-avatar'></Avatar>
               <Typography component="h1" variant="h5">{ isSignup ? 'Sign up' : 'Sign in' }</Typography>
-                <form className={classes.form} onSubmit={handleSubmit}>
+                <form autocomplete="off" className={classes.form} onSubmit={handleSubmit}>
                   <Grid container spacing={1}>
                     { isSignup && (
                     <>

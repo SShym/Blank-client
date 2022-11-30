@@ -7,7 +7,7 @@ import { commentCreate, commentUpdate, commentsLoad } from "../../redux/actions"
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from 'react';
 import { gapi } from 'gapi-script';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Layout from '../styles/Layout';
 import { PageBackground, FormComments } from '../styles/homestyles';
 

@@ -85,6 +85,7 @@ const Navbar = () => {
                   </Tooltip>
               </NavbarBlockUser>
             </Box>
+            <div>
             <Menu
               anchorEl={anchorEl}
               id="account-menu"
@@ -94,12 +95,14 @@ const Navbar = () => {
               PaperProps={{
                 elevation: 0,
                 sx: {
-                  backgroundColor:'white',
+                  backgroundColor: localStorage.getItem('theme') === 'light' ? '' : 'rgb(27, 80, 80)',
                   overflow: 'visible',
                   marginLeft:'-1.5px',
                   filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                   mt: 1.0,
                   '& .MuiAvatar-root': {
+                    bgcolor: localStorage.getItem('theme') === 'light' ? '' : 'rgb(92, 92, 100)',
+                    color: localStorage.getItem('theme') === 'light' ? '' : 'gray',
                     width: 32,
                     height: 32,
                     ml: -0.5,
@@ -113,7 +116,7 @@ const Navbar = () => {
                     right: 14,
                     width: 10,
                     height: 10,
-                    bgcolor: 'background.paper',
+                    bgcolor: localStorage.getItem('theme') === 'light' ? '' : 'rgb(27, 80, 80, 1)',
                     transform: 'translateY(-50%) rotate(45deg)',
                     zIndex: 0,
                   },
@@ -122,9 +125,16 @@ const Navbar = () => {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-              <MenuItem>
+              <div style={{
+                display:'flex',
+                alignItems:'center',
+                padding:'5px 15px 10px 16px',
+                userSelect:'none',
+                fontWeight:'bold',
+                fontSize:'11px',
+              }}>
                 <Avatar src={user.result.imageUrl ? user.result.imageUrl : ''} />{user.result.name}
-              </MenuItem>
+              </div>
               <Divider />
               <Link className='navbar-link' to="/settings">
                 <MenuItem>
@@ -141,6 +151,7 @@ const Navbar = () => {
                 Logout
               </MenuItem>
             </Menu>
+            </div>
           </div>
         ) : 
         (
