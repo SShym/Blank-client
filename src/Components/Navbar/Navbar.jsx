@@ -95,14 +95,14 @@ const Navbar = () => {
               PaperProps={{
                 elevation: 0,
                 sx: {
-                  backgroundColor: localStorage.getItem('theme') === 'light' ? '' : 'rgb(27, 80, 80)',
+                  backgroundColor: 'rgb(232, 232, 232)',
                   overflow: 'visible',
                   marginLeft:'-1.5px',
                   filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                   mt: 1.0,
                   '& .MuiAvatar-root': {
-                    bgcolor: localStorage.getItem('theme') === 'light' ? '' : 'rgb(92, 92, 100)',
-                    color: localStorage.getItem('theme') === 'light' ? '' : 'gray',
+                    bgcolor: 'papper',
+                    color: 'white',
                     width: 32,
                     height: 32,
                     ml: -0.5,
@@ -116,7 +116,7 @@ const Navbar = () => {
                     right: 14,
                     width: 10,
                     height: 10,
-                    bgcolor: localStorage.getItem('theme') === 'light' ? '' : 'rgb(27, 80, 80, 1)',
+                    bgcolor: 'rgb(232, 232, 232)',
                     transform: 'translateY(-50%) rotate(45deg)',
                     zIndex: 0,
                   },

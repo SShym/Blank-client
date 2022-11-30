@@ -14,12 +14,12 @@ import { PageBackground, FormComments } from '../styles/homestyles';
 
 export default function Comments(){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const [id, setId] = useState('');
     const [textComment, setTextComment] = useState('');
     const [editText, setEditText] = useState('');
-    const [id, setId] = useState('');
-    const [editMode, setEditMode] = useState(false);
     const [photo, setPhoto] = useState('');
     const [editPhoto, setEditPhoto] = useState('');
+    const [editMode, setEditMode] = useState(false);
 
     const dispatch = useDispatch();
     const location = useLocation();
@@ -54,10 +54,11 @@ export default function Comments(){
                 comment: textComment, 
                 photo: photo, 
                 name: user?.result?.name,
-                avatar: user?.result?.imageUrl
+                avatar: user?.result?.imageUrl,
+                setTextComment,
+                setEditText,
+                setPhoto
             }));
-            setTextComment('');
-            setPhoto('');
         } else {
             e.preventDefault();
         }
@@ -66,11 +67,15 @@ export default function Comments(){
     const handleUpdate = (e) => {
         if(editText.length >= 1){
             e.preventDefault();
-            dispatch(commentUpdate({ name: user?.result?.name, avatar: user?.result?.imageUrl }, editText, id, editPhoto.length > 0 ? editPhoto : photo));
-            setEditText('');
-            setPhoto('');
-            setEditPhoto('');
-            setEditMode(false);
+            dispatch(commentUpdate({ 
+                name: user?.result?.name, 
+                avatar: user?.result?.imageUrl,
+                setTextComment,
+                setEditText,
+                setPhoto,
+                setEditPhoto,
+                setEditMode
+            }, editText, id, editPhoto.length > 0 ? editPhoto : photo));
         } else {
             e.preventDefault();
         }

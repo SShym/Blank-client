@@ -10,6 +10,8 @@ import { gapi } from 'gapi-script';
 import { useLocation } from 'react-router-dom';
 import Layout from '../styles/Layout';
 import { CommentsPage } from '../styles/homestyles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Button from '@mui/material/Button';
 
 export default function SingleComment({comments, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -18,6 +20,8 @@ export default function SingleComment({comments, setId, setEditText, setEditMode
 
     const dispatch = useDispatch();
     const location = useLocation();
+
+    const matches = useMediaQuery('(min-width: 442px)');
 
     useEffect(() => {
         gapi.load('client:auth2', ()=>{
@@ -39,8 +43,7 @@ export default function SingleComment({comments, setId, setEditText, setEditMode
     
     const handleDelete = (e) => {
         e.preventDefault();
-        dispatch(commentDelete(commentText, comments.id));
-        setModal(false);
+        dispatch(commentDelete(commentText, comments.id, setEditMode, setModal));
     }
 
     return (
@@ -91,21 +94,37 @@ export default function SingleComment({comments, setId, setEditText, setEditMode
                             </div>
                         }
                         <PureModal 
-                            header="Сonfirmation"
-                            footer={
-                                <div style={{display:'flex', justifyContent:'space-around'}}>
-                                    <button style={{fontFamily:'sans-serif', borderRadius:'5px', padding:'2px 10px'}} onClick={()=>setModal(false)}>CANCEL</button>
-                                    <button style={{fontFamily:'sans-serif', borderRadius:'5px', padding:'2px 10px'}} onClick={handleDelete}>DELETE</button>
+                            header={
+                                <div style={{textAlign:'center'}}>
+                                    Сonfirmation
                                 </div>
                             }
-                            width="415px"
+                            footer={
+                                <div>
+                                    { matches ?
+                                        <div style={{display:'flex', justifyContent:'space-around'}}>
+                                            <Button style={{fontFamily:'sans-serif', fontSize:'13px' }} onClick={()=>setModal(false)} variant="outlined">cancel</Button>   
+                                            <Button style={{fontFamily:'sans-serif', fontSize:'13px' }} onClick={handleDelete} variant="outlined">delete</Button> 
+                                        </div>
+                                    :
+                                        <div style={{display:'flex', justifyContent:'space-around', textAlign:'center'}}>
+                                            <Button style={{fontFamily:'sans-serif', fontSize:'12px' }} onClick={()=>setModal(false)} variant="outlined">cancel</Button>   
+                                            <Button style={{fontFamily:'sans-serif', fontSize:'12px' }} onClick={handleDelete} variant="outlined">delete</Button>   
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            width={ matches ? '415px' : '325px' }
                             isOpen={modal} 
                             onClose={() => {
                                 setModal(false);
                                 return true;
                             }}
                             >
-                            <div>Are you sure you want to delete the message?</div>
+                            { matches ?
+                                <div style={{ fontFamily:'Georgia', letterSpacing:'0.3px', padding:'5px 0px' }}>Are you sure you want to delete the message?</div>
+                                : <div style={{ fontSize:'14px', fontFamily:'Georgia', letterSpacing:'0.3px', padding:'5px 0px' }}>Are you sure you want to delete the message?</div>
+                            }
                         </PureModal>
                     </form>
                 </div>

@@ -25,7 +25,7 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-export function commentCreate({comment, photo, name, avatar}, timeCreate, id){
+export function commentCreate({comment, photo, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
@@ -45,7 +45,10 @@ export function commentCreate({comment, photo, name, avatar}, timeCreate, id){
                     timeCreate: date, 
                     id: res.data._id,
                 }
-            })
+            });
+            setTextComment('');
+            setEditText('');
+            setPhoto('');
             dispatch({ type: SET_DISABLED_FALSE })
             dispatch(errorOff());
         }).catch(res => {
@@ -55,7 +58,7 @@ export function commentCreate({comment, photo, name, avatar}, timeCreate, id){
     }
 }
 
-export function commentUpdate({name, avatar}, comment, id, photo){
+export function commentUpdate({name, avatar,setTextComment, setEditText, setPhoto, setEditPhoto, setEditMode}, comment, id, photo){
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
 
     return async dispatch => {
@@ -73,7 +76,12 @@ export function commentUpdate({name, avatar}, comment, id, photo){
                     changed: true, 
                     timeChanged: date
                 } 
-            })
+            });
+            setTextComment('');
+            setEditText('');
+            setPhoto('');
+            setEditPhoto('');
+            setEditMode(false);
             dispatch({ type: SET_DISABLED_FALSE })
         }).catch(res => {
             dispatch(errorOn(res.response.data.error));
@@ -82,15 +90,20 @@ export function commentUpdate({name, avatar}, comment, id, photo){
     }
 }
 
-export function commentDelete(comment, id){ 
+export function commentDelete(comment, id, setEditMode, setModal){ 
         return async dispatch => {
             API.delete(`/products/${id}`)
-                .then((res) => dispatch({
-                    type: COMMENT_DELETE,
-                    data: { comment, id} 
-                })).catch(res => {
+                .then((res) => {
+                    dispatch({
+                        type: COMMENT_DELETE,
+                        data: { comment, id} 
+                    });
+                    setEditMode(false);
+                    setModal(false);
+                }
+                
+                ).catch(res => {
                     dispatch(errorOn(res.response.data.error));
-                    // dispatch({ type: SET_DISABLED_FALSE })
                 })
         }
 }

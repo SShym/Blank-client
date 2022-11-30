@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const SwitchButton = styled.label`
   position: relative;
   display: inline-block;
-  width: 24px;
+  width: 22px;
   height: 32px;
   bottom: 6px;
   margin-left: 25px;
@@ -32,12 +32,11 @@ export const SwitchButton = styled.label`
     transform: ${(props) => props.theme.transform};
     position: absolute;
     content: "";
-    height: 24px;
-    width: 24px;
+    height: 22px;
+    width: 22px;
     left: -1px;
-    top: -6px;
+    top: -5px;
     background-color: ${(props) => props.theme.button};
-    background-image: url(${(props) => props.theme.img});
     background-size: 14px;
     background-position: center;
     background-repeat: no-repeat;
