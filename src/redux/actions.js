@@ -46,9 +46,9 @@ export function commentCreate({comment, photo, name, avatar, setTextComment, set
                     id: res.data._id,
                 }
             });
+            setPhoto('');
             setTextComment('');
             setEditText('');
-            setPhoto('');
             dispatch({ type: SET_DISABLED_FALSE })
             dispatch(errorOff());
         }).catch(res => {

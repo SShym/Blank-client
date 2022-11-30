@@ -29,7 +29,6 @@ export default function Comments(){
     const disabled = useSelector(state => state.appReducer.disabled);
     const loading = useSelector(state => state.appReducer.loading);
 
-
     useEffect(() => {
       gapi.load('client:auth2', ()=>{
         gapi.client.init({
@@ -140,7 +139,9 @@ export default function Comments(){
                             }
                             <div className={!photo ? `none` : 'comments-item-img-preview-wrap'}>            
                                 <img className='comments-item-img-preview' src={photo} alt="" />
-                                <img onClick={()=>setPhoto('')} className='comments-item-close-svg' src={closeSvg} alt="" />
+                                {!disabled && 
+                                    <img onClick={()=>setPhoto('')} className='comments-item-close-svg' src={closeSvg} alt="" />
+                                }
                             </div>   
                         </div>
                         <div>
