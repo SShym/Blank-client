@@ -67,8 +67,8 @@ const Settings = () => {
     const [color,  setColor] = useState(false);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [one, setOne] = useState({ status: true, className: 'pick' });
-    const [two, setTwo] = useState({ status: false, className: 'settings-x' }); 
+    const [one, setOne] = useState({ status: true, className: '' });
+    const [two, setTwo] = useState({ status: false, className: '' }); 
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -138,7 +138,21 @@ const Settings = () => {
         !disabled && setForm({...form, imageUrl: null});
     }
 
-    const formData = { id: user.result._id }
+    const formData = { id: user.result._id };
+
+    const page = localStorage.getItem('settings-page');
+    
+    useEffect(()=>{
+        if(page === 'account'){
+            setOne({status: true, className: 'pick'})
+            setTwo({status: false, className: ''}); 
+        } else if(page === 'settings'){
+            setOne({satus: false, className: ''})
+            setTwo({status: true, className: 'pick'}); 
+        } else {
+
+        }
+    }, [])
     
     return(
         <Layout>
@@ -149,10 +163,12 @@ const Settings = () => {
                         <Black>
                             <div className={one.className}  onClick={()=>{
                                 setOne({status: true, className: 'pick'}); 
+                                localStorage.setItem('settings-page', 'account');
                                 setTwo({status: false});
                             }}>Account</div>
                             <div className={two.className} onClick={()=>{
                                 setTwo({status: true, className: 'pick'}); 
+                                localStorage.setItem('settings-page', 'settings');
                                 setOne({status: false});
                             }}>Settings</div>
                         </Black>
@@ -273,8 +289,7 @@ const Settings = () => {
                                                 <div className='change-user-settings-one'>
                                                     <div className='settings-changeAvatar'>
                                                         <div>
-                                                            
-                                                            <img  
+                                                            <img
                                                                 src={form.imageUrl ? form.imageUrl
 
                                                                     : !authData && user.result.avatar ? user.result.avatar

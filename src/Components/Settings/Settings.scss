@@ -144,13 +144,14 @@
     overflow: hidden;
     display: inline-block;
     position: relative;
+    background-color: none;
 }
 
 .settings-changeAvatar img{
     display: flex;
-    max-width: 150px;
+    width: 150px;
     height: 150px;
-    object-fit: contain;
+    object-fit: cover;
 }
   
 .block{
