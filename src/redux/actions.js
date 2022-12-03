@@ -15,7 +15,7 @@ export const SET_AUTHDATA = 'SET_AUTHDATA';
 export const LOGOUT = 'LOGOUT';
 
 const API = axios.create({ 
-    baseURL: 'http://localhost:5000' 
+    baseURL: 'https://vvv.herokuapp.com' 
 });
 
 API.interceptors.request.use((req) => {
