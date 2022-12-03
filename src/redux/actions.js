@@ -15,7 +15,7 @@ export const SET_AUTHDATA = 'SET_AUTHDATA';
 export const LOGOUT = 'LOGOUT';
 
 const API = axios.create({ 
-    baseURL: 'https://mushy-jade-coat.cyclic.app/' 
+    baseURL: 'https://sqmr.onrender.com/' 
 });
 
 API.interceptors.request.use((req) => {
