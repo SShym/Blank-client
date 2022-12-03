@@ -53,7 +53,7 @@ export default function Comments(){
                 comment: textComment, 
                 photo: photo, 
                 name: user?.result?.name,
-                avatar: user?.result?.imageUrl,
+                avatar: user?.result.avatar ? user?.result.avatar : user?.result.imageUrl,
                 setTextComment,
                 setEditText,
                 setPhoto
@@ -68,7 +68,7 @@ export default function Comments(){
             e.preventDefault();
             dispatch(commentUpdate({ 
                 name: user?.result?.name, 
-                avatar: user?.result?.imageUrl,
+                avatar: user?.result.avatar ? user?.result.avatar : user?.result.imageUrl,
                 setTextComment,
                 setEditText,
                 setPhoto,
@@ -118,7 +118,9 @@ export default function Comments(){
                                         </label>
                                         <div className={!editPhoto ? `none` : 'comments-item-img-preview-wrap'}>
                                             <img className='comments-item-img-preview' src={editPhoto} alt="" />
-                                            <img onClick={()=>setEditPhoto('')} className='comments-item-close-svg' src={closeSvg} alt="" />
+                                            {!disabled && 
+                                                <img onClick={()=>setEditPhoto('')} className='comments-item-close-svg' src={closeSvg} alt="" />
+                                            }
                                         </div>
                                         <input type="submit" hidden/>
                                     </form>

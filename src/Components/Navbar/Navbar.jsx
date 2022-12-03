@@ -2,7 +2,7 @@ import './Navbar.css';
 import { Button} from '@material-ui/core';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { errorOff, LOGOUT } from '../../redux/actions';
 import { gapi } from 'gapi-script';
 import Box from '@mui/material/Box';
@@ -17,21 +17,21 @@ import Tooltip from '@mui/material/Tooltip';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Layout from '../styles/Layout';
-import { NavbarAvatar, NavbarBlock, NavbarBlockUser, NavbarLogo } from "../styles/homestyles";
+import { NavbarBlock, NavbarBlockUser, NavbarLogo } from "../styles/homestyles";
 import { ReactComponent as HomeSvg } from '../../png/home.svg';
 
 const Navbar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const [anchorEl, setAnchorEl] = useState(null);
-
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
+  
   useEffect(()=>{
     user && location.pathname === '/auth' && navigate('/')
   }, [location])
-  
+
   useEffect(() => {
     gapi.load('client:auth2', ()=>{
       gapi.client.init({
@@ -43,6 +43,10 @@ const Navbar = () => {
     setUser(JSON.parse(localStorage.getItem('profile')));
   }, [location]);
 
+
+
+  const authData = useSelector(state => state.authReducer.authData)
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
@@ -53,7 +57,7 @@ const Navbar = () => {
     navigate('/');
     setUser(null);
   };
-
+  
   return (
     <Layout>
       <NavbarBlock>
@@ -66,23 +70,20 @@ const Navbar = () => {
           <div>
             <Box onClick={handleClick}>
               <NavbarBlockUser>
+                <Tooltip title="Account settings" PopperProps={{modifiers: [{name: "offset", options: {offset: [2, -12]}}]}}>
                   <Typography sx={{ fontSize:'17px', marginLeft:'15px', userSelect:'none' }}>
-                    {user.result.name}
-                  </Typography>
-                  <Tooltip title="Account settings">
-                    <IconButton
-                      size="small"
-                      sx={{ ml: 0.3 }}
-                      aria-controls={open ? 'account-menu' : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={open ? 'true' : undefined}
-                    >
-                    {user.result.imageUrl ?
+                    {authData ? authData.result.name.split(' ')[0] : user.result.name.split(' ')[0]}
+                    <IconButton>
+                      {user.result.googleId ?
                         <Avatar src={user.result.imageUrl} sx={{ width: 30, height: 30 }}></Avatar>
-                      : <NavbarAvatar>{user.result.name.charAt(0)}</NavbarAvatar>              
-                    }
+                        :
+                        <Avatar src={authData ? authData?.result.avatar : user.result.avatar} sx={{ width: 30, height: 30 }}>
+                          {user.result.name.charAt(0)}
+                        </Avatar>
+                      }
                     </IconButton>
-                  </Tooltip>
+                  </Typography>
+                </Tooltip>
               </NavbarBlockUser>
             </Box>
             <div>
@@ -128,13 +129,17 @@ const Navbar = () => {
               <div style={{
                 display:'flex',
                 alignItems:'center',
-                padding:'5px 15px 10px 16px',
+                padding:'3px 15px 10px 14px',
                 userSelect:'none',
                 fontWeight:'bold',
                 fontSize:'11px',
               }}>
-                <Avatar src={user.result.imageUrl ? user.result.imageUrl : ''} />{user.result.name}
-              </div>
+                <Avatar />
+                <Typography>
+                    {authData ? authData.result.name : user.result.name}
+                  </Typography>
+                  </div>
+              
               <Divider />
               <Link className='navbar-link' to="/settings">
                 <MenuItem>

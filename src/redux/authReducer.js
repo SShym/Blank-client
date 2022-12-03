@@ -1,6 +1,7 @@
 import { 
     AUTH,
-    LOGOUT
+    LOGOUT,
+    SET_AUTHDATA
 } from './actions';
 
 
@@ -26,6 +27,11 @@ export const authReducer = (state = initialState, action) => {
                 authData: null, 
                 loading: false, 
                 errors: null 
+            };
+        case SET_AUTHDATA:
+            return {
+                ...state,
+                authData: action.data, 
             };
         
         default:

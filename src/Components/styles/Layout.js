@@ -28,7 +28,6 @@ const Layout = ({ children }) => {
     border: 'rgb(27, 80, 80)',
     avatarBackground: 'rgb(27, 80, 80)',
     avatarColorName: 'rgb(67, 137, 127)',
-    SettingsRightBlock: 'gray',
     SettingsText: 'rgb(46, 46, 46)',
     pageBackground: mainDark,
   };
@@ -44,7 +43,6 @@ const Layout = ({ children }) => {
     border: 'black',
     avatarBackground: 'rgb(195, 200, 201)',
     avatarColorName: 'white',
-    SettingsRightBlock: 'rgb(216, 216, 216)',
     SettingsText: 'rgb(107, 107, 107)',
     pageBackground: mainLight,
   };

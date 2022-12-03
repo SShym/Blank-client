@@ -11,10 +11,11 @@ export const ADD_PHOTO = 'ADD_PHOTO';
 export const SET_DISABLED_TRUE = 'SET_DISABLED_TRUE';
 export const SET_DISABLED_FALSE = 'SET_DISABLED_FALSE';
 export const AUTH = 'AUTH';
+export const SET_AUTHDATA = 'SET_AUTHDATA';
 export const LOGOUT = 'LOGOUT';
 
 const API = axios.create({ 
-    baseURL: 'https://vvv.herokuapp.com' 
+    baseURL: 'http://localhost:5000' 
 });
 
 API.interceptors.request.use((req) => {
@@ -24,6 +25,33 @@ API.interceptors.request.use((req) => {
 
   return req;
 });
+
+export function loaderOn(){
+    return{
+        type: LOADER_DISPLAY_ON,
+    }
+}
+
+export function loaderOff(){
+    return{
+        type: LOADER_DISPLAY_OFF,
+    }
+}
+
+export function errorOn(text){
+    return dispatch => {
+        dispatch({
+            type: ERROR_DISPLAY_ON,
+            text
+        })
+    }
+}
+
+export function errorOff(){
+    return{
+        type: ERROR_DISPLAY_OFF,
+    }
+}
 
 export function commentCreate({comment, photo, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
@@ -127,33 +155,6 @@ export function commentsLoad(data){
     }
 }
 
-export function loaderOn(){
-    return{
-        type: LOADER_DISPLAY_ON,
-    }
-}
-
-export function loaderOff(){
-    return{
-        type: LOADER_DISPLAY_OFF,
-    }
-}
-
-export function errorOn(text){
-    return dispatch => {
-        dispatch({
-            type: ERROR_DISPLAY_ON,
-            text
-        })
-    }
-}
-
-export function errorOff(){
-    return{
-        type: ERROR_DISPLAY_OFF,
-    }
-}
-
 export const signin = (formData, navigate) => async (dispatch) => {
     try {
       const { data } = await API.post('/login', formData);
@@ -171,7 +172,6 @@ export const signup = (formData, navigate, setVerifyStatus) => async (dispatch) 
         dispatch(errorOff());
         setVerifyStatus(true);
       })
-    //   dispatch({ type: AUTH, data });
     } catch (error) {
       dispatch(errorOn(error.response.data.message));
     }
@@ -191,7 +191,6 @@ export const verifyMailOnLoad = (formData, navigate, decode, setValidUrl) => asy
     try {
         await API.get(`/${formData.id}/verify/${formData.token}`)
         .then((res) => {
-            console.log(res)
             if (formData.token) {
                 const decodedToken = decode(formData.token);
             
@@ -219,8 +218,33 @@ export const deleteSchema = (formData, navigate) => async (dispatch) => {
             dispatch({type: LOGOUT});
             navigate('/');
         })
-    //   dispatch({ type: AUTH, data });
     } catch (error) {
       dispatch(errorOn(error.response.data.message));
     }
 };
+
+export const changeSettings = (formData) => async (dispatch) => {
+    try {
+        await API.put('/change-settings', formData).then((res) => {
+            dispatch({ type: AUTH, data: {
+                result: res.data.user,
+                token: res.data.token
+            }});
+        })
+    } catch (error) {
+      dispatch(errorOn(error.response.data.message));
+    }
+};
+
+export const loadAuthData = ({ data }) => async (dispatch) => {
+    try {
+        await API.post(`/account`, data).then((res) => {
+            dispatch({
+                type: SET_AUTHDATA,
+                data: res.data
+            })
+        })
+    } catch (error) {
+      dispatch(errorOn(error.response.data.message));
+    }
+}

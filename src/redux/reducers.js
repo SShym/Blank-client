@@ -6,5 +6,5 @@ import { authReducer } from "./authReducer";
 export const reducers = combineReducers({
     commentReducer,
     appReducer,
-    authReducer
+    authReducer,
 })

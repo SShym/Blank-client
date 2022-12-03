@@ -22,7 +22,7 @@ export default function SingleComment({comments, setId, setEditText, setEditMode
     const location = useLocation();
 
     const matches = useMediaQuery('(min-width: 442px)');
-
+    
     useEffect(() => {
         gapi.load('client:auth2', ()=>{
           gapi.client.init({
@@ -54,12 +54,11 @@ export default function SingleComment({comments, setId, setEditText, setEditMode
                         {!comments.avatar 
                             ? <div className='single-comment-without-profileImg'>{comments.name.charAt(0)}</div>  
                             : <img className='single-comment-profile-img' src={comments.avatar} alt="" />
-
                         }
                     </div>
                     <form className='single-comment'>
                         <div className='single-comment-block-BtnAndText'>
-                            { (user?.result?.googleId === comments?.creator || user?.result?._id === comments?.creator) &&
+                            { (user?.result?.googleId === comments?.creator || user?.result?._id === comments?.creator) && user != null &&
                             <div className='single-comment-buttons'>
                                 <div onClick={() => {
                                     if(!disabled && user != null){

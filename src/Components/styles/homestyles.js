@@ -5,7 +5,7 @@ export const SwitchButton = styled.label`
   display: inline-block;
   width: 22px;
   height: 32px;
-  bottom: 6px;
+  bottom: -4px;
   margin-left: 25px;
 
   input {
@@ -53,10 +53,13 @@ export const SwitchButton = styled.label`
 `;
 
 export const Black = styled.div`
+  div{
+    color: rgb(101, 101, 101);
+  }
   .pick{
     transition-property: color, border-left;
     transition-duration: 0.5s;
-    color: ${(props) => props.theme.theme === 'light' ? 'white' : 'gray'};
+    color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(181, 181, 181)'};
     border-left: 1px solid ${(props) => props.theme.theme === 'light' ? 'white' : 'gray'};
   }
 
@@ -167,7 +170,7 @@ export const SettingsRightBlock = styled.div`
   transition-property: color, background-color;
   transition-duration: 0.5s;
   padding: 10px;
-  background-color: ${(props) => props.theme.SettingsRightBlock};
+  background-color: ${(props) => props.theme.theme === 'light' ? 'rgb(216, 216, 216)' : 'rgb(110, 110, 110)'};
   color: ${(props) => props.theme.SettingsText};
   flex-basis: 80%;
   width: 100%;
@@ -179,6 +182,19 @@ export const SettingsRightBlock = styled.div`
     border: 1px solid ${(props) => props.theme.theme === 'light' ? 'red' : 'black'};
     color: ${(props) => props.theme.theme === 'light' ? 'red' : 'black'};
   }
+
+  .change-user-settings-two{
+    transition: background 0.5s;
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(141, 141, 141, 0.3)'};
+  }
+
+  .change-user-settings-button, .settings-delete-avatar{
+    transition-property: background-color, color;
+    transition-duration: 0.5s;
+    background-color: ${(props) => props.theme.theme === 'light' ? 'rgb(200, 200, 200)' : 'rgb(56, 56, 56)'};
+    color: ${(props) => props.theme.theme === 'light' ? '' : 'gray'};
+  }
+
 `;
 
 export const FormComments = styled.div`

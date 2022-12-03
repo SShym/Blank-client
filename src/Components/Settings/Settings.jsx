@@ -1,5 +1,5 @@
 import './Settings.scss';
-import success from '../../png/success.svg';
+import { ReactComponent as Success } from '../../png/success.svg';
 import profile from '../../png/profile.svg';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
@@ -7,15 +7,19 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';import Icon from '@mui/material/Icon';
+import Avatar from '@mui/material/Avatar';
 import { useContext, useEffect, useState } from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { verifyMail, deleteSchema } from "../../redux/actions";
+import { verifyMail, deleteSchema, changeSettings, errorOff, loadAuthData } from "../../redux/actions";
 import { GlobalContext } from '../styles/globalContext';
 import { SwitchButton } from "../styles/homestyles";
 import Layout from '../styles/Layout';
 import { Black, PageBackground, SettingsRightBlock} from "../styles/homestyles";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import profileImg from '../../png/profile.webp';
+import { ReactComponent as UploadSvg } from '../../png/upload.svg';
+import Input from './Input';
 
 const style = {
     position: 'absolute',
@@ -28,40 +32,99 @@ const style = {
     p: 4,
 };
 
+const initialState = { 
+    firstName: '', 
+    lastName: '', 
+    imageUrl: '', 
+};
+
 const Settings = () => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const { theme, themeSwitchHandler } = useContext(GlobalContext);
-    
+    const [form, setForm] = useState(initialState);
     const [verifyStatus, setVerifyStatus] = useState(false);
-
-    const matches = useMediaQuery('(min-width: 442px)');
-
-    useEffect(() => {
-        window.localStorage.setItem("theme", theme);
-      }, [theme]);
+    const [color,  setColor] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const [one, setOne] = useState({
         status: true,
         className: 'pick'
-    })
+    });
 
     const [two, setTwo] = useState({
         status: false,
         className: 'settings-x'
-    }) 
+    }); 
 
-    const [color,  setColor] = useState(false);
-
-    const [open, setOpen] = useState(false);
-
-    const toggle = () => setColor(!color)
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const matches = useMediaQuery('(min-width: 462px)');
+    const authData = useSelector(state => state.authReducer.authData);
+
+    useEffect(() => {
+        !user.result.googleId && dispatch(loadAuthData({ 
+            data: {
+                id:user.result._id, 
+                token: user.token
+            }
+        }));
+        dispatch(errorOff())
+    }, []);
+
+    useEffect(() => window.localStorage.setItem("theme", theme), [theme]);
+
+    const toggle = () => setColor(!color);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const handleChange = (e) => {
+        setForm({ ...form, [e.target.name]: e.target.value.length > 0 ? e.target.value : '' });
+    }
+    
+    useEffect(()=>{
+        !user.result.googleId && setForm(authData ? { ...form, 
+            firstName: authData?.result.name.split(' ')[0],
+            lastName: authData?.result.name.split(' ')[1],
+            imageUrl: authData?.result.avatar
+        } : {...form});
+    }, [authData]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const formData = {
+            token: user.token,
+            id: user.result._id,
+            imageUrl: form.imageUrl, 
+            firstName: form.firstName,
+            lastName: form.lastName,
+        }
+
+        dispatch(changeSettings(formData))
+    };
+
+    const handleDeleteProfile = () => {
+        dispatch(deleteSchema(formData, navigate))
+    }
+
+    const handleOnChange = (e) => {
+        const file = e.target.files[0];
+        setFileToBase(file);
+    }
+
+    const setFileToBase = (file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setForm({...form, imageUrl: reader.result});
+        }
+    }
+
+    const handleDeleteAvatar = () => {
+        setForm({...form, imageUrl: null});
+    }
 
     const formData = { id: user.result._id }
+
 
     return(
         <Layout>
@@ -84,13 +147,26 @@ const Settings = () => {
                             {one.status &&
                                 <div className='settings-block-two-general'>
                                     <div className='settings-block-two-general-one'>
-                                        <div>
-                                            { user.result.imageUrl 
-                                                ? <img className='settings-avatar' src={user.result.imageUrl} alt="" />
-                                                : <img className='settings-avatar' src={profile} alt="" />
-                                            }
-                                        </div>
-                                        <div className='settings-block-user-name'>{user.result.name}</div>
+                                        { user.result.imageUrl ?
+                                            <div>
+                                                { user.result.imageUrl ?
+                                                    <img className='settings-avatar' src={user.result.imageUrl} alt="" /> :
+                                                    <img className='settings-avatar' src={profile} alt="" />
+                                                }
+                                            </div>
+                                            :
+                                            <div style={{
+                                                display:'flex',
+                                                justifyContent:'center',
+                                                marginBottom:'5px'
+                                            }}>
+                                                <Avatar 
+                                                    src={authData ? authData?.result?.avatar : user.result.avatar} 
+                                                    sx={{ width: 150, height: 150 }} >
+                                                </Avatar>
+                                            </div>
+                                        }
+                                        <div className='settings-block-user-name'>{authData ? authData.result.name : user.result.name}</div>
                                         <div className='settings-block-user-email'>
                                             <Icon sx={{
                                                 width:25, 
@@ -113,7 +189,7 @@ const Settings = () => {
                                                     fontSize:'17px',
                                                     color:'black'
                                                 }}>
-                                                    <img style={{width:'60px', height:'60px'}} src={success} alt="" />
+                                                    <Success style={{width:'60px', height:'60px'}} />
                                                     <div style={{marginTop:'5px'}}>An Email sent to your account!</div>
                                                 </div>
                                             :
@@ -157,28 +233,80 @@ const Settings = () => {
                                                 variant="outlined" 
                                                 size="large" 
                                                 color="error" 
-                                                onClick={()=>dispatch(deleteSchema(formData, navigate))}>
+                                                onClick={handleDeleteProfile}>
                                                     Delete profile
                                             </Button>
                                         </div>
                                         </Box>
                                     </Modal>
+                                    { !user.result.googleId &&
+                                        <div className='change-user-settings'>
+                                            <div style={{
+                                                textAlign:'center',
+                                                fontWeight:'bold',
+                                                marginBottom:'6px', 
+                                                
+                                            }}>
+                                                <div style={{
+                                                    textAlign:'center',
+                                                    fontWeight:'bold',
+                                                    marginBottom:'5px', 
+                                                }}>
+                                                    Profile settings:
+                                                </div>
+                                            </div>
+                                            <form onSubmit={handleSubmit} className='change-user-settings-wrap'>
+                                                <div className='change-user-settings-one'>
+                                                    <div className='settings-changeAvatar'>
+                                                        <div>
+                                                            <img  
+                                                                src={form.imageUrl ? form.imageUrl : profileImg}
+                                                                alt="" 
+                                                            />
+                                                        </div>
+                                                        <label for="file">
+                                                            <div className='block'>
+                                                                <div>change photo</div>
+                                                                <UploadSvg style={{width:'30px', marginTop:'5px'}}/>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                    <div className='settings-delete-avatar' onClick={handleDeleteAvatar}>delete</div>
+                                                    <input onChange={handleOnChange} name="imageUrl" id="file" className='comments-item-select-img' type="file" multiple />
+                                                </div>
+                                                <div className='change-user-settings-two'>
+                                                    <div className='change-user-settings-two-box'>
+                                                        <Input value={form.firstName}  name="firstName" label="First Name" handleChange={handleChange}  />
+                                                        <Input value={form.lastName} name="lastName" label="Last Name" handleChange={handleChange} />
+                                                    </div>
+                                                </div>
+                                                <button type="submit" className='change-user-settings-button'>
+                                                    <div>save</div>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
                                     <div className='change-theme-block'>
-                                        <h5>Change theme:</h5>
-                                        <Layout>
-                                            <SwitchButton>
-                                                <input type='checkbox' onChange={() => themeSwitchHandler(theme === "dark" ? "light" : "dark")} />
-                                                <span></span>
-                                            </SwitchButton>
-                                        </Layout>
+                                        <div style={{
+                                            textAlign:'center',
+                                            fontWeight:'bold',
+                                            marginBottom:'5px', 
+                                            marginTop:'25px',
+                                        }}>
+                                            Change theme:
+                                        </div>
+                                        <SwitchButton>
+                                            <input type='checkbox' onChange={() => themeSwitchHandler(theme === "dark" ? "light" : "dark")} />
+                                            <span></span>
+                                        </SwitchButton>
                                     </div>
-                                    <div className='delete-profile-block'>
-                                        { !user.result.googleId &&
+                                    { !user.result.googleId &&
+                                        <div className='delete-profile-block'>
                                             <Button variant="outlined" size="large" color="error" onClick={handleOpen}>
                                                 Delete profile
                                             </Button>
-                                        }
-                                    </div>
+                                        </div>
+                                    }
                                 </div>
                             }
                         </SettingsRightBlock>
