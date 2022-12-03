@@ -57,118 +57,130 @@ const Navbar = () => {
     navigate('/');
     setUser(null);
   };
-  
+
   return (
-    <Layout>
-      <NavbarBlock>
-        <NavbarLogo>
-          <HomeSvg onClick={()=>navigate("/")} />
-        </NavbarLogo>
-        <div >
-        {user ? 
-        (
+    <div>
+    { location.pathname.includes('verify') ? 
+      <Layout>
+        <NavbarBlock>
+          <div className='verification-text'>VERIFICATION</div>
+        </NavbarBlock>
+      </Layout>
+      :
+      <Layout>
+        <NavbarBlock>
+        { location.pathname.includes('verify') &&
+          <div className='verification-text'>VERIFICATION</div>
+        }
+          <NavbarLogo>
+            <HomeSvg onClick={()=>navigate("/")} />
+          </NavbarLogo>
           <div>
-            <Box onClick={handleClick}>
-              <NavbarBlockUser>
-                <Tooltip title="Account settings" PopperProps={{modifiers: [{name: "offset", options: {offset: [2, -12]}}]}}>
-                  <Typography sx={{ fontSize:'17px', marginLeft:'15px', userSelect:'none' }}>
-                    {authData ? authData.result.name.split(' ')[0] : user.result.name.split(' ')[0]}
-                    <IconButton>
-                      {user.result.googleId ?
-                        <Avatar src={user.result.imageUrl} sx={{ width: 30, height: 30 }}></Avatar>
-                        :
-                        <Avatar src={authData ? authData?.result.avatar : user.result.avatar} sx={{ width: 30, height: 30 }}>
-                          {user.result.name.charAt(0)}
-                        </Avatar>
-                      }
-                    </IconButton>
-                  </Typography>
-                </Tooltip>
-              </NavbarBlockUser>
-            </Box>
+          {user ? 
+          (
             <div>
-            <Menu
-              anchorEl={anchorEl}
-              id="account-menu"
-              open={open}
-              onClose={handleClose}
-              onClick={handleClose}
-              PaperProps={{
-                elevation: 0,
-                sx: {
-                  backgroundColor: 'rgb(232, 232, 232)',
-                  overflow: 'visible',
-                  marginLeft:'-1.5px',
-                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                  mt: 1.0,
-                  '& .MuiAvatar-root': {
-                    bgcolor: 'papper',
-                    color: 'white',
-                    width: 32,
-                    height: 32,
-                    ml: -0.5,
-                    mr: 1,
+              <Box onClick={handleClick}>
+                <NavbarBlockUser>
+                  <Tooltip title="Account settings" PopperProps={{modifiers: [{name: "offset", options: {offset: [2, -12]}}]}}>
+                    <Typography sx={{ fontSize:'17px', marginLeft:'15px', userSelect:'none' }}>
+                      {authData ? authData.result.name.split(' ')[0] : user.result.name.split(' ')[0]}
+                      <IconButton>
+                        {user.result.googleId ?
+                          <Avatar src={user.result.imageUrl} sx={{ width: 30, height: 30 }}></Avatar>
+                          :
+                          <Avatar src={authData ? authData?.result.avatar : user.result.avatar} sx={{ width: 30, height: 30 }}>
+                            {authData ? authData?.result?.name.charAt(0) : user.result.name.charAt(0)}
+                          </Avatar>
+                        }
+                      </IconButton>
+                    </Typography>
+                  </Tooltip>
+                </NavbarBlockUser>
+              </Box>
+              <div>
+              <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    backgroundColor: 'rgb(232, 232, 232)',
+                    overflow: 'visible',
+                    marginLeft:'-1.5px',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                    mt: 1.0,
+                    '& .MuiAvatar-root': {
+                      bgcolor: 'papper',
+                      color: 'white',
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    '&:before': {
+                      content: '""',
+                      display: 'block',
+                      position: 'absolute',
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: 'rgb(232, 232, 232)',
+                      transform: 'translateY(-50%) rotate(45deg)',
+                      zIndex: 0,
+                    },
                   },
-                  '&:before': {
-                    content: '""',
-                    display: 'block',
-                    position: 'absolute',
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: 'rgb(232, 232, 232)',
-                    transform: 'translateY(-50%) rotate(45deg)',
-                    zIndex: 0,
-                  },
-                },
-              }}
-              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-            >
-              <div style={{
-                display:'flex',
-                alignItems:'center',
-                padding:'3px 15px 10px 14px',
-                userSelect:'none',
-                fontWeight:'bold',
-                fontSize:'11px',
-              }}>
-                <Avatar />
-                <Typography>
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              >
+                <div style={{
+                  display:'flex',
+                  alignItems:'center',
+                  padding:'3px 15px 10px 14px',
+                  userSelect:'none',
+                  fontWeight:'bold',
+                  fontSize:'11px',
+                }}>
+                  <Avatar />
+                  <Typography>
                     {authData ? authData.result.name : user.result.name}
                   </Typography>
-                  </div>
-              
-              <Divider />
-              <Link className='navbar-link' to="/settings">
-                <MenuItem>
+                </div>              
+                <Divider />
+                <Link className='navbar-link' to="/settings">
+                  <MenuItem>
+                    <ListItemIcon>
+                      <Settings fontSize="small" />
+                    </ListItemIcon>
+                    Settings
+                  </MenuItem>
+                </Link>
+                <MenuItem onClick={logout}>
                   <ListItemIcon>
-                    <Settings fontSize="small" />
+                    <Logout fontSize="small" />
                   </ListItemIcon>
-                  Settings
+                  Logout
                 </MenuItem>
-              </Link>
-              <MenuItem onClick={logout}>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
-                </ListItemIcon>
-                Logout
-              </MenuItem>
-            </Menu>
+              </Menu>
+              </div>
             </div>
+          ) : 
+          (
+            <div className='navbar-right-block-two'>
+              <Link className='navbar-link' to="/auth">
+                <Button size="large" color="primary" variant="outlined">LOGIN</Button>
+              </Link>
+            </div>
+          )}
           </div>
-        ) : 
-        (
-          <div className='navbar-right-block-two'>
-            <Link className='navbar-link' to="/auth">
-              <Button size="large" color="primary" variant="outlined">LOGIN</Button>
-            </Link>
-          </div>
-        )}
-        </div>
-        </NavbarBlock>
-    </Layout>
+          </NavbarBlock>
+      </Layout>
+    }
+    </div>
   );
 };
 

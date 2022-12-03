@@ -157,30 +157,37 @@ export function commentsLoad(data){
 
 export const signin = (formData, navigate) => async (dispatch) => {
     try {
-      const { data } = await API.post('/login', formData);
-      dispatch({ type: AUTH, data });
-      dispatch(errorOff());
-      navigate('/');
+      dispatch({ type: SET_DISABLED_TRUE })
+      await API.post('/login', formData).then(res => {
+        dispatch({ type: AUTH, data: res.data });
+        dispatch({ type: SET_DISABLED_FALSE });
+        dispatch(errorOff());
+        navigate('/');
+      });
     } catch (error) {
         dispatch(errorOn(error.response.data.message));
+        dispatch({ type: SET_DISABLED_FALSE });
     }
   };
   
 export const signup = (formData, navigate, setVerifyStatus) => async (dispatch) => {
     try {
+      dispatch({ type: SET_DISABLED_TRUE })
       await API.post('/register', formData).then(() => {
         dispatch(errorOff());
         setVerifyStatus(true);
+        dispatch({ type: SET_DISABLED_FALSE });
       })
     } catch (error) {
       dispatch(errorOn(error.response.data.message));
+      dispatch({ type: SET_DISABLED_FALSE });
     }
 };
 
 export const verifyMail = (formData, setVerifyStatus) => async (dispatch) => {
     try {
         await API.post('/resend-verification', formData).then(() => {
-            setVerifyStatus(true)
+            setVerifyStatus(true);
         });
     } catch (error) {
       dispatch(errorOn(error.response.data.message));
@@ -225,14 +232,17 @@ export const deleteSchema = (formData, navigate) => async (dispatch) => {
 
 export const changeSettings = (formData) => async (dispatch) => {
     try {
+        dispatch({ type: SET_DISABLED_TRUE });
         await API.put('/change-settings', formData).then((res) => {
             dispatch({ type: AUTH, data: {
                 result: res.data.user,
                 token: res.data.token
             }});
+            dispatch({ type: SET_DISABLED_FALSE });
         })
     } catch (error) {
       dispatch(errorOn(error.response.data.message));
+      dispatch({ type: SET_DISABLED_FALSE });
     }
 };
 

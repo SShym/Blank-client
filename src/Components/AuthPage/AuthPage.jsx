@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
@@ -22,7 +22,7 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const classes = useStyles();
-
+  const disabled = useSelector(state => state.appReducer.disabled);
   const handleShowPassword = () => setShowPassword(!showPassword);
 
   const switchMode = () => {
@@ -79,20 +79,20 @@ const SignUp = () => {
                   <Grid container spacing={1}>
                     { isSignup && (
                     <>
-                      <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half />
-                      <Input name="lastName" label="Last Name" handleChange={handleChange} half />
+                      <Input disabled={disabled} name="firstName" label="First Name" handleChange={handleChange} autoFocus half />
+                      <Input disabled={disabled} name="lastName" label="Last Name" handleChange={handleChange} half />
                     </>
                     )}
-                    <Input name="email" label="Email Address" handleChange={handleChange} type="email" />
-                    <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword} />
+                    <Input disabled={disabled} name="email" label="Email Address" handleChange={handleChange} type="email" />
+                    <Input disabled={disabled} name="password" label="Password" handleChange={handleChange} type={showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword} />
                   </Grid>
                   <div className='authpage-btnBlock'>
                   {
                     isSignup ?
-                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                    <Button disabled={disabled} type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                       Sign Up
                     </Button> :
-                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                    <Button disabled={disabled} type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                       Sign In
                     </Button>  
                   }
@@ -100,7 +100,7 @@ const SignUp = () => {
                   <GoogleLogin
                     clientId="733992931171-gjd9utoojt376cq1b0l9ut8prvikebbn.apps.googleusercontent.com"
                     render={(renderProps) => (
-                      <Button className='authpage-google-button' color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
+                      <Button className='authpage-google-button' color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled || disabled} startIcon={<Icon />} variant="contained">
                         Google Sign In
                       </Button>
                     )}

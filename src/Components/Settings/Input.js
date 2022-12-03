@@ -22,7 +22,7 @@ const CssTextField = styled(TextField)({
   },
 });
 
-const Input = ({ name, handleChange, label, type, value }) => (
+const Input = ({ name, handleChange, label, type, value, disabled }) => (
     <CssTextField onKeyDown={(event) => {
       event.code === 'Space' && event.preventDefault()
     }}
@@ -32,6 +32,7 @@ const Input = ({ name, handleChange, label, type, value }) => (
       name={name}
       required
       value={value}
+      disabled={disabled}
       label={label}
       type={type}
       onChange={handleChange}>

@@ -60,6 +60,7 @@ const Settings = () => {
     const navigate = useNavigate();
     const matches = useMediaQuery('(min-width: 462px)');
     const authData = useSelector(state => state.authReducer.authData);
+    const disabled = useSelector(state => state.appReducer.disabled)
 
     useEffect(() => {
         !user.result.googleId && dispatch(loadAuthData({ 
@@ -120,11 +121,12 @@ const Settings = () => {
     }
 
     const handleDeleteAvatar = () => {
-        setForm({...form, imageUrl: null});
+        !disabled && setForm({...form, imageUrl: null});
     }
 
     const formData = { id: user.result._id }
 
+    console.log(disabled)
 
     return(
         <Layout>
@@ -255,7 +257,7 @@ const Settings = () => {
                                                     Profile settings:
                                                 </div>
                                             </div>
-                                            <form onSubmit={handleSubmit} className='change-user-settings-wrap'>
+                                            <form autocomplete="off" onSubmit={handleSubmit} className='change-user-settings-wrap'>
                                                 <div className='change-user-settings-one'>
                                                     <div className='settings-changeAvatar'>
                                                         <div>
@@ -271,16 +273,18 @@ const Settings = () => {
                                                             </div>
                                                         </label>
                                                     </div>
-                                                    <div className='settings-delete-avatar' onClick={handleDeleteAvatar}>delete</div>
-                                                    <input onChange={handleOnChange} name="imageUrl" id="file" className='comments-item-select-img' type="file" multiple />
+                                                    <div className='settings-delete-avatar' onClick={handleDeleteAvatar}>
+                                                        <div className={disabled && 'gray'}>delete</div>
+                                                    </div>
+                                                    <input disabled={disabled} onChange={handleOnChange} name="imageUrl" id="file" className='comments-item-select-img' type="file" multiple />
                                                 </div>
                                                 <div className='change-user-settings-two'>
                                                     <div className='change-user-settings-two-box'>
-                                                        <Input value={form.firstName}  name="firstName" label="First Name" handleChange={handleChange}  />
-                                                        <Input value={form.lastName} name="lastName" label="Last Name" handleChange={handleChange} />
+                                                        <Input disabled={disabled} value={form.firstName}  name="firstName" label="First Name" handleChange={handleChange}  />
+                                                        <Input disabled={disabled} value={form.lastName} name="lastName" label="Last Name" handleChange={handleChange} />
                                                     </div>
                                                 </div>
-                                                <button type="submit" className='change-user-settings-button'>
+                                                <button disabled={disabled} type="submit" className='change-user-settings-button'>
                                                     <div>save</div>
                                                 </button>
                                             </form>
