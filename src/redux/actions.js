@@ -16,6 +16,7 @@ export const LOGOUT = 'LOGOUT';
 
 const API = axios.create({ 
     baseURL: 'https://sqmr.onrender.com/' 
+    // baseURL: 'http://localhost:5000/' 
 });
 
 API.interceptors.request.use((req) => {
@@ -246,13 +247,14 @@ export const changeSettings = (formData) => async (dispatch) => {
     }
 };
 
-export const loadAuthData = ({ data }) => async (dispatch) => {
+export const loadAuthData = ({ data }, setLoading) => async (dispatch) => {
     try {
         await API.post(`/account`, data).then((res) => {
             dispatch({
                 type: SET_AUTHDATA,
                 data: res.data
-            })
+            });
+            setLoading(false);
         })
     } catch (error) {
       dispatch(errorOn(error.response.data.message));

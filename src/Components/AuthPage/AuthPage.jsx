@@ -10,6 +10,8 @@ import useStyles from './styles';
 import Input from './Input';
 import Layout from '../styles/Layout';
 import { PageAuth } from "../styles/homestyles";
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 
 const initialState = { firstName: '', lastName: '', email: '', password: '' };
 
@@ -87,16 +89,32 @@ const SignUp = () => {
                     <Input disabled={disabled} name="password" label="Password" handleChange={handleChange} type={showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword} />
                   </Grid>
                   <div className='authpage-btnBlock'>
-                  {
-                    isSignup ?
-                    <Button disabled={disabled} type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                      Sign Up
-                    </Button> :
-                    <Button disabled={disabled} type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                      Sign In
-                    </Button>  
+                  {!disabled ?
+                    <div>
+                      { isSignup ?
+                        <Button disabled={disabled} type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                          Sign Up
+                        </Button> :
+                        <Button disabled={disabled} type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                          Sign In
+                        </Button>  
+                      }
+                    </div>
+                    :
+                    <div>
+                      <LoadingButton
+                        sx={{mt:1.5, mb:1.5, boxShadow:0, p:0.7}}
+                        fullWidth
+                        loading
+                        loadingPosition="start"
+                        variant="outlined" 
+                        color="primary"
+                      >Sign In
+                      </LoadingButton> 
+                    </div>
                   }
                   </div>
+                  <div className='google-login-button'>
                   <GoogleLogin
                     clientId="733992931171-gjd9utoojt376cq1b0l9ut8prvikebbn.apps.googleusercontent.com"
                     render={(renderProps) => (
@@ -108,10 +126,11 @@ const SignUp = () => {
                     onFailure={googleError}
                     cookiePolicy="single_host_origin"
                   />
+                  </div>
                   {/* <div>{error}</div> */}
                   <Grid container justify="flex-end">
                     <Grid item>
-                      <Button onClick={switchMode}>
+                      <Button className='switch-mode' disabled={disabled} onClick={switchMode}>
                         { isSignup ? 'Already have an account? Sign in' : "Don't have an account? Sign Up" }
                       </Button>
                     </Grid>

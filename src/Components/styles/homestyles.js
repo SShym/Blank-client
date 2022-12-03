@@ -230,6 +230,7 @@ export const CommentsPage = styled.div`
 
 export const PageAuth = styled.div`
   .authpage-wrap {
+    height: 550px;
     padding: 80px 0px 80px 0px;
     background-image: url(${(props) => props.theme.pageBackground});
     margin:0px 20px 20px 20px;
@@ -275,7 +276,18 @@ export const PageAuth = styled.div`
       }
     }
 
+    .switch-mode:disabled{
+      color:black
+    }
+
+    .authpage-btnBlock, .google-login-button{
+      button[disabled]{
+        box-shadow:0px 1px 2px gray;
+      }  
+    }
+
     .authpage-btnBlock button{
+      border: none;
       font-family: ${(props) => props.theme.theme === 'light' ? '' : 'Georgia'};
       background-color: ${(props) => props.theme.theme === 'light' ? '#1976d2' : 'black'};
       color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(158, 154, 148)'};

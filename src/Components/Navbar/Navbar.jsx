@@ -137,20 +137,6 @@ const Navbar = () => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
-                <div style={{
-                  display:'flex',
-                  alignItems:'center',
-                  padding:'3px 15px 10px 14px',
-                  userSelect:'none',
-                  fontWeight:'bold',
-                  fontSize:'11px',
-                }}>
-                  <Avatar />
-                  <Typography>
-                    {authData ? authData.result.name : user.result.name}
-                  </Typography>
-                </div>              
-                <Divider />
                 <Link className='navbar-link' to="/settings">
                   <MenuItem>
                     <ListItemIcon>

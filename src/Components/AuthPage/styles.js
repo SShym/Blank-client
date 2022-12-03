@@ -34,7 +34,7 @@ export default makeStyles((theme) => ({
     fontSize:'18px'
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(1.5, -0, 1.5),
   },
   submitMail: {
     margin: theme.spacing(1, 0, 1),

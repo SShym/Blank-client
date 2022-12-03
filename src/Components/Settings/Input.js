@@ -1,7 +1,6 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import { styled } from '@mui/material/styles';
-import { createMuiTheme } from '@material-ui/core';
 
 const CssTextField = styled(TextField)({
   label:{
@@ -22,7 +21,7 @@ const CssTextField = styled(TextField)({
   },
 });
 
-const Input = ({ name, handleChange, label, type, value, disabled }) => (
+const Input = ({ name, handleChange, label, type, value, disabled, authData, user, form }) => (
     <CssTextField onKeyDown={(event) => {
       event.code === 'Space' && event.preventDefault()
     }}
@@ -31,7 +30,7 @@ const Input = ({ name, handleChange, label, type, value, disabled }) => (
       string
       name={name}
       required
-      value={value}
+      value={!authData ? user.result.name.split(' ')[0] : form.firstName}
       disabled={disabled}
       label={label}
       type={type}

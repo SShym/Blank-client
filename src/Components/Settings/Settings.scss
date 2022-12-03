@@ -2,6 +2,12 @@
     color: gray;
 }
 
+.skeleton{
+    width: 150px;
+    height: 150px;
+    background: rgb(182, 182, 182);
+}
+
 .settings-wrap{
     height: 500px;
     flex-basis: calc(33.333% - 40px);

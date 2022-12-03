@@ -19,7 +19,28 @@ import { Black, PageBackground, SettingsRightBlock} from "../styles/homestyles";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import profileImg from '../../png/profile.webp';
 import { ReactComponent as UploadSvg } from '../../png/upload.svg';
-import Input from './Input';
+import React from 'react';
+import { TextField } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+
+const CssTextField = styled(TextField)({
+  label:{
+    fontSize:'13px'
+  },
+  '& .MuiInputBase-input': {
+    padding: '10px 4px',
+    fontSize:'13px'
+  },
+  '& label.Mui-focused': {
+    color: 'rgb(0, 110, 110)',
+  },
+  '& .MuiInput-underline:after': {
+    borderBottomColor: 'rgb(0, 110, 110)',
+  },
+  '& .MuiInput-underline:before': { 
+    borderBottomColor: 'rgb(151, 151, 151)' 
+  },
+});
 
 const style = {
     position: 'absolute',
@@ -45,30 +66,23 @@ const Settings = () => {
     const [verifyStatus, setVerifyStatus] = useState(false);
     const [color,  setColor] = useState(false);
     const [open, setOpen] = useState(false);
-
-    const [one, setOne] = useState({
-        status: true,
-        className: 'pick'
-    });
-
-    const [two, setTwo] = useState({
-        status: false,
-        className: 'settings-x'
-    }); 
+    const [loading, setLoading] = useState(true);
+    const [one, setOne] = useState({ status: true, className: 'pick' });
+    const [two, setTwo] = useState({ status: false, className: 'settings-x' }); 
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const matches = useMediaQuery('(min-width: 462px)');
     const authData = useSelector(state => state.authReducer.authData);
     const disabled = useSelector(state => state.appReducer.disabled)
-
+    
     useEffect(() => {
         !user.result.googleId && dispatch(loadAuthData({ 
             data: {
                 id:user.result._id, 
                 token: user.token
             }
-        }));
+        }, setLoading));
         dispatch(errorOff())
     }, []);
 
@@ -125,9 +139,7 @@ const Settings = () => {
     }
 
     const formData = { id: user.result._id }
-
-    console.log(disabled)
-
+    
     return(
         <Layout>
             <PageBackground>
@@ -261,8 +273,16 @@ const Settings = () => {
                                                 <div className='change-user-settings-one'>
                                                     <div className='settings-changeAvatar'>
                                                         <div>
+                                                            
                                                             <img  
-                                                                src={form.imageUrl ? form.imageUrl : profileImg}
+                                                                src={form.imageUrl ? form.imageUrl
+
+                                                                    : !authData && user.result.avatar ? user.result.avatar
+                    
+                                                                    : authData?.result?.avatar == null ? profileImg
+
+                                                                    : profileImg
+                                                                }
                                                                 alt="" 
                                                             />
                                                         </div>
@@ -274,17 +294,40 @@ const Settings = () => {
                                                         </label>
                                                     </div>
                                                     <div className='settings-delete-avatar' onClick={handleDeleteAvatar}>
-                                                        <div className={disabled && 'gray'}>delete</div>
+                                                        <div className={(disabled || loading) && 'gray'}>delete</div>
                                                     </div>
-                                                    <input disabled={disabled} onChange={handleOnChange} name="imageUrl" id="file" className='comments-item-select-img' type="file" multiple />
+                                                    <input disabled={disabled || loading} onChange={handleOnChange} name="imageUrl" id="file" className='comments-item-select-img' type="file" multiple />
                                                 </div>
                                                 <div className='change-user-settings-two'>
                                                     <div className='change-user-settings-two-box'>
-                                                        <Input disabled={disabled} value={form.firstName}  name="firstName" label="First Name" handleChange={handleChange}  />
-                                                        <Input disabled={disabled} value={form.lastName} name="lastName" label="Last Name" handleChange={handleChange} />
+                                                        {/* /////////////////// INPUT SETTINGS //////////////////////////// */}
+
+                                                        <CssTextField onKeyDown={(event) => { event.code === 'Space' && event.preventDefault()}}
+                                                            inputProps={{ maxLength: 15}}
+                                                            style={{margin:'13px 0px'}}
+                                                            value={!authData ? user.result.name.split(' ')[0] : form.firstName}
+                                                            onChange={handleChange}
+                                                            disabled={disabled || loading} 
+                                                            name="firstName" 
+                                                            label="First Name"
+                                                        >
+                                                        </CssTextField>
+
+                                                        <CssTextField onKeyDown={(event) => { event.code === 'Space' && event.preventDefault()}}
+                                                            inputProps={{ maxLength: 15}}
+                                                            style={{margin:'13px 0px'}}
+                                                            value={!authData ? user.result.name.split(' ')[1] : form.lastName}
+                                                            disabled={disabled || loading}
+                                                            name="lastName" 
+                                                            label="lastName" 
+                                                            onChange={handleChange}
+                                                        >
+                                                        </CssTextField>
+                                                        
+                                                        {/* //////////////////////////////////////////////////////////////// */}
                                                     </div>
                                                 </div>
-                                                <button disabled={disabled} type="submit" className='change-user-settings-button'>
+                                                <button disabled={disabled || loading} type="submit" className='change-user-settings-button'>
                                                     <div>save</div>
                                                 </button>
                                             </form>
