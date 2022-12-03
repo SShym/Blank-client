@@ -10,7 +10,6 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
@@ -27,6 +26,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const disabled = useSelector(state => state.appReducer.disabled)
   
   useEffect(()=>{
     user && location.pathname === '/auth' && navigate('/')
@@ -48,7 +48,7 @@ const Navbar = () => {
   const authData = useSelector(state => state.authReducer.authData)
 
   const open = Boolean(anchorEl);
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClick = (event) => !disabled && setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
   const logout = () => {
@@ -73,7 +73,7 @@ const Navbar = () => {
           <div className='verification-text'>VERIFICATION</div>
         }
           <NavbarLogo>
-            <HomeSvg onClick={()=>navigate("/")} />
+            <HomeSvg onClick={() => {!disabled && navigate("/")}} />
           </NavbarLogo>
           <div>
           {user ? 
@@ -84,15 +84,15 @@ const Navbar = () => {
                   <Tooltip title="Account settings" PopperProps={{modifiers: [{name: "offset", options: {offset: [2, -12]}}]}}>
                     <Typography sx={{ fontSize:'17px', marginLeft:'15px', userSelect:'none' }}>
                       {authData ? authData.result.name.split(' ')[0] : user.result.name.split(' ')[0]}
-                      <IconButton>
-                        {user.result.googleId ?
-                          <Avatar src={user.result.imageUrl} sx={{ width: 30, height: 30 }}></Avatar>
-                          :
-                          <Avatar src={authData ? authData?.result.avatar : user.result.avatar} sx={{ width: 30, height: 30 }}>
-                            {authData ? authData?.result?.name.charAt(0) : user.result.name.charAt(0)}
-                          </Avatar>
-                        }
-                      </IconButton>
+                        <IconButton>
+                          {user.result.googleId ?
+                            <Avatar className='navAvatar' src={user.result.imageUrl} sx={{ width: 30, height: 30 }}></Avatar>
+                            :
+                            <Avatar className='navAvatar' src={authData ? authData?.result.avatar : user.result.avatar} sx={{ width: 30, height: 30 }}>
+                              {authData ? authData?.result?.name.charAt(0) : user.result.name.charAt(0)}
+                            </Avatar>
+                          }
+                        </IconButton>
                     </Typography>
                   </Tooltip>
                 </NavbarBlockUser>

@@ -67,12 +67,13 @@ const Settings = () => {
     const [color,  setColor] = useState(false);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [one, setOne] = useState({ status: true, className: '' });
+    const [one, setOne] = useState({ status: true, className: 'pick' });
     const [two, setTwo] = useState({ status: false, className: '' }); 
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const matches = useMediaQuery('(min-width: 462px)');
+    const matches = useMediaQuery('(min-width: 495px)');
+    const matchesSettings = useMediaQuery('(max-width: 495px)');
     const authData = useSelector(state => state.authReducer.authData);
     const disabled = useSelector(state => state.appReducer.disabled)
     
@@ -139,10 +140,11 @@ const Settings = () => {
     }
 
     const formData = { id: user.result._id };
-
-    const page = localStorage.getItem('settings-page');
     
     useEffect(()=>{
+        
+        const page = localStorage.getItem('settings-page');
+        
         if(page === 'account'){
             setOne({status: true, className: 'pick'})
             setTwo({status: false, className: ''}); 
@@ -152,227 +154,222 @@ const Settings = () => {
         } else {
 
         }
+        return () => {
+            localStorage.removeItem('settings-page');
+        }
     }, [])
     
     return(
         <Layout>
             <PageBackground>
-                <div className='settings-wrap'>
-                    <div className={matches ? 'settings-block' : 'settings-block-media'}>
-                        <div className='settings-block-one'>
-                        <Black>
-                            <div className={one.className}  onClick={()=>{
-                                setOne({status: true, className: 'pick'}); 
-                                localStorage.setItem('settings-page', 'account');
-                                setTwo({status: false});
-                            }}>Account</div>
-                            <div className={two.className} onClick={()=>{
-                                setTwo({status: true, className: 'pick'}); 
-                                localStorage.setItem('settings-page', 'settings');
-                                setOne({status: false});
-                            }}>Settings</div>
-                        </Black>
-                        </div>
-                        <SettingsRightBlock>
-                            {one.status &&
-                                <div className='settings-block-two-general'>
-                                    <div className='settings-block-two-general-one'>
-                                        { user.result.imageUrl ?
-                                            <div>
-                                                { user.result.imageUrl ?
-                                                    <img className='settings-avatar' src={user.result.imageUrl} alt="" /> :
-                                                    <img className='settings-avatar' src={profile} alt="" />
-                                                }
-                                            </div>
-                                            :
-                                            <div style={{
-                                                display:'flex',
-                                                justifyContent:'center',
-                                                marginBottom:'5px'
-                                            }}>
-                                                <Avatar 
-                                                    src={authData ? authData?.result?.avatar : user.result.avatar} 
-                                                    sx={{ width: 150, height: 150 }} >
-                                                </Avatar>
-                                            </div>
-                                        }
-                                        <div className='settings-block-user-name'>{authData ? authData.result.name : user.result.name}</div>
-                                        <div className='settings-block-user-email'>
-                                            <Icon sx={{
-                                                width:25, 
-                                                height:25, 
-                                                marginTop:0.3,
-                                                marginRight:0.4
-                                                }} 
-                                                component={MarkunreadOutlinedIcon}
-                                            />
-                                            {user.result.email}
-                                        </div>
-                                        { user.result.verified === false &&
-                                        <div style={{marginTop: '10px'}}>
-                                            {verifyStatus ?
-                                                <div style={{
-                                                    backgroundColor: 'rgb(24, 247, 98)',
-                                                    border:'1px solid',
-                                                    borderRadius:'10px',
-                                                    padding:'10px 15px',
-                                                    fontSize:'17px',
-                                                    color:'black'
-                                                }}>
-                                                    <Success style={{width:'60px', height:'60px'}} />
-                                                    <div style={{marginTop:'5px'}}>An Email sent to your account!</div>
-                                                </div>
-                                            :
-                                            <div className='settings-confirm-mail'>
-                                                <div>CONFIRM YOUR MAIL!!!</div>
-                                                <div>
-                                                    <Button onClick={() => dispatch(verifyMail(user.result, setVerifyStatus))} style={{marginTop:'10px'}} variant="outlined" size="large" color="error">
-                                                        CONFIRM
-                                                    </Button>
-                                                </div>
-                                            </div>
+                <div className={matches ? 'settings-block' : 'settings-block-media'}>
+                    <div className='settings-block-one'>
+                    <Black>
+                        <div className={one.className}  onClick={()=>{
+                            setOne({status: true, className: 'pick'}); 
+                            localStorage.setItem('settings-page', 'account');
+                            setTwo({status: false});
+                        }}>Account</div>
+                        <div className={two.className} onClick={()=>{
+                            setTwo({status: true, className: 'pick'}); 
+                            localStorage.setItem('settings-page', 'settings');
+                            setOne({status: false});
+                        }}>Settings</div>
+                    </Black>
+                    </div>
+                    <SettingsRightBlock>
+                        {one.status &&
+                            <div className='settings-block-two-general'>
+                                <div className='settings-block-two-general-one'>
+                                    { user.result.imageUrl ?
+                                        <div>
+                                            { user.result.imageUrl ?
+                                                <img className='settings-avatar' src={user.result.imageUrl} alt="" /> :
+                                                <img className='settings-avatar' src={profile} alt="" />
                                             }
+                                        </div>
+                                        :
+                                        <div style={{
+                                            display:'flex',
+                                            justifyContent:'center',
+                                            marginBottom:'5px'
+                                        }}>
+                                            <Avatar className='accountAvatar'src={authData ? authData?.result?.avatar : user.result.avatar}></Avatar>
+                                        </div>
+                                    }
+                                    <div className='settings-block-user-name'>{authData ? authData.result.name : user.result.name}</div>
+                                    <div className='settings-block-user-email'>
+                                        <Icon sx={{
+                                            width:25, 
+                                            height:25, 
+                                            marginTop:0.3,
+                                            marginRight:0.4
+                                            }} 
+                                            component={MarkunreadOutlinedIcon}
+                                        />
+                                        {user.result.email}
+                                    </div>
+                                    { user.result.verified === false &&
+                                    <div style={{marginTop: '10px'}}>
+                                        {verifyStatus ?
+                                            <div style={{
+                                                backgroundColor: 'rgb(24, 247, 98)',
+                                                border:'1px solid',
+                                                borderRadius:'10px',
+                                                padding:'10px 15px',
+                                                fontSize:'17px',
+                                                color:'black'
+                                            }}>
+                                                <Success style={{width:'60px', height:'60px'}} />
+                                                <div style={{marginTop:'5px'}}>An Email sent to your account!</div>
+                                            </div>
+                                        :
+                                        <div className='settings-confirm-mail'>
+                                            <div>CONFIRM YOUR MAIL!!!</div>
+                                            <div>
+                                                <Button onClick={() => dispatch(verifyMail(user.result, setVerifyStatus))} style={{marginTop:'10px'}} variant="outlined" size="large" color="error">
+                                                    CONFIRM
+                                                </Button>
+                                            </div>
                                         </div>
                                         }
                                     </div>
-                                </div>
-                            }
-                            {two.status &&
-                                <div className='settings-block-two-settings'>
-                                    <Modal keepMounted
-                                        open={open}
-                                        onClose={handleClose}
-                                        aria-labelledby="keep-mounted-modal-title"
-                                        aria-describedby="keep-mounted-modal-description">
-                                        <Box sx={style}>
-                                        <div style={{
-                                            display:'flex', 
-                                            alignItems:'center', 
-                                            justifyContent:'center',
-                                        }}>
-                                            <Typography style={{textAlign:'center'}} id="keep-mounted-modal-title" variant="h6" component="h2">
-                                                Are you sure you want to delete your profile?
-                                            </Typography>
-                                            <Typography >
-                                                <Checkbox onChange={toggle}  />
-                                            </Typography>
-                                        </div>
-                                        <div style={{textAlign:'center'}}>
-                                            <Button 
-                                                disabled={!color} 
-                                                variant="outlined" 
-                                                size="large" 
-                                                color="error" 
-                                                onClick={handleDeleteProfile}>
-                                                    Delete profile
-                                            </Button>
-                                        </div>
-                                        </Box>
-                                    </Modal>
-                                    { !user.result.googleId &&
-                                        <div className='change-user-settings'>
-                                            <div style={{
-                                                textAlign:'center',
-                                                fontWeight:'bold',
-                                                marginBottom:'6px', 
-                                                
-                                            }}>
-                                                <div style={{
-                                                    textAlign:'center',
-                                                    fontWeight:'bold',
-                                                    marginBottom:'5px', 
-                                                }}>
-                                                    Profile settings:
-                                                </div>
-                                            </div>
-                                            <form autocomplete="off" onSubmit={handleSubmit} className='change-user-settings-wrap'>
-                                                <div className='change-user-settings-one'>
-                                                    <div className='settings-changeAvatar'>
-                                                        <div>
-                                                            <img
-                                                                src={form.imageUrl ? form.imageUrl
-
-                                                                    : !authData && user.result.avatar ? user.result.avatar
-                    
-                                                                    : authData?.result?.avatar == null ? profileImg
-
-                                                                    : profileImg
-                                                                }
-                                                                alt="" 
-                                                            />
-                                                        </div>
-                                                        <label for="file">
-                                                            <div className='block'>
-                                                                <div>change photo</div>
-                                                                <UploadSvg style={{width:'30px', marginTop:'5px'}}/>
-                                                            </div>
-                                                        </label>
-                                                    </div>
-                                                    <div className='settings-delete-avatar' onClick={handleDeleteAvatar}>
-                                                        <div className={(disabled || loading) && 'gray'}>delete</div>
-                                                    </div>
-                                                    <input disabled={disabled || loading} onChange={handleOnChange} name="imageUrl" id="file" className='comments-item-select-img' type="file" multiple />
-                                                </div>
-                                                <div className='change-user-settings-two'>
-                                                    <div className='change-user-settings-two-box'>
-                                                        {/* /////////////////// INPUT SETTINGS //////////////////////////// */}
-
-                                                        <CssTextField onKeyDown={(event) => { event.code === 'Space' && event.preventDefault()}}
-                                                            inputProps={{ maxLength: 15}}
-                                                            style={{margin:'13px 0px'}}
-                                                            value={!authData ? user.result.name.split(' ')[0] : form.firstName}
-                                                            onChange={handleChange}
-                                                            disabled={disabled || loading} 
-                                                            name="firstName" 
-                                                            label="First Name"
-                                                        >
-                                                        </CssTextField>
-
-                                                        <CssTextField onKeyDown={(event) => { event.code === 'Space' && event.preventDefault()}}
-                                                            inputProps={{ maxLength: 15}}
-                                                            style={{margin:'13px 0px'}}
-                                                            value={!authData ? user.result.name.split(' ')[1] : form.lastName}
-                                                            disabled={disabled || loading}
-                                                            name="lastName" 
-                                                            label="lastName" 
-                                                            onChange={handleChange}
-                                                        >
-                                                        </CssTextField>
-                                                        
-                                                        {/* //////////////////////////////////////////////////////////////// */}
-                                                    </div>
-                                                </div>
-                                                <button disabled={disabled || loading} type="submit" className='change-user-settings-button'>
-                                                    <div>save</div>
-                                                </button>
-                                            </form>
-                                        </div>
                                     }
-                                    <div className='change-theme-block'>
+                                </div>
+                            </div>
+                        }
+                        {two.status &&
+                            <div className='settings-block-two-settings'>
+                                <Modal keepMounted
+                                    open={open}
+                                    onClose={handleClose}
+                                    aria-labelledby="keep-mounted-modal-title"
+                                    aria-describedby="keep-mounted-modal-description">
+                                    <Box sx={style}>
+                                    <div style={{
+                                        display:'flex', 
+                                        alignItems:'center', 
+                                        justifyContent:'center',
+                                    }}>
+                                        <Typography style={{textAlign:'center'}} id="keep-mounted-modal-title" variant="h6" component="h2">
+                                            Are you sure you want to delete your profile?
+                                        </Typography>
+                                        <Typography >
+                                            <Checkbox onChange={toggle}  />
+                                        </Typography>
+                                    </div>
+                                    <div style={{textAlign:'center'}}>
+                                        <Button className='settings-button-delete-profile'
+                                            disabled={!color} 
+                                            variant="outlined" 
+                                            size="large" 
+                                            color="error" 
+                                            onClick={handleDeleteProfile}>
+                                                Delete profile
+                                        </Button>
+                                    </div>
+                                    </Box>
+                                </Modal>
+                                { !user.result.googleId &&
+                                    <div className='change-user-settings'>
                                         <div style={{
                                             textAlign:'center',
                                             fontWeight:'bold',
-                                            marginBottom:'5px', 
-                                            marginTop:'25px',
+                                            marginBottom:'10px', 
                                         }}>
-                                            Change theme:
+                                            Profile settings:
                                         </div>
-                                        <SwitchButton>
-                                            <input type='checkbox' onChange={() => themeSwitchHandler(theme === "dark" ? "light" : "dark")} />
-                                            <span></span>
-                                        </SwitchButton>
+                                        <form autocomplete="off" onSubmit={handleSubmit} className={matchesSettings ? 'change-user-settings-wrap-media' : 'change-user-settings-wrap'}>
+                                            <div className='change-user-settings-one'>
+                                                <div className='settings-changeAvatar'>
+                                                    <div>
+                                                        <img
+                                                            src={form.imageUrl ? form.imageUrl
+
+                                                                : !authData && user.result.avatar ? user.result.avatar
+                
+                                                                : authData?.result?.avatar == null ? profileImg
+
+                                                                : profileImg
+                                                            }
+                                                            alt="" 
+                                                        />
+                                                    </div>
+                                                    <label for="file">
+                                                        <div className='block'>
+                                                            <div>change photo</div>
+                                                            <UploadSvg style={{width:'30px', marginTop:'5px'}}/>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div className='settings-delete-avatar' onClick={handleDeleteAvatar}>
+                                                    <div className={(disabled || loading) && 'gray'}>delete</div>
+                                                </div>
+                                                <input disabled={disabled || loading} onChange={handleOnChange} name="imageUrl" id="file" className='comments-item-select-img' type="file" multiple />
+                                            </div>
+                                            <div className='change-user-settings-two'>
+                                                <div className='change-user-settings-two-box'>
+                                                    {/* /////////////////// INPUT SETTINGS //////////////////////////// */}
+
+                                                    <CssTextField onKeyDown={(event) => { event.code === 'Space' && event.preventDefault()}}
+                                                        required
+                                                        inputProps={{ maxLength: 15}}
+                                                        style={{margin:'13px 0px'}}
+                                                        value={!authData ? user.result.name.split(' ')[0] : form.firstName}
+                                                        onChange={handleChange}
+                                                        disabled={disabled || loading} 
+                                                        name="firstName" 
+                                                        label="First Name"
+                                                        className='settings-input-fname'
+                                                    >
+                                                    </CssTextField>
+
+                                                    <CssTextField onKeyDown={(event) => { event.code === 'Space' && event.preventDefault()}}
+                                                        required
+                                                        inputProps={{ maxLength: 15}}
+                                                        style={{margin:'13px 0px'}}
+                                                        value={!authData ? user.result.name.split(' ')[1] : form.lastName}
+                                                        disabled={disabled || loading}
+                                                        name="lastName" 
+                                                        label="lastName" 
+                                                        onChange={handleChange}
+                                                        className='settings-input-lname'
+                                                    >
+                                                    </CssTextField>
+                                                    
+                                                    {/* //////////////////////////////////////////////////////////////// */}
+                                                </div>
+                                            </div>
+                                            <button disabled={disabled || loading} type="submit" className='change-user-settings-button'>
+                                                <div>save</div>
+                                            </button>
+                                        </form>
                                     </div>
-                                    { !user.result.googleId &&
-                                        <div className='delete-profile-block'>
-                                            <Button variant="outlined" size="large" color="error" onClick={handleOpen}>
-                                                Delete profile
-                                            </Button>
-                                        </div>
-                                    }
+                                }
+                                <div className='change-theme-block'>
+                                    <div style={{
+                                        textAlign:'center',
+                                        fontWeight:'bold',
+                                        marginBottom:'5px', 
+                                        marginTop:'25px',
+                                    }}>
+                                        Change theme:
+                                    </div>
+                                    <SwitchButton>
+                                        <input type='checkbox' onChange={() => themeSwitchHandler(theme === "dark" ? "light" : "dark")} />
+                                        <span></span>
+                                    </SwitchButton>
                                 </div>
-                            }
-                        </SettingsRightBlock>
-                    </div>
+                                { !user.result.googleId &&
+                                    <div className='delete-profile-block'>
+                                        <Button variant="outlined" size="large" color="error" onClick={handleOpen}>
+                                            Delete profile
+                                        </Button>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </SettingsRightBlock>
                 </div>
             </PageBackground>
         </Layout>

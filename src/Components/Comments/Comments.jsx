@@ -9,8 +9,7 @@ import { useState, useEffect } from 'react';
 import { gapi } from 'gapi-script';
 import { useLocation } from 'react-router-dom';
 import Layout from '../styles/Layout';
-import { PageBackground, FormComments } from '../styles/homestyles';
-
+import { CommentsBackground, FormComments } from '../styles/homestyles';
 
 export default function Comments(){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -23,7 +22,7 @@ export default function Comments(){
 
     const dispatch = useDispatch();
     const location = useLocation();
-
+    
     const error = useSelector(state => state.appReducer.error);
     const comments = useSelector(state => state.commentReducer.comments);
     const disabled = useSelector(state => state.appReducer.disabled);
@@ -101,7 +100,7 @@ export default function Comments(){
 
     return(
         <Layout>
-            <PageBackground>
+            <CommentsBackground>
                 {/* {!error &&  */}
                     <div>
                         <div>
@@ -165,7 +164,7 @@ export default function Comments(){
                         </div>
                     </div>
                 {/* } */}
-            </PageBackground>
+            </CommentsBackground>
         </Layout>
     )
 }

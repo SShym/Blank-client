@@ -10,10 +10,18 @@ import useStyles from './styles';
 import Input from './Input';
 import Layout from '../styles/Layout';
 import { PageAuth } from "../styles/homestyles";
-import LoadingButton from '@mui/lab/LoadingButton';
-import SaveIcon from '@mui/icons-material/Save';
+import CircularProgress from '@mui/material/CircularProgress';
+import { createTheme } from '@mui/material/styles';
 
 const initialState = { firstName: '', lastName: '', email: '', password: '' };
+
+const theme = createTheme({
+  palette: {
+    secondary: {
+      main: '#fff',
+    },
+  },
+});
 
 const SignUp = () => {
   const [form, setForm] = useState(initialState);
@@ -88,45 +96,40 @@ const SignUp = () => {
                     <Input disabled={disabled} name="email" label="Email Address" handleChange={handleChange} type="email" />
                     <Input disabled={disabled} name="password" label="Password" handleChange={handleChange} type={showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword} />
                   </Grid>
-                  <div className='authpage-btnBlock'>
-                  {!disabled ?
-                    <div>
+                    <div className='authpage-btnBlock'>
                       { isSignup ?
-                        <Button disabled={disabled} type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                          Sign Up
-                        </Button> :
-                        <Button disabled={disabled} type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                          Sign In
-                        </Button>  
+                        <button  type="submit" className="authpage-button">
+                          {disabled ?
+                            <div style={{display:'flex'}}>
+                              <CircularProgress theme={theme} sx={{mr:0.8}} size="10px" color="secondary"/>
+                              <div>SIGN UP</div>
+                            </div>
+                            : <div>SIGN UP</div>
+                          }
+                        </button>
+                        :
+                        <button  type="submit" className="authpage-button">
+                        {disabled ?
+                          <div style={{display:'flex'}}>
+                            <CircularProgress theme={theme} sx={{mr:0.8}} size="10px" color="secondary"/>
+                            <div>SIGN IN</div>
+                          </div>
+                          : <div>SIGN IN</div>
+                        }
+                      </button>
                       }
                     </div>
-                    :
-                    <div>
-                      <LoadingButton
-                        sx={{mt:1.5, mb:1.5, boxShadow:0, p:0.7}}
-                        fullWidth
-                        loading
-                        loadingPosition="start"
-                        variant="outlined" 
-                        color="primary"
-                      >Sign In
-                      </LoadingButton> 
-                    </div>
-                  }
-                  </div>
-                  <div className='google-login-button'>
                   <GoogleLogin
                     clientId="733992931171-gjd9utoojt376cq1b0l9ut8prvikebbn.apps.googleusercontent.com"
                     render={(renderProps) => (
-                      <Button className='authpage-google-button' color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled || disabled} startIcon={<Icon />} variant="contained">
-                        Google Sign In
-                      </Button>
+                      <button onClick={renderProps.onClick} disabled={renderProps.disabled || disabled} type="submit" className="authpage-button">
+                        <Icon />Google Sign In
+                      </button>
                     )}
                     onSuccess={googleSuccess}
                     onFailure={googleError}
                     cookiePolicy="single_host_origin"
                   />
-                  </div>
                   {/* <div>{error}</div> */}
                   <Grid container justify="flex-end">
                     <Grid item>
