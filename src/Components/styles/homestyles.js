@@ -318,6 +318,10 @@ export const PageAuth = styled.div`
       }
     }
 
+    .switch-mode{
+      margin-top: 9px;
+    }
+
     .switch-mode:disabled{
       color:black
     }
