@@ -356,7 +356,7 @@ const Settings = () => {
                                                     <div style={{display:"flex", justifyContent:'center'}}>
                                                         <CircularProgress theme={colorCircle} size="17px" color="secondary"/>
                                                     </div> 
-                                                : <div>save</div>}
+                                                : <div className='saveDiv'>save</div>}
                                             </button>
                                         </form>
                                     </div>

@@ -233,6 +233,10 @@ export const SettingsRightBlock = styled.div`
     color: ${(props) => props.theme.theme === 'light' ? '' : 'gray'};
   }
 
+  .saveDiv{
+    color: ${(props) => props.theme.theme === 'light' ? '' : 'gray'};
+  }
+
 `;
 
 export const FormComments = styled.div`
