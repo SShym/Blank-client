@@ -15,7 +15,7 @@ export const SET_AUTHDATA = 'SET_AUTHDATA';
 export const LOGOUT = 'LOGOUT';
 
 const API = axios.create({ 
-    baseURL: 'https://sqmr.onrender.com/123' 
+    baseURL: 'https://sqmr.onrender.com/' 
     // baseURL: 'http://localhost:5000/' 
 });
 
