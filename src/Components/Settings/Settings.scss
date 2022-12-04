@@ -176,6 +176,10 @@
     letter-spacing: 3px;
     font-size: 15px;
     padding: 4px;
+
+    &:hover{
+        opacity: 0.8;
+    }
 }
 
 .settings-delete-avatar:active{
@@ -281,12 +285,11 @@
 }
 
 .change-user-settings-button:hover{
-    background: rgba(189, 189, 189, 0.8);
+    &:hover{
+        opacity: 0.8;
+    }
 }
 
-.change-user-settings-button:active{
-    font-size: 14px;
-}
 
 
 

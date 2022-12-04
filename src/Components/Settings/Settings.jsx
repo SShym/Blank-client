@@ -22,6 +22,16 @@ import { ReactComponent as UploadSvg } from '../../png/upload.svg';
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import { styled } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
+import { createTheme } from '@mui/material/styles';
+
+const colorCircle = createTheme({
+    palette: {
+      secondary: {
+        main: '#f10f10f10',
+      },
+    },
+  });
 
 const CssTextField = styled(TextField)({
   label:{
@@ -88,6 +98,7 @@ const Settings = () => {
     }, []);
 
     useEffect(() => window.localStorage.setItem("theme", theme), [theme]);
+    document.body.className = localStorage.getItem('theme');
 
     const toggle = () => setColor(!color);
     const handleOpen = () => setOpen(true);
@@ -340,8 +351,12 @@ const Settings = () => {
                                                     {/* //////////////////////////////////////////////////////////////// */}
                                                 </div>
                                             </div>
-                                            <button disabled={disabled || loading} type="submit" className='change-user-settings-button'>
-                                                <div>save</div>
+                                            <button disabled={disabled || loading} type="submit" className={'change-user-settings-button'}>
+                                                {disabled ? 
+                                                    <div style={{display:"flex", justifyContent:'center'}}>
+                                                        <CircularProgress theme={colorCircle} size="17px" color="secondary"/>
+                                                    </div> 
+                                                : <div>save</div>}
                                             </button>
                                         </form>
                                     </div>

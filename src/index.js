@@ -15,7 +15,7 @@ const store = createStore(reducers, compose(
 ));
 
 ReactDOM.render(
-    <Provider store = {store}>
+    <Provider store={store}>
       <GlobalContextProvider>
           <App />
       </GlobalContextProvider>

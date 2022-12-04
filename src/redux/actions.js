@@ -121,6 +121,7 @@ export function commentUpdate({name, avatar,setTextComment, setEditText, setPhot
 
 export function commentDelete(comment, id, setEditMode, setModal){ 
         return async dispatch => {
+            dispatch({ type: SET_DISABLED_TRUE });
             API.delete(`/products/${id}`)
                 .then((res) => {
                     dispatch({
@@ -129,6 +130,7 @@ export function commentDelete(comment, id, setEditMode, setModal){
                     });
                     setEditMode(false);
                     setModal(false);
+                    dispatch({ type: SET_DISABLED_FALSE });
                 }
                 
                 ).catch(res => {

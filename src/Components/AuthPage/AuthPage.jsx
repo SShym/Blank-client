@@ -35,6 +35,8 @@ const SignUp = () => {
   const disabled = useSelector(state => state.appReducer.disabled);
   const handleShowPassword = () => setShowPassword(!showPassword);
 
+  document.body.className = localStorage.getItem('theme');
+
   const switchMode = () => {
     dispatch(errorOff())
     setIsSignup((prevIsSignup) => !prevIsSignup);

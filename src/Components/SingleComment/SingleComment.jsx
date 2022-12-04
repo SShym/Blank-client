@@ -12,6 +12,7 @@ import Layout from '../styles/Layout';
 import { CommentsPage } from '../styles/homestyles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function SingleComment({comments, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -33,6 +34,8 @@ export default function SingleComment({comments, setId, setEditText, setEditMode
     
         setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);
+
+    document.body.className = localStorage.getItem('theme');
 
 
     useEffect(()=> {
@@ -101,14 +104,34 @@ export default function SingleComment({comments, setId, setEditText, setEditMode
                             footer={
                                 <div>
                                     { matches ?
-                                        <div style={{display:'flex', justifyContent:'space-around'}}>
-                                            <Button style={{fontFamily:'sans-serif', fontSize:'13px' }} onClick={()=>setModal(false)} variant="outlined">cancel</Button>   
-                                            <Button style={{fontFamily:'sans-serif', fontSize:'13px' }} onClick={handleDelete} variant="outlined">delete</Button> 
+                                        <div style={{display:'flex', justifyContent:'space-around', textAlign:'center'}}>
+                                            <Button disabled={disabled} style={{fontFamily:'sans-serif', fontSize:'13px' }} onClick={()=>setModal(false)} variant="outlined">
+                                                cancel
+                                            </Button>   
+                                            {disabled ?
+                                                <Button style={{fontFamily:'sans-serif', fontSize:'12px' }} onClick={handleDelete} variant="outlined">
+                                                    <CircularProgress size="15px" sx={{mr:1}} />delete
+                                                </Button> 
+                                                :
+                                                <Button style={{fontFamily:'sans-serif', fontSize:'13px' }} onClick={handleDelete} variant="outlined">
+                                                    delete
+                                                </Button>   
+                                            }
                                         </div>
                                     :
                                         <div style={{display:'flex', justifyContent:'space-around', textAlign:'center'}}>
-                                            <Button style={{fontFamily:'sans-serif', fontSize:'12px' }} onClick={()=>setModal(false)} variant="outlined">cancel</Button>   
-                                            <Button style={{fontFamily:'sans-serif', fontSize:'12px' }} onClick={handleDelete} variant="outlined">delete</Button>   
+                                            <Button disabled={disabled} style={{fontFamily:'sans-serif', fontSize:'10px' }} onClick={()=>setModal(false)} variant="outlined">
+                                                cancel
+                                            </Button>   
+                                            {!disabled ?
+                                                <Button style={{fontFamily:'sans-serif', fontSize:'10px' }} onClick={handleDelete} variant="outlined">
+                                                    <CircularProgress size="15px" sx={{mr:1}} />delete
+                                                </Button> 
+                                                :
+                                                <Button style={{fontFamily:'sans-serif', fontSize:'10px' }} onClick={handleDelete} variant="outlined">
+                                                    delete
+                                                </Button>   
+                                            }
                                         </div>
                                     }
                                 </div>
@@ -116,8 +139,10 @@ export default function SingleComment({comments, setId, setEditText, setEditMode
                             width={ matches ? '415px' : '325px' }
                             isOpen={modal} 
                             onClose={() => {
-                                setModal(false);
-                                return true;
+                                if(!disabled){
+                                    setModal(false);
+                                    return true;
+                                }
                             }}
                             >
                             { matches ?

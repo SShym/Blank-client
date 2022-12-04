@@ -41,6 +41,7 @@ export default function Comments(){
 
     useEffect(() => {
         dispatch(commentsLoad());
+        localStorage.removeItem('settings-page');
     }, [])
 
     const handleChange = (e) => setTextComment(e.target.value)
