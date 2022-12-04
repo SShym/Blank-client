@@ -123,7 +123,7 @@ export default function SingleComment({comments, setId, setEditText, setEditMode
                                             <Button disabled={disabled} style={{fontFamily:'sans-serif', fontSize:'10px' }} onClick={()=>setModal(false)} variant="outlined">
                                                 cancel
                                             </Button>   
-                                            {!disabled ?
+                                            {disabled ?
                                                 <Button style={{fontFamily:'sans-serif', fontSize:'10px' }} onClick={handleDelete} variant="outlined">
                                                     <CircularProgress size="15px" sx={{mr:1}} />delete
                                                 </Button> 

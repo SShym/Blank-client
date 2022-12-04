@@ -172,7 +172,7 @@
     border-bottom: 2px solid rgb(0, 110, 110);
     border-left: 2px solid rgb(0, 110, 110);
     text-transform: uppercase;
-    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
     letter-spacing: 3px;
     font-size: 15px;
     padding: 4px;
@@ -180,6 +180,20 @@
     &:hover{
         opacity: 0.8;
     }
+}
+
+.change-user-settings-button{
+    color: black;
+    text-transform: uppercase;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    letter-spacing: 3px;
+    font-size: 15px;
+    outline: none;
+    border: none;
+    padding: 4px;
+    background: none;
+    border-left: 2px solid rgb(0, 110, 110);
+    border-bottom: 2px solid rgb(0, 110, 110);
 }
 
 .settings-delete-avatar:active{
@@ -264,20 +278,6 @@
     .settings-input-fname, .settings-input-lname{
         width: 125px
     }
-}
-
-.change-user-settings-button{
-    color: black;
-    text-transform: uppercase;
-    font-family:Georgia, 'Times New Roman', Times, serif;
-    letter-spacing: 3px;
-    font-size: 15px;
-    outline: none;
-    border: none;
-    padding: 4px;
-    background: none;
-    border-left: 2px solid rgb(0, 110, 110);
-    border-bottom: 2px solid rgb(0, 110, 110);
 }
 
 .change-user-settings-button div{
