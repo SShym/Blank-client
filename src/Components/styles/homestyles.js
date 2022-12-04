@@ -231,10 +231,12 @@ export const SettingsRightBlock = styled.div`
     transition-duration: 0.5s;
     background-color: ${(props) => props.theme.theme === 'light' ? 'rgb(200, 200, 200)' : 'rgb(56, 56, 56)'};
     color: ${(props) => props.theme.theme === 'light' ? '' : 'gray'};
-  }
-
-  .saveDiv{
-    color: ${(props) => props.theme.theme === 'light' ? '' : 'gray'};
+    
+    div{
+      transition-property: color;
+      transition-duration: 0.5s;
+      color: ${(props) => props.theme.theme === 'light' ? '' : 'gray'};
+    }
   }
 
 `;

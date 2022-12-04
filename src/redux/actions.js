@@ -16,7 +16,6 @@ export const LOGOUT = 'LOGOUT';
 
 const API = axios.create({ 
     baseURL: 'https://sqmr.vercel.app/' 
-    // baseURL: 'http://localhost:5000/' 
 });
 
 API.interceptors.request.use((req) => {

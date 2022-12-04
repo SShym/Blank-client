@@ -82,8 +82,8 @@ const Settings = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const matches = useMediaQuery('(min-width: 495px)');
-    const matchesSettings = useMediaQuery('(max-width: 495px)');
+    const matches = useMediaQuery('(min-width: 550px)');
+    const matchesSettings = useMediaQuery('(max-width: 549px)');
     const authData = useSelector(state => state.authReducer.authData);
     const disabled = useSelector(state => state.appReducer.disabled)
     
@@ -103,7 +103,7 @@ const Settings = () => {
     const toggle = () => setColor(!color);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+    
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value.length > 0 ? e.target.value : '' });
     }

@@ -267,6 +267,7 @@
 }
 
 .change-user-settings-button{
+    color: black;
     text-transform: uppercase;
     font-family:Georgia, 'Times New Roman', Times, serif;
     letter-spacing: 3px;
@@ -274,7 +275,7 @@
     outline: none;
     border: none;
     padding: 4px;
-    
+    background: none;
     border-left: 2px solid rgb(0, 110, 110);
     border-bottom: 2px solid rgb(0, 110, 110);
 }
