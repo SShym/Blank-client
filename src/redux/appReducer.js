@@ -5,13 +5,16 @@ import {
     ERROR_DISPLAY_OFF,
     SET_DISABLED_TRUE,
     SET_DISABLED_FALSE,
+    SET_CHANGES_TRUE,
+    SET_CHANGES_FALSE
 } from './actions';
 
 
 const initialState = {
     loading: false,
     error: null,
-    disabled: false
+    disabled: false,
+    changes: false
 }
 
 export const appReducer = (state = initialState, action) => {
@@ -45,6 +48,16 @@ export const appReducer = (state = initialState, action) => {
             return{
                 ...state,
                 disabled: false
+            }
+        case SET_CHANGES_TRUE: 
+            return {
+                ...state,
+                changes: true
+            }
+        case SET_CHANGES_FALSE: 
+            return {
+                ...state,
+                changes: false
             }
 
         default:

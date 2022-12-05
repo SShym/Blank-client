@@ -26,11 +26,12 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const disabled = useSelector(state => state.appReducer.disabled)
+  const disabled = useSelector(state => state.appReducer.disabled);
+  const loading = useSelector(state => state.appReducer.loading);
   
   useEffect(()=>{
     user && location.pathname === '/auth' && navigate('/')
-  }, [location])
+  }, [location]) //eslint-disable-line
 
   useEffect(() => {
     gapi.load('client:auth2', ()=>{
@@ -48,7 +49,7 @@ const Navbar = () => {
   const authData = useSelector(state => state.authReducer.authData)
 
   const open = Boolean(anchorEl);
-  const handleClick = (event) => !disabled && setAnchorEl(event.currentTarget);
+  const handleClick = (event) => (!disabled && !loading) && setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
   const logout = () => {

@@ -207,11 +207,10 @@ export const SettingsRightBlock = styled.div`
   .accountAvatar{
     width: 150px;
     height: 150px;
-    
     transition-property: color, background;
     transition-duration: 0.5s;
-    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(150, 150, 150)'};
-    color: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(199, 199, 199)'};
+    background: ${(props) => props.theme.theme === 'light' ? 'rgb(115, 115, 115)' : 'rgb(165, 165, 165)'};
+    color: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(119, 119, 119)'};
   }
 
   .delete-profile-block button{
@@ -226,7 +225,7 @@ export const SettingsRightBlock = styled.div`
     background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(141, 141, 141, 0.3)'};
   }
 
-  .change-user-settings-button, .settings-delete-avatar{
+  .change-user-settings-button, .settings-delete-avatar, .settings-delete-avatar-loading{
     transition-property: background-color, color;
     transition-duration: 0.5s;
     background-color: ${(props) => props.theme.theme === 'light' ? 'rgb(200, 200, 200)' : 'rgb(56, 56, 56)'};
@@ -254,13 +253,13 @@ export const FormComments = styled.div`
 
 export const CommentsPage = styled.div`
   .single-comment-without-profileImg{
-    background-color: ${(props) => props.theme.theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(125, 125, 124 , 0.7)'};
+    background-color: ${(props) => props.theme.theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(195, 195, 195, 0.7)'};
     color: ${(props) => props.theme.theme === 'light' ? 'black' : 'black'};
     border: 1px solid black;
   }
 
   .single-comment{
-    background-color: ${(props) => props.theme.theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(125, 125, 124, 0.85)'};
+    background-color: ${(props) => props.theme.theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(185, 185, 185, 0.7)'};
   }
 
   .single-comment-edit, .single-comment-delete{

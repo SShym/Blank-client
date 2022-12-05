@@ -1,17 +1,17 @@
 import '../Comments/Comments.css';
-import { ReactComponent as ImageSvg } from '../../png/image.svg';
-import closeSvg from '../../png/close.svg'
-import loader from '../../png/loader.gif'
-import SingleComment from "../SingleComment/SingleComment";
-import { commentCreate, commentUpdate, commentsLoad } from "../../redux/actions";
-import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from 'react';
 import { gapi } from 'gapi-script';
 import { useLocation } from 'react-router-dom';
-import Layout from '../styles/Layout';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { ReactComponent as ImageSvg } from '../../png/image.svg';
+import { commentCreate, commentUpdate } from "../../redux/actions";
 import { CommentsBackground, FormComments } from '../styles/homestyles';
+import closeSvg from '../../png/close.svg';
+import loader from '../../png/loader.gif';
+import Layout from '../styles/Layout';
+import SingleComment from "../SingleComment/SingleComment";
 
-export default function Comments(){
+export default function Comments({ setTrackLocation }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [id, setId] = useState('');
     const [textComment, setTextComment] = useState('');
@@ -23,7 +23,6 @@ export default function Comments(){
     const dispatch = useDispatch();
     const location = useLocation();
     
-    const error = useSelector(state => state.appReducer.error);
     const comments = useSelector(state => state.commentReducer.comments);
     const disabled = useSelector(state => state.appReducer.disabled);
     const loading = useSelector(state => state.appReducer.loading);
@@ -39,13 +38,11 @@ export default function Comments(){
       setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);
 
-    useEffect(() => {
-        dispatch(commentsLoad());
-        localStorage.removeItem('settings-page');
-    }, [])
-
     const handleChange = (e) => setTextComment(e.target.value)
-    
+
+    // eslint-disable-next-line
+    useEffect(() => setTrackLocation(location.pathname), []);
+
     const handleSubmit = (e) => {
         if(textComment.length >= 1){
             e.preventDefault();
@@ -102,69 +99,67 @@ export default function Comments(){
     return(
         <Layout>
             <CommentsBackground>
-                {/* {!error &&  */}
+                <div>
                     <div>
-                        <div>
-                            {editMode ?
-                                <FormComments>
-                                    <form onSubmit={handleUpdate}>
-                                        <input disabled={disabled || user == null} type="text" value={editText} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} onChange={(e) => setEditText(e.target.value)}/>
-                                        <input disabled={disabled || user == null} name="file" id="file" className='comments-item-select-img' type="file" multiple onChange={handleOnChange} />
-                                        { disabled &&
-                                            <img className='comments-item-disabled' src={loader} alt="" />
+                        {editMode ?
+                            <FormComments>
+                                <form onSubmit={handleUpdate}>
+                                    <input disabled={disabled || user == null} type="text" value={editText} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} onChange={(e) => setEditText(e.target.value)}/>
+                                    <input disabled={disabled || user == null} name="file" id="file" className='comments-item-select-img' type="file" multiple onChange={handleOnChange} />
+                                    { disabled &&
+                                        <img className='comments-item-disabled' src={loader} alt="" />
+                                    }
+                                    <label for="file">
+                                        <ImageSvg className='comments-item-select-img-svg' />
+                                    </label>
+                                    <div className={!editPhoto ? `none` : 'comments-item-img-preview-wrap'}>
+                                        <img className='comments-item-img-preview' src={editPhoto} alt="" />
+                                        {!disabled && 
+                                            <img onClick={()=>setEditPhoto('')} className='comments-item-close-svg' src={closeSvg} alt="" />
                                         }
-                                        <label for="file">
-                                            <ImageSvg className='comments-item-select-img-svg' />
-                                        </label>
-                                        <div className={!editPhoto ? `none` : 'comments-item-img-preview-wrap'}>
-                                            <img className='comments-item-img-preview' src={editPhoto} alt="" />
-                                            {!disabled && 
-                                                <img onClick={()=>setEditPhoto('')} className='comments-item-close-svg' src={closeSvg} alt="" />
-                                            }
-                                        </div>
-                                        <input type="submit" hidden/>
-                                    </form>
-                                </FormComments> :
-                                <FormComments>
-                                    <form onSubmit={handleSubmit}>
-                                        <input disabled={disabled || loading || user == null} value={textComment} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} placeholder={!disabled ? 'Сообщение' : 'загрузка'} onChange={handleChange} type="text" />
-                                        <input disabled={disabled || loading || user == null} name="file" id="file" className='comments-item-select-img' type="file" multiple onChange={handleOnChange} />
-                                        { disabled &&
-                                            <img className='comments-item-disabled' src={loader} alt="" />
-                                        } 
-                                        <label for="file">
-                                            <ImageSvg className='comments-item-select-img-svg' />
-                                        </label>
-                                        <input type="submit" hidden />
-                                    </form>
-                                </FormComments>
-                            }
-                            <div className={!photo ? `none` : 'comments-item-img-preview-wrap'}>            
-                                <img className='comments-item-img-preview' src={photo} alt="" />
-                                {!disabled && 
-                                    <img onClick={()=>setPhoto('')} className='comments-item-close-svg' src={closeSvg} alt="" />
-                                }
-                            </div>   
-                        </div>
-                        <div>
-                            {!!comments.length && comments.map(res => {
-                                return(
-                                    <div>
-                                        <SingleComment 
-                                            disabled={disabled}
-                                            comments={res} 
-                                            setId={setId} 
-                                            setEditText={setEditText} 
-                                            setEditMode={setEditMode}
-                                            setPhoto={setPhoto}
-                                            setEditPhoto={setEditPhoto}
-                                        />
                                     </div>
-                                )
-                            })}
-                        </div>
+                                    <input type="submit" hidden/>
+                                </form>
+                            </FormComments> :
+                            <FormComments>
+                                <form onSubmit={handleSubmit}>
+                                    <input disabled={disabled || loading || user == null} value={textComment} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} placeholder={!disabled ? 'Сообщение' : 'загрузка'} onChange={handleChange} type="text" />
+                                    <input disabled={disabled || loading || user == null} name="file" id="file" className='comments-item-select-img' type="file" multiple onChange={handleOnChange} />
+                                    { disabled &&
+                                        <img className='comments-item-disabled' src={loader} alt="" />
+                                    } 
+                                    <label for="file">
+                                        <ImageSvg className='comments-item-select-img-svg' />
+                                    </label>
+                                    <input type="submit" hidden />
+                                </form>
+                            </FormComments>
+                        }
+                        <div className={!photo ? `none` : 'comments-item-img-preview-wrap'}>            
+                            <img className='comments-item-img-preview' src={photo} alt="" />
+                            {!disabled && 
+                                <img onClick={()=>setPhoto('')} className='comments-item-close-svg' src={closeSvg} alt="" />
+                            }
+                        </div>   
                     </div>
-                {/* } */}
+                    <div>
+                        {!!comments.length && comments.map(res => {
+                            return(
+                                <div>
+                                    <SingleComment 
+                                        disabled={disabled}
+                                        comments={res} 
+                                        setId={setId} 
+                                        setEditText={setEditText} 
+                                        setEditMode={setEditMode}
+                                        setPhoto={setPhoto}
+                                        setEditPhoto={setEditPhoto}
+                                    />
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
             </CommentsBackground>
         </Layout>
     )

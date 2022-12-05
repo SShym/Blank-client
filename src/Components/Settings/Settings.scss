@@ -1,5 +1,6 @@
 .gray{
     color: gray;
+    cursor: default;
 }
 
 .settings-block{
@@ -182,6 +183,29 @@
     }
 }
 
+.settings-delete-avatar-loading{
+    cursor: default;
+    color: black;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: none;
+    border-top: 2px solid rgb(0, 110, 110);
+    border-bottom: 2px solid rgb(0, 110, 110);
+    border-left: 2px solid rgb(0, 110, 110);
+    text-transform: uppercase;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    letter-spacing: 3px;
+    font-size: 15px;
+    padding: 4px;
+
+    &:hover{
+        opacity: 0.8;
+    }
+}
+
 .change-user-settings-button{
     color: black;
     text-transform: uppercase;
@@ -195,12 +219,6 @@
     border-left: 2px solid rgb(0, 110, 110);
     border-bottom: 2px solid rgb(0, 110, 110);
 }
-
-.settings-delete-avatar:active{
-    color: gray;
-}
-
-
 
 .settings-changeAvatar:hover{
     .block{
@@ -267,7 +285,7 @@
         border-left: none;
     }
 
-    .settings-delete-avatar{
+    .settings-delete-avatar, .settings-delete-avatar-loading{
         border-left: none;
     }
 

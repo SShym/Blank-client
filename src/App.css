@@ -1,8 +1,8 @@
-.App {
+.app {
   font-size: 18px;
 }
 
-.wrap {
+.app-wrap {
   position: relative;
   max-width: 800px;
   margin: 25px auto 0;

@@ -1,13 +1,11 @@
 import './EmailVerify.css'
+import Layout from '../styles/Layout';
+import { decode } from "jsonwebtoken";
+import { useDispatch } from "react-redux";
+import { verifyMailOnLoad } from "../../redux/actions";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { verifyMailOnLoad } from "../../redux/actions";
-import { useDispatch } from "react-redux";
-import { decode } from "jsonwebtoken";
-import Layout from '../styles/Layout';
 import { EmailVerifyBackground } from '../styles/homestyles';
-
-
 
 const EmailVerify = () => {
 	const [validUrl, setValidUrl] = useState('');
@@ -30,7 +28,7 @@ const EmailVerify = () => {
 			}
 		};
 		verifyEmail();
-	}, []);
+	}, []); // eslint-disable-line
 
 	return (
 		<Layout>

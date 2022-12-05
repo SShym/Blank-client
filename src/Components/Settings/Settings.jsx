@@ -70,7 +70,7 @@ const initialState = {
 };
 
 const Settings = () => {
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); // eslint-disable-line
     const { theme, themeSwitchHandler } = useContext(GlobalContext);
     const [form, setForm] = useState(initialState);
     const [verifyStatus, setVerifyStatus] = useState(false);
@@ -82,8 +82,8 @@ const Settings = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const matches = useMediaQuery('(min-width: 550px)');
-    const matchesSettings = useMediaQuery('(max-width: 549px)');
+    const matches = useMediaQuery('(min-width: 576px)');
+    const matchesSettings = useMediaQuery('(max-width: 575px)');
     const authData = useSelector(state => state.authReducer.authData);
     const disabled = useSelector(state => state.appReducer.disabled)
     
@@ -95,7 +95,7 @@ const Settings = () => {
             }
         }, setLoading));
         dispatch(errorOff())
-    }, []);
+    }, []); // eslint-disable-line
 
     useEffect(() => window.localStorage.setItem("theme", theme), [theme]);
     document.body.className = localStorage.getItem('theme');
@@ -114,7 +114,7 @@ const Settings = () => {
             lastName: authData?.result.name.split(' ')[1],
             imageUrl: authData?.result.avatar
         } : {...form});
-    }, [authData]);
+    }, [authData]); // eslint-disable-line
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -153,7 +153,6 @@ const Settings = () => {
     const formData = { id: user.result._id };
     
     useEffect(()=>{
-        
         const page = localStorage.getItem('settings-page');
         
         if(page === 'account'){
@@ -165,9 +164,7 @@ const Settings = () => {
         } else {
 
         }
-        return () => {
-            localStorage.removeItem('settings-page');
-        }
+        return () => localStorage.removeItem('settings-page');
     }, [])
     
     return(
@@ -175,18 +172,18 @@ const Settings = () => {
             <PageBackground>
                 <div className={matches ? 'settings-block' : 'settings-block-media'}>
                     <div className='settings-block-one'>
-                    <Black>
-                        <div className={one.className}  onClick={()=>{
-                            setOne({status: true, className: 'pick'}); 
-                            localStorage.setItem('settings-page', 'account');
-                            setTwo({status: false});
-                        }}>Account</div>
-                        <div className={two.className} onClick={()=>{
-                            setTwo({status: true, className: 'pick'}); 
-                            localStorage.setItem('settings-page', 'settings');
-                            setOne({status: false});
-                        }}>Settings</div>
-                    </Black>
+                        <Black>
+                            <div className={one.className}  onClick={()=>{
+                                setOne({status: true, className: 'pick'}); 
+                                localStorage.setItem('settings-page', 'account');
+                                setTwo({status: false});
+                            }}>Account</div>
+                            <div className={two.className} onClick={()=>{
+                                setTwo({status: true, className: 'pick'}); 
+                                localStorage.setItem('settings-page', 'settings');
+                                setOne({status: false});
+                            }}>Settings</div>
+                        </Black>
                     </div>
                     <SettingsRightBlock>
                         {one.status &&
@@ -313,15 +310,13 @@ const Settings = () => {
                                                         </div>
                                                     </label>
                                                 </div>
-                                                <div className='settings-delete-avatar' onClick={handleDeleteAvatar}>
-                                                    <div className={(disabled || loading) && 'gray'}>delete</div>
+                                                <div className={(disabled || loading) ? 'settings-delete-avatar-loading' : 'settings-delete-avatar'} onClick={handleDeleteAvatar}>
+                                                    <div>delete</div>
                                                 </div>
                                                 <input disabled={disabled || loading} onChange={handleOnChange} name="imageUrl" id="file" className='comments-item-select-img' type="file" multiple />
                                             </div>
                                             <div className='change-user-settings-two'>
                                                 <div className='change-user-settings-two-box'>
-                                                    {/* /////////////////// INPUT SETTINGS //////////////////////////// */}
-
                                                     <CssTextField onKeyDown={(event) => { event.code === 'Space' && event.preventDefault()}}
                                                         required
                                                         inputProps={{ maxLength: 15}}
@@ -347,13 +342,11 @@ const Settings = () => {
                                                         className='settings-input-lname'
                                                     >
                                                     </CssTextField>
-                                                    
-                                                    {/* //////////////////////////////////////////////////////////////// */}
                                                 </div>
                                             </div>
-                                            <button disabled={disabled || loading} type="submit" className={'change-user-settings-button'}>
+                                            <button disabled={disabled || loading} type="submit" className='change-user-settings-button' style={(disabled || loading) ? {cursor: 'default'} : {cursor: 'pointer'}}>
                                                 {disabled ? 
-                                                    <div style={{display:"flex", justifyContent:'center'}}>
+                                                    <div style={{display:"flex", justifyContent:'center', cursor:'default'}}>
                                                         <CircularProgress theme={colorCircle} size="17px" color="secondary"/>
                                                     </div> 
                                                 : <div className='saveDiv'>save</div>}

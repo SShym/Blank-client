@@ -13,9 +13,12 @@ export const SET_DISABLED_FALSE = 'SET_DISABLED_FALSE';
 export const AUTH = 'AUTH';
 export const SET_AUTHDATA = 'SET_AUTHDATA';
 export const LOGOUT = 'LOGOUT';
+export const SET_CHANGES_TRUE = 'SET_CHANGES_TRUE';
+export const SET_CHANGES_FALSE = 'SET_CHANGES_FALSE';
 
 const API = axios.create({ 
     baseURL: 'https://sqmr.vercel.app/' 
+    // baseURL: 'http://localhost:5000/'
 });
 
 API.interceptors.request.use((req) => {
@@ -149,6 +152,7 @@ export function commentsLoad(data){
                     type: COMMENTS_LOAD, 
                     data: res.data 
                 })
+                dispatch({type: SET_CHANGES_FALSE})
             })
         } catch(err){
             dispatch(errorOn(`${err.response.status} ${err.response.statusText}`));
@@ -240,6 +244,7 @@ export const changeSettings = (formData) => async (dispatch) => {
                 result: res.data.user,
                 token: res.data.token
             }});
+            dispatch({ type: SET_CHANGES_TRUE });
             dispatch({ type: SET_DISABLED_FALSE });
         })
     } catch (error) {
