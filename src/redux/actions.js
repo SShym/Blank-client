@@ -18,7 +18,7 @@ export const SET_CHANGES_FALSE = 'SET_CHANGES_FALSE';
 
 const API = axios.create({ 
     // baseURL: 'http://localhost:5000/'
-    baseURL: 'https://sqmr.vercel.app/'
+    baseURL: 'https://sqmr.onrender.com/'
 });
 
 API.interceptors.request.use((req) => {
