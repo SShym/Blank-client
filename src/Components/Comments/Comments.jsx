@@ -26,6 +26,7 @@ export default function Comments({ setTrackLocation }){
     const comments = useSelector(state => state.commentReducer.comments);
     const disabled = useSelector(state => state.appReducer.disabled);
     const loading = useSelector(state => state.appReducer.loading);
+    const error = useSelector(state => state.appReducer.error);
 
     useEffect(() => {
       gapi.load('client:auth2', ()=>{
@@ -104,8 +105,8 @@ export default function Comments({ setTrackLocation }){
                         {editMode ?
                             <FormComments>
                                 <form onSubmit={handleUpdate}>
-                                    <input disabled={disabled || user == null} type="text" value={editText} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} onChange={(e) => setEditText(e.target.value)}/>
-                                    <input disabled={disabled || user == null} name="file" id="file" className='comments-item-select-img' type="file" multiple onChange={handleOnChange} />
+                                    <input disabled={disabled || user == null || error} type="text" value={editText} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} onChange={(e) => setEditText(e.target.value)}/>
+                                    <input disabled={disabled || user == null || error} name="file" id="file" className='comments-item-select-img' type="file" multiple onChange={handleOnChange} />
                                     { disabled &&
                                         <img className='comments-item-disabled' src={loader} alt="" />
                                     }
@@ -123,8 +124,8 @@ export default function Comments({ setTrackLocation }){
                             </FormComments> :
                             <FormComments>
                                 <form onSubmit={handleSubmit}>
-                                    <input disabled={disabled || loading || user == null} value={textComment} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} placeholder={!disabled ? 'Сообщение' : 'загрузка'} onChange={handleChange} type="text" />
-                                    <input disabled={disabled || loading || user == null} name="file" id="file" className='comments-item-select-img' type="file" multiple onChange={handleOnChange} />
+                                    <input disabled={disabled || loading || user == null || error} value={textComment} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} placeholder={!disabled ? 'Сообщение' : 'загрузка'} onChange={handleChange} type="text" />
+                                    <input disabled={disabled || loading || user == null || error} name="file" id="file" className='comments-item-select-img' type="file" multiple onChange={handleOnChange} />
                                     { disabled &&
                                         <img className='comments-item-disabled' src={loader} alt="" />
                                     } 

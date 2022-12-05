@@ -26,8 +26,11 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  
   const disabled = useSelector(state => state.appReducer.disabled);
   const loading = useSelector(state => state.appReducer.loading);
+  const error = useSelector(state => state.appReducer.error);
+  const authData = useSelector(state => state.authReducer.authData)
   
   useEffect(()=>{
     user && location.pathname === '/auth' && navigate('/')
@@ -44,12 +47,8 @@ const Navbar = () => {
     setUser(JSON.parse(localStorage.getItem('profile')));
   }, [location]);
 
-
-
-  const authData = useSelector(state => state.authReducer.authData)
-
   const open = Boolean(anchorEl);
-  const handleClick = (event) => (!disabled && !loading) && setAnchorEl(event.currentTarget);
+  const handleClick = (event) => (!disabled && !loading && !error) && setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
   const logout = () => {
