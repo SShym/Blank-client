@@ -18,6 +18,7 @@ export const SET_CHANGES_FALSE = 'SET_CHANGES_FALSE';
 
 const API = axios.create({ 
     baseURL: 'https://sqmr.vercel.app/'
+    // http://localhost:5000/
 });
 
 API.interceptors.request.use((req) => {
