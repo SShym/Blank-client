@@ -31,7 +31,9 @@ const Paginate = ({ setEditText, setEditPhoto, setEditMode, page, disabled, load
           <PaginationItem style={{
             border:'1px solid gray', 
             color:'gray', 
-            fontSize:'11px'
+            fontSize:'11px',
+            margin:'0px 3px',
+            borderRadius:'4px'
           }} 
           color="string" 
           {...item}

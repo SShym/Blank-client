@@ -17,8 +17,8 @@ export const SET_CHANGES_TRUE = 'SET_CHANGES_TRUE';
 export const SET_CHANGES_FALSE = 'SET_CHANGES_FALSE';
 
 const API = axios.create({ 
-    // baseURL: 'http://localhost:5000/'
-    baseURL: 'https://sqmr.onrender.com/'
+    baseURL: 'http://localhost:5000/'
+    // baseURL: 'https://sqmr.onrender.com/'
 });
 
 API.interceptors.request.use((req) => {
@@ -171,7 +171,7 @@ export const signin = (formData, navigate) => async (dispatch) => {
         dispatch({ type: AUTH, data: res.data });
         dispatch({ type: SET_DISABLED_FALSE });
         dispatch(errorOff());
-        navigate('/comments');
+        navigate('/comments?page=1');
       });
     } catch (error) {
         dispatch(errorOn(error.response.data.message));
