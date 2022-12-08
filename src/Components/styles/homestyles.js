@@ -66,7 +66,6 @@ export const Black = styled.div`
 `;
 
 export const NavbarBlock = styled.div`
-
   transition: all 0.5s;
   background-color: ${(props) => props.theme.backgroundNavbar};
   border-top: 1px solid ${(props) => props.theme.border};
@@ -130,7 +129,6 @@ export const PageBackground = styled.div`
   @media (max-width: 576px) {
     overflow-Y: scroll;
     ::-webkit-scrollbar { display: none }
-    margin: 0px;
   } 
 
   .comments-item-img-preview-wrap{
@@ -144,9 +142,6 @@ export const PageBackground = styled.div`
 export const CommentsBackground = styled.div`
   height: 600px;
   margin: 0px 20px 20px 20px;
-  @media (max-width: 576px) {
-    margin: 0px;
-  } 
   transition: all 0.5s;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
