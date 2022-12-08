@@ -123,7 +123,7 @@ export const PageBackground = styled.div`
   flex-grow: 1;
   flex-shrink: 0;
   height: 600px;
-  @media (max-width: 576px) { height: 445px } 
+  @media (max-width: 576px) { height: 460px } 
   margin: 0px 20px 20px 20px;
   position: relative;
   
@@ -142,7 +142,7 @@ export const PageBackground = styled.div`
 
 export const CommentsBackground = styled.div`
   height: 600px;
-  @media (max-width: 576px) { height: 100% }
+  @media (max-width: 576px) { height: 460px }
   margin: 0px 20px 50px 20px;
   transition: all 0.5s;
   border-bottom-left-radius: 3px;
@@ -214,7 +214,12 @@ export const SettingsRightBlock = styled.div`
   min-height: 550px;
 
   @media (max-width: 576px) {
-    min-height: 330px;
+    max-height: 345px;
+    overflow-Y: scroll;
+  } 
+
+  @media (max-width: 576px) {
+    min-height: 345px;
   } 
   
   .accountAvatar{
@@ -291,6 +296,14 @@ export const IconAvatar = styled.div`
 export const PageAuth = styled.div`
   .authpage-wrap {
     height: 550px;
+    @media (max-width: 576px) { 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 460px;
+      padding: 10px 1px;
+    } 
     padding: 80px 0px 80px 0px;
     background-image: url(${(props) => props.theme.pageBackground});
     margin:0px 20px 20px 20px;
