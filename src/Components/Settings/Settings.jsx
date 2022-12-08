@@ -169,7 +169,7 @@ const Settings = () => {
     
     return(
         <Layout>
-            <PageBackground style={{height: '600px'}}>
+            <PageBackground>
                 <div className={matches ? 'settings-block' : 'settings-block-media'}>
                     <div className='settings-block-one'>
                         <Black>

@@ -114,8 +114,7 @@
 .comments-block{
   display: flex;
   flex-direction: column;
-  height: 100%;
-  flex-basis: 90%;
+  height: 300px;
   margin-top: 10px;
   overflow: hidden;
   overflow-y: auto;

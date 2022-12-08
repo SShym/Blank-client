@@ -66,6 +66,7 @@ export const Black = styled.div`
 `;
 
 export const NavbarBlock = styled.div`
+  margin: 0px 20px 0px 20px;
   transition: all 0.5s;
   background-color: ${(props) => props.theme.backgroundNavbar};
   border-top: 1px solid ${(props) => props.theme.border};
@@ -112,7 +113,6 @@ export const NavbarLogo = styled.div`
 `;
 
 export const PageBackground = styled.div`
-
   transition: all 0.5s;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
@@ -123,6 +123,7 @@ export const PageBackground = styled.div`
   flex-grow: 1;
   flex-shrink: 0;
   height: 600px;
+  @media (max-width: 576px) { height: 445px } 
   margin: 0px 20px 20px 20px;
   position: relative;
   
@@ -141,7 +142,8 @@ export const PageBackground = styled.div`
 
 export const CommentsBackground = styled.div`
   height: 600px;
-  margin: 0px 20px 20px 20px;
+  @media (max-width: 576px) { height: 100% }
+  margin: 0px 20px 50px 20px;
   transition: all 0.5s;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
@@ -210,6 +212,10 @@ export const SettingsRightBlock = styled.div`
   color: ${(props) => props.theme.SettingsText};
   flex-basis: 80%;
   min-height: 550px;
+
+  @media (max-width: 576px) {
+    min-height: 330px;
+  } 
   
   .accountAvatar{
     width: 150px;

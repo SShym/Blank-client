@@ -61,7 +61,7 @@ const Navbar = () => {
   };
 
   return (
-    <div style={{margin: '0px 20px 0px 20px'}}>
+    <div>
     { location.pathname.includes('verify') ? 
       <Layout>
         <NavbarBlock>
@@ -70,7 +70,7 @@ const Navbar = () => {
       </Layout>
       :
       <Layout>
-        <NavbarBlock style={matches ? {margin: '0px'} : {margin: '20px 20px 0px 20px'}}>
+        <NavbarBlock>
         { location.pathname.includes('verify') &&
           <div className='verification-text'>VERIFICATION</div>
         }
