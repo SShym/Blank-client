@@ -131,7 +131,6 @@ export const PageBackground = styled.div`
     overflow-Y: scroll;
     ::-webkit-scrollbar { display: none }
     margin: 0px;
-    height: ${100 - ((100 * 45) / Number(window.innerHeight))}vh;
   } 
 
   .comments-item-img-preview-wrap{
@@ -147,7 +146,6 @@ export const CommentsBackground = styled.div`
   margin: 0px 20px 20px 20px;
   @media (max-width: 576px) {
     margin: 0px;
-    height: ${100 - ((100 * 45) / Number(window.innerHeight))}vh;
   } 
   transition: all 0.5s;
   border-bottom-left-radius: 3px;
@@ -216,6 +214,7 @@ export const SettingsRightBlock = styled.div`
   background-color: ${(props) => props.theme.theme === 'light' ? 'rgb(216, 216, 216)' : 'rgb(110, 110, 110)'};
   color: ${(props) => props.theme.SettingsText};
   flex-basis: 80%;
+  min-height: 550px;
   
   .accountAvatar{
     width: 150px;
@@ -233,18 +232,6 @@ export const SettingsRightBlock = styled.div`
     color: ${(props) => props.theme.theme === 'light' ? 'red' : 'black'};
   }
 
-  @media (max-width: 576px) {
-    .delete-profile-block button{
-      margin-bottom: 10px;
-    }
-  } 
-
-  .settings-block-two-general, .settings-block-two-settings{
-    @media (max-width: 576px) {
-      margin: 0px;
-      height: ${100 - ((100 * 45) / Number(window.innerHeight))}vh;
-    } 
-  }
   .change-user-settings-two{
     transition: background 0.5s;
     background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(141, 141, 141, 0.3)'};
