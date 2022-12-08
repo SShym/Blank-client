@@ -17,7 +17,6 @@ const Paginate = ({ setEditText, setEditPhoto, setEditMode, page, disabled, load
       display:'flex',
       alignItems:'center',
       justifyContent:'center',
-      marginTop:'20px',
     }}>
       {numberOfPages ?
         <Pagination onClick={func}

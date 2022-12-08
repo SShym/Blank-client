@@ -56,16 +56,17 @@ export const Black = styled.div`
   div{
     color: rgb(101, 101, 101);
   }
+  
   .pick{
     transition-property: color, border-left;
     transition-duration: 0.5s;
     color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(181, 181, 181)'};
     border-left: 1px solid ${(props) => props.theme.theme === 'light' ? 'white' : 'gray'};
   }
-
 `;
 
 export const NavbarBlock = styled.div`
+
   transition: all 0.5s;
   background-color: ${(props) => props.theme.backgroundNavbar};
   border-top: 1px solid ${(props) => props.theme.border};
@@ -74,7 +75,6 @@ export const NavbarBlock = styled.div`
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   padding: 4px 4px;
-  margin: 0px 20px 0px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -113,6 +113,7 @@ export const NavbarLogo = styled.div`
 `;
 
 export const PageBackground = styled.div`
+
   transition: all 0.5s;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
@@ -122,8 +123,16 @@ export const PageBackground = styled.div`
   flex-basis: calc(33.333% - 40px);
   flex-grow: 1;
   flex-shrink: 0;
+  height: 600px;
   margin: 0px 20px 20px 20px;
   position: relative;
+  
+  @media (max-width: 576px) {
+    overflow-Y: scroll;
+    ::-webkit-scrollbar { display: none }
+    margin: 0px;
+    height: ${100 - ((100 * 45) / Number(window.innerHeight))}vh;
+  } 
 
   .comments-item-img-preview-wrap{
     border-top: none;
@@ -134,17 +143,18 @@ export const PageBackground = styled.div`
 `;
 
 export const CommentsBackground = styled.div`
-  min-height: 600px;
+  height: 600px;
+  margin: 0px 20px 20px 20px;
+  @media (max-width: 576px) {
+    margin: 0px;
+    height: ${100 - ((100 * 45) / Number(window.innerHeight))}vh;
+  } 
   transition: all 0.5s;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   background-image: url(${(props) => props.theme.pageBackground});
   padding: 20px;
   border: 1px solid ${(props) => props.theme.border};
-  flex-basis: calc(33.333% - 40px);
-  flex-grow: 1;
-  flex-shrink: 0;
-  margin: 0px 20px 20px 20px;
   position: relative;
 
   .comments-item-img-preview-wrap{
@@ -200,14 +210,13 @@ export const NavbarAvatar = styled.div`
 export const SettingsRightBlock = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 550px;
   transition-property: color, background-color;
   transition-duration: 0.5s;
   padding: 10px;
   background-color: ${(props) => props.theme.theme === 'light' ? 'rgb(216, 216, 216)' : 'rgb(110, 110, 110)'};
   color: ${(props) => props.theme.SettingsText};
   flex-basis: 80%;
-
+  
   .accountAvatar{
     width: 150px;
     height: 150px;
@@ -224,6 +233,18 @@ export const SettingsRightBlock = styled.div`
     color: ${(props) => props.theme.theme === 'light' ? 'red' : 'black'};
   }
 
+  @media (max-width: 576px) {
+    .delete-profile-block button{
+      margin-bottom: 10px;
+    }
+  } 
+
+  .settings-block-two-general, .settings-block-two-settings{
+    @media (max-width: 576px) {
+      margin: 0px;
+      height: ${100 - ((100 * 45) / Number(window.innerHeight))}vh;
+    } 
+  }
   .change-user-settings-two{
     transition: background 0.5s;
     background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(141, 141, 141, 0.3)'};

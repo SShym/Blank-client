@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as ImageSvg } from '../../png/image.svg';
 import { commentCreate, commentUpdate } from "../../redux/actions";
 import { CommentsBackground, FormComments } from '../styles/homestyles';
-import closeSvg from '../../png/close.svg';
 import loader from '../../png/loaderGear.svg';
 import Layout from '../styles/Layout';
 import SingleComment from "../SingleComment/SingleComment";
@@ -102,7 +101,7 @@ export default function Comments({ setTrackLocation, page }){
     return(
         <Layout>
             <CommentsBackground>
-                <div>
+                <div className='comments-wrap'>
                     <div>
                         {editMode ?
                             <FormComments>
@@ -145,7 +144,7 @@ export default function Comments({ setTrackLocation, page }){
                             }
                         </div>   
                     </div>
-                    <div className='comments-block'>
+                    <div className={(editPhoto || photo) ? 'comments-block-editMode' : 'comments-block'}>
                         {!!comments.length && comments.map(res => {
                             return(
                                 <div>
@@ -163,7 +162,7 @@ export default function Comments({ setTrackLocation, page }){
                             )
                         })}
                     </div>
-                    <div>
+                    <div className='pagination-block'>
                         <Pagination 
                             setEditPhoto={setEditPhoto} 
                             setEditMode={setEditMode} 

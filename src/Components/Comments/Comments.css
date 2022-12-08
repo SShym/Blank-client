@@ -95,9 +95,34 @@
   100% {transform: rotate(180deg)}
 }
 
+.comments-wrap{
+  display: flex;
+  flex-direction: column;
+  flex-basis: 90%;
+  height: 100%;
+}
+
+.pagination-block{
+  margin-top: 15px;
+  display: flex;
+  flex-basis: 10%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .comments-block{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex-basis: 90%;
   margin-top: 10px;
-  height: 450px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.comments-block-editMode{
+  margin-top: 10px;
   overflow: hidden;
   overflow-y: auto;
 }
