@@ -16,19 +16,6 @@ input {
   resize: vertical;
 }
 
-.loader-wrapper{
-  border: 1px solid red;
-  height: 100%;
-}
-
-.loader-styles {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 999999;
-}
-
 .error-message {
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -48,5 +35,4 @@ input {
   background: red;
   padding: 10px 20px;
 }
-
 

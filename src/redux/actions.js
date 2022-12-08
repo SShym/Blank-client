@@ -56,27 +56,29 @@ export function errorOff(){
     }
 }
 
-export function commentCreate({comment, photo, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){
+export function commentCreate({page, comment, photo, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
-        API.post(`/products/`, { comment, photo, name, avatar, changed: false, timeCreate: date, id }, {
+        API.post(`/comments/`, { comment, photo, name, avatar, changed: false, timeCreate: date, id }, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        }).then((res) => {
-            dispatch({
-                type: COMMENT_CREATE,
-                data: {
-                    name,
-                    avatar,
-                    comment, 
-                    photo, 
-                    changed: false, 
-                    timeCreate: date, 
-                    id: res.data._id,
-                }
-            });
+        })
+        .then((res) => {
+            // dispatch({
+            //     type: COMMENT_CREATE,
+            //     data: {
+            //         name,
+            //         avatar,
+            //         comment, 
+            //         photo, 
+            //         changed: false, 
+            //         timeCreate: date, 
+            //         id: res.data._id,
+            //     }
+            // });
+            dispatch(commentsLoad(page));
             setPhoto('');
             setTextComment('');
             setEditText('');
@@ -94,7 +96,7 @@ export function commentUpdate({name, avatar,setTextComment, setEditText, setPhot
 
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
-        API.put(`/products/${id}`, { name, avatar, comment, photo, changed: true, timeChanged: date })
+        API.put(`/comments/${id}`, { name, avatar, comment, photo, changed: true, timeChanged: date })
         .then((res) => {
             dispatch({
                 type: COMMENT_UPDATE,
@@ -121,37 +123,38 @@ export function commentUpdate({name, avatar,setTextComment, setEditText, setPhot
     }
 }
 
-export function commentDelete(comment, id, setEditMode, setModal){ 
+export function commentDelete(comment, id, setEditMode, setModal, page, navigate){ 
         return async dispatch => {
             dispatch({ type: SET_DISABLED_TRUE });
-            API.delete(`/products/${id}`)
-                .then((res) => {
-                    dispatch({
-                        type: COMMENT_DELETE,
-                        data: { comment, id} 
-                    });
+            await API.get(`/comments/${page}`).then((res) => {
+                if(page > 1 && res.data.data.length === 1){
+                    dispatch(commentsLoad(Number(page) - 1));
+                    navigate(`?page=${Number(page) - 1}`);
+                } else {
+                    dispatch(commentsLoad(page))
+                }
+                API.delete(`/comments/${id}`).then((res) => {
+                    dispatch({ type: COMMENT_DELETE, data: { comment, id} });
                     setEditMode(false);
                     setModal(false);
                     dispatch({ type: SET_DISABLED_FALSE });
-                }
-                
-                ).catch(res => {
+                }).catch(res => {
                     dispatch(errorOn(res.response.data.error));
                 })
+                dispatch(commentsLoad(page));
+
+            })
         }
 }
 
-export function commentsLoad(data){
+export function commentsLoad(page){
     return async dispatch => {
         try{
             dispatch(loaderOn());
-            await API.get('/products').then((res) => {
+            await API.get(`/comments/${page}`).then((res) => {
                 dispatch(errorOff());
                 dispatch(loaderOff());
-                dispatch({ 
-                    type: COMMENTS_LOAD, 
-                    data: res.data 
-                })
+                dispatch({ type: COMMENTS_LOAD, data: res.data })
                 dispatch({type: SET_CHANGES_FALSE})
             })
         } catch(err){
@@ -168,7 +171,7 @@ export const signin = (formData, navigate) => async (dispatch) => {
         dispatch({ type: AUTH, data: res.data });
         dispatch({ type: SET_DISABLED_FALSE });
         dispatch(errorOff());
-        navigate('/');
+        navigate('/comments');
       });
     } catch (error) {
         dispatch(errorOn(error.response.data.message));
@@ -229,7 +232,7 @@ export const deleteSchema = (formData, navigate) => async (dispatch) => {
     try {
         await API.post(`/delete/${formData.id}`, formData).then((res) => {
             dispatch({type: LOGOUT});
-            navigate('/');
+            navigate('/comments');
         })
     } catch (error) {
       dispatch(errorOn(error.response.data.message));

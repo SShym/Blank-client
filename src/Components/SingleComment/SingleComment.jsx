@@ -7,20 +7,21 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { commentDelete } from "../../redux/actions";
 import { gapi } from 'gapi-script';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Layout from '../styles/Layout';
 import { CommentsPage } from '../styles/homestyles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 
-export default function SingleComment({comments, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled }){
+export default function SingleComment({page, comments, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [modal, setModal] = useState(false);
     const [commentText, setCommentText] = useState('');
 
     const dispatch = useDispatch();
     const location = useLocation();
+    const navigate = useNavigate();
 
     const matches = useMediaQuery('(min-width: 442px)');
     
@@ -37,7 +38,6 @@ export default function SingleComment({comments, setId, setEditText, setEditMode
 
     document.body.className = localStorage.getItem('theme');
 
-
     useEffect(()=> {
         comments.comment && setCommentText(comments.comment);
     }, [comments.comment])
@@ -46,7 +46,7 @@ export default function SingleComment({comments, setId, setEditText, setEditMode
     
     const handleDelete = (e) => {
         e.preventDefault();
-        dispatch(commentDelete(commentText, comments.id, setEditMode, setModal));
+        dispatch(commentDelete(commentText, comments.id, setEditMode, setModal, page, navigate));
     }
 
     return (

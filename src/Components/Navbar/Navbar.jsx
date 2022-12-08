@@ -33,7 +33,7 @@ const Navbar = () => {
   const authData = useSelector(state => state.authReducer.authData)
   
   useEffect(()=>{
-    user && location.pathname === '/auth' && navigate('/')
+    user && location.pathname === '/auth' && navigate('/comments')
   }, [location]) //eslint-disable-line
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const Navbar = () => {
   const logout = () => {
     dispatch({ type: LOGOUT });
     dispatch(errorOff());
-    navigate('/');
+    navigate('/comments');
     setUser(null);
   };
 

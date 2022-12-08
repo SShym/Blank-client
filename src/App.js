@@ -1,14 +1,15 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { commentsLoad } from './redux/actions';
-import Spin from './spin';
 import Navbar from './Components/Navbar/Navbar';
 import Comments from './Components/Comments/Comments';
 import AuthPage from './Components/AuthPage/AuthPage';
 import Settings from './Components/Settings/Settings';
 import EmailVerify from './Components/EmailVerify/EmailVerify';
+
+function useQuery() { return new URLSearchParams(useLocation().search) }
 
 function App() {
   ////////////////////////////////////////////////////////////////
@@ -22,16 +23,23 @@ function App() {
   
   const location = useLocation();
   const dispatch = useDispatch();
-    
-  useEffect(() => {
-    if(trackLocation === '/'){
-      localStorage.removeItem('settings-page');
-      dispatch(commentsLoad());
-    }
-  }, [trackLocation]) // eslint-disable-line
+  
+  const query = useQuery();
+  const page = query.get('page') || 1;
 
-  useEffect(()=>{
-    (location.pathname === '/' && changes) && dispatch(commentsLoad());
+  useEffect(() => {
+    if(location.pathname === '/comments' && trackLocation){
+      dispatch(commentsLoad(page));
+      localStorage.setItem('page', page);
+    }
+  }, [page, trackLocation]); // eslint-disable-line
+
+  useEffect(() => localStorage.removeItem('settings-page'), []);
+
+  useEffect(() => {
+    if(location.pathname === '/comments' && changes){
+      dispatch(commentsLoad(localStorage.getItem('page')));
+    }
   }, [location]) // eslint-disable-line
 
   ////////////////////////////////////////////////////////////////
@@ -44,10 +52,10 @@ function App() {
         <Routes>
           <Route path='/auth' element={<AuthPage />} />
           <Route path="/:id/verify/:token" element={<EmailVerify />} />
-          <Route path='/' element={<Comments setTrackLocation={setTrackLocation} />} />
+          <Route path='/' element={<Navigate to={'/comments'} />} />
+          <Route path='/comments' element={<Comments page={page} setTrackLocation={setTrackLocation} />} />
           <Route path='/settings' element={<Settings />} />
         </Routes>
-        <Spin />
       </div>
     </div>
   );

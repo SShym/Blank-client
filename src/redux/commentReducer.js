@@ -7,6 +7,8 @@ import {
 
 const initialState = {
     comments: [],
+    currentPage: null,
+    numberOfPages: null
 }
 
 export const commentReducer = (state = initialState, action) => {
@@ -42,7 +44,7 @@ export const commentReducer = (state = initialState, action) => {
             };
             
         case COMMENTS_LOAD:
-            const commentsNew = action.data.map(res => {
+            const commentsNew = action.data.data.map(res => {
                 return{
                     comment: res.comment,
                     id: res._id,
@@ -58,7 +60,9 @@ export const commentReducer = (state = initialState, action) => {
             
             return {
                 ...state,
-                comments: commentsNew
+                comments: commentsNew,
+                currentPage: action.data.currentPage,
+                numberOfPages: action.data.numberOfPages
             }
 
         default:

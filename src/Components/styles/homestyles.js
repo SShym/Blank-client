@@ -153,6 +153,10 @@ export const CommentsBackground = styled.div`
     border-left: 1px solid ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};;
     border-right: 1px solid ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};;
   }
+
+  .comments-item-close-svg{
+    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'rgba(125, 125, 124 , 1)'};
+  }
 `;
 
 export const EmailVerifyBackground = styled.div`
