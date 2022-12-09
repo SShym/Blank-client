@@ -115,24 +115,12 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  flex-basis: 90%;
   margin-top: 10px;
   overflow: hidden;
   overflow-y: auto;
 }
 
-@media (min-width: 576px) {
-  .comments-block{
-    flex-basis: 90%;
-  }
-}
-
-@media (max-width: 576px) {
-  .comments-block{
-    height: 300px;
-    display: block;
-    
-  }
-}
 
 .comments-block-editMode{
   margin-top: 10px;
