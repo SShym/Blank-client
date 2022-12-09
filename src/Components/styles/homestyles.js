@@ -66,6 +66,7 @@ export const Black = styled.div`
 `;
 
 export const NavbarBlock = styled.div`
+  height: 45px;
   margin: 20px 20px 0px 20px;
   @media (max-width: 576px) { 
     margin: 0px;
@@ -163,6 +164,7 @@ export const CommentsBackground = styled.div`
     border-left: none;
     border-right: none;
     border-bottom: none;
+    border-radius: 0px;
   }
   transition: all 0.5s;
   border-bottom-left-radius: 3px;
