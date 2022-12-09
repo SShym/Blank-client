@@ -148,7 +148,7 @@ export const PageBackground = styled.div`
 
 export const CommentsBackground = styled.div`
   height: 600px;
-  margin: 0px 20px 20px 20px;
+  margin: 0px 20px 0px 20px;
   @media (max-width: 576px) { 
     height: 460px;
     margin: 0px;
