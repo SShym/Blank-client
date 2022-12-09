@@ -16,7 +16,6 @@ import Tooltip from '@mui/material/Tooltip';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Layout from '../styles/Layout';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { NavbarBlock, NavbarBlockUser, NavbarLogo } from "../styles/homestyles";
 import { ReactComponent as HomeSvg } from '../../png/home.svg';
 
@@ -27,7 +26,6 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const matches = useMediaQuery('(max-width: 576px)');
   
   const disabled = useSelector(state => state.appReducer.disabled);
   const loading = useSelector(state => state.appReducer.loading);
