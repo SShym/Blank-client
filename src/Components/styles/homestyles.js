@@ -126,8 +126,11 @@ export const PageBackground = styled.div`
   flex-grow: 1;
   flex-shrink: 0;
   height: 600px;
-  @media (max-width: 576px) { height: 460px } 
   margin: 0px 20px 20px 20px;
+  @media (max-width: 576px) { 
+    height: 460px;
+    margin: 0px 
+  };
   position: relative;
   
   @media (max-width: 576px) {
@@ -220,12 +223,9 @@ export const SettingsRightBlock = styled.div`
   min-height: 550px;
 
   @media (max-width: 576px) {
+    min-height: 345px;
     max-height: 345px;
     overflow-Y: scroll;
-  } 
-
-  @media (max-width: 576px) {
-    min-height: 345px;
   } 
   
   .accountAvatar{
@@ -312,7 +312,7 @@ export const PageAuth = styled.div`
     } 
     padding: 80px 0px 80px 0px;
     background-image: url(${(props) => props.theme.pageBackground});
-    margin:0px 20px 20px 20px;
+    margin: 0px 20px 20px 20px;
     border: 1px solid ${(props) => props.theme.border};
     borderBottomRightRadius: 3px;
     borderBottomLeftRadius: 3px;

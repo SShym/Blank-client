@@ -5,6 +5,7 @@
 .app-wrap {
   max-width: 800px;
   margin: 0px auto;
+  border: 1px solid red;
 }
 
 input {
