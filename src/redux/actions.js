@@ -56,7 +56,7 @@ export function errorOff(){
     }
 }
 
-export function commentCreate({page, comment, photo, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){
+export function commentCreate({comments, page, comment, photo, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
@@ -66,19 +66,24 @@ export function commentCreate({page, comment, photo, name, avatar, setTextCommen
             }
         })
         .then((res) => {
-            // dispatch({
-            //     type: COMMENT_CREATE,
-            //     data: {
-            //         name,
-            //         avatar,
-            //         comment, 
-            //         photo, 
-            //         changed: false, 
-            //         timeCreate: date, 
-            //         id: res.data._id,
-            //     }
-            // });
-            dispatch(commentsLoad(page));
+                if(comments.length > 4){
+                    API.get(`/comments/${page}`).then((res) => {
+                        dispatch({ type: COMMENTS_LOAD, data: res.data });
+                    })
+                } else {
+                    dispatch({
+                        type: COMMENT_CREATE,
+                        data: {
+                            name,
+                            avatar,
+                            comment, 
+                            photo, 
+                            changed: false, 
+                            timeCreate: date, 
+                            id: res.data._id,
+                        }
+                    });
+                }
             setPhoto('');
             setTextComment('');
             setEditText('');
@@ -124,27 +129,29 @@ export function commentUpdate({name, avatar,setTextComment, setEditText, setPhot
 }
 
 export function commentDelete(comment, id, setEditMode, setModal, page, navigate){ 
-        return async dispatch => {
-            dispatch({ type: SET_DISABLED_TRUE });
-            await API.get(`/comments/${page}`).then((res) => {
-                if(page > 1 && res.data.data.length === 1){
-                    dispatch(commentsLoad(Number(page) - 1));
-                    navigate(`?page=${Number(page) - 1}`);
-                } else {
-                    dispatch(commentsLoad(page))
-                }
+    return async dispatch => {
+        // dispatch({ type: SET_DISABLED_TRUE });
+            new Promise((resolve) => {
+                  resolve(API.get(`/comments/${page}`).then((res) => {
+                    if(page > 1 && res.data.data.length === 1){
+                        dispatch(commentsLoad(Number(page) - 1));
+                        navigate(`?page=${Number(page) - 1}`);
+                    } else {
+                        dispatch(commentsLoad(page))
+                    }
+                }));
                 API.delete(`/comments/${id}`).then((res) => {
                     dispatch({ type: COMMENT_DELETE, data: { comment, id} });
                     setEditMode(false);
                     setModal(false);
-                }).then(() => dispatch(commentsLoad(page))).then(() => {
-                    dispatch({ type: SET_DISABLED_FALSE })
+                }).finally(() => { 
+                    dispatch(commentsLoad(page));
+                    dispatch({ type: SET_DISABLED_FALSE });
                 }).catch(res => {
                     dispatch(errorOn(res.response.data.error));
-                })
-
-            })
-        }
+                }); 
+            })   
+    }
 }
 
 export function commentsLoad(page){

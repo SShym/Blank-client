@@ -55,7 +55,8 @@ export default function Comments({ setTrackLocation, page }){
                 setTextComment,
                 setEditText,
                 setPhoto,
-                page
+                page,
+                comments
             }));
         } else {
             e.preventDefault();
