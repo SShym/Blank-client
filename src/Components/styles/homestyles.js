@@ -150,7 +150,7 @@ export const CommentsBackground = styled.div`
   height: 600px;
   margin: 0px 20px 0px 20px;
   @media (max-width: 576px) { 
-    height: 460px;
+    height: calc(${window.innerHeight}px - 45px);
     margin: 0px;
   }
   transition: all 0.5s;
