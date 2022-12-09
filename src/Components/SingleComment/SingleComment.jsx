@@ -110,7 +110,8 @@ export default function SingleComment({page, comments, setId, setEditText, setEd
                                             </Button>   
                                             {disabled ?
                                                 <Button style={{fontFamily:'sans-serif', fontSize:'12px' }} onClick={handleDelete} variant="outlined">
-                                                    <CircularProgress size="15px" sx={{mr:1}} />delete
+                                                    <CircularProgress sx={{ display:'flex', flexDirection:'column', justifyContent:'center', mr: 1}} size={15} />
+                                                    delete
                                                 </Button> 
                                                 :
                                                 <Button style={{fontFamily:'sans-serif', fontSize:'13px' }} onClick={handleDelete} variant="outlined">
@@ -125,7 +126,8 @@ export default function SingleComment({page, comments, setId, setEditText, setEd
                                             </Button>   
                                             {disabled ?
                                                 <Button style={{fontFamily:'sans-serif', fontSize:'10px' }} onClick={handleDelete} variant="outlined">
-                                                    <CircularProgress size="15px" sx={{mr:1}} />delete
+                                                    <CircularProgress sx={{ display:'flex', flexDirection:'column', justifyContent:'center', mr: 1}} size={15} />
+                                                    delete
                                                 </Button> 
                                                 :
                                                 <Button style={{fontFamily:'sans-serif', fontSize:'10px' }} onClick={handleDelete} variant="outlined">

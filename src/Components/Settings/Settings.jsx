@@ -347,7 +347,7 @@ const Settings = () => {
                                             <button disabled={disabled || loading} type="submit" className='change-user-settings-button' style={(disabled || loading) ? {cursor: 'default'} : {cursor: 'pointer'}}>
                                                 {disabled ? 
                                                     <div style={{display:"flex", justifyContent:'center', cursor:'default'}}>
-                                                        <CircularProgress theme={colorCircle} size="17px" color="secondary"/>
+                                                        <CircularProgress theme={colorCircle} sx={{ display:'flex', flexDirection:'column', justifyContent:'center' }} size={17} color="secondary"/>
                                                     </div> 
                                                 : <div className='saveDiv'>save</div>}
                                             </button>

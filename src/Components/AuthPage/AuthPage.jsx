@@ -103,7 +103,7 @@ const SignUp = () => {
                         <button  type="submit" className="authpage-button">
                           {disabled ?
                             <div style={{display:'flex'}}>
-                              <CircularProgress theme={theme} sx={{mr:0.8}} size="10px" color="secondary"/>
+                              <CircularProgress theme={theme} sx={{ display:'flex', flexDirection:'column', justifyContent:'center', mr: 0.8 }} size={10} color="secondary"/>
                               <div>SIGN UP</div>
                             </div>
                             : <div>SIGN UP</div>
@@ -113,7 +113,7 @@ const SignUp = () => {
                         <button  type="submit" className="authpage-button">
                         {disabled ?
                           <div style={{display:'flex'}}>
-                            <CircularProgress theme={theme} sx={{mr:0.8}} size="10px" color="secondary"/>
+                            <CircularProgress theme={theme} sx={{ display:'flex', flexDirection:'column', justifyContent:'center', mr: 0.8 }} size={10} color="secondary"/>
                             <div>SIGN IN</div>
                           </div>
                           : <div>SIGN IN</div>

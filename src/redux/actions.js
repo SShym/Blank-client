@@ -137,11 +137,11 @@ export function commentDelete(comment, id, setEditMode, setModal, page, navigate
                     dispatch({ type: COMMENT_DELETE, data: { comment, id} });
                     setEditMode(false);
                     setModal(false);
-                    dispatch({ type: SET_DISABLED_FALSE });
+                }).then(() => dispatch(commentsLoad(page))).then(() => {
+                    dispatch({ type: SET_DISABLED_FALSE })
                 }).catch(res => {
                     dispatch(errorOn(res.response.data.error));
                 })
-                dispatch(commentsLoad(page));
 
             })
         }
