@@ -72,11 +72,13 @@ export const NavbarBlock = styled.div`
   }
   transition: all 0.5s;
   background-color: ${(props) => props.theme.backgroundNavbar};
-  border-top: 1px solid ${(props) => props.theme.border};
-  border-left: 1px solid ${(props) => props.theme.border};
-  border-right: 1px solid ${(props) => props.theme.border};
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  @media(min-width: 576px){
+    border-top: 1px solid ${(props) => props.theme.border};
+    border-left: 1px solid ${(props) => props.theme.border};
+    border-right: 1px solid ${(props) => props.theme.border};
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+  }
   padding: 4px 4px;
   display: flex;
   align-items: center;
@@ -117,20 +119,26 @@ export const NavbarLogo = styled.div`
 
 export const PageBackground = styled.div`
   transition: all 0.5s;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
   background-image: url(${(props) => props.theme.pageBackground});
   padding: 20px;
-  border: 1px solid ${(props) => props.theme.border};
   flex-basis: calc(33.333% - 40px);
   flex-grow: 1;
   flex-shrink: 0;
   height: 600px;
   margin: 0px 20px 20px 20px;
+
   @media (max-width: 576px) { 
-    height: 460px;
-    margin: 0px 
+    height: calc(${window.innerHeight}px - 45px);
+    margin: 0px;
+    border-top: 1px solid black;
   };
+
+  @media (min-width: 576px) {
+    border: 1px solid ${(props) => props.theme.border};
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+
   position: relative;
   
   @media (max-width: 576px) {
@@ -152,6 +160,9 @@ export const CommentsBackground = styled.div`
   @media (max-width: 576px) { 
     height: calc(${window.innerHeight}px - 45px);
     margin: 0px;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
   }
   transition: all 0.5s;
   border-bottom-left-radius: 3px;
@@ -221,10 +232,8 @@ export const SettingsRightBlock = styled.div`
   color: ${(props) => props.theme.SettingsText};
   flex-basis: 80%;
   min-height: 550px;
-
+  
   @media (max-width: 576px) {
-    min-height: 345px;
-    max-height: 345px;
     overflow-Y: scroll;
   } 
   
@@ -301,21 +310,24 @@ export const IconAvatar = styled.div`
 
 export const PageAuth = styled.div`
   .authpage-wrap {
-    height: 550px;
+    padding: 80px 0px 80px 0px;
+    background-image: url(${(props) => props.theme.pageBackground});
+    margin: 0px 20px 20px 20px;
+    @media(min-width: 576px) {
+      border: 1px solid ${(props) => props.theme.border};
+      borderBottomRightRadius: 3px;
+      borderBottomLeftRadius: 3px;
+    }
+
     @media (max-width: 576px) { 
+      border-top: 1px solid black;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 460px;
-      padding: 10px 1px;
+      height: calc(${window.innerHeight}px - 45px);
+      margin: 0px;
     } 
-    padding: 80px 0px 80px 0px;
-    background-image: url(${(props) => props.theme.pageBackground});
-    margin: 0px 20px 20px 20px;
-    border: 1px solid ${(props) => props.theme.border};
-    borderBottomRightRadius: 3px;
-    borderBottomLeftRadius: 3px;
   }
 
   .authpage-papper {
@@ -403,9 +415,3 @@ export const PageAuth = styled.div`
     }
   }
 `;
-
-
-
-
-
-
