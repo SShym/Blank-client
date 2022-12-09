@@ -237,6 +237,7 @@ export const SettingsRightBlock = styled.div`
   
   @media (max-width: 576px) {
     overflow-Y: scroll;
+    min-height: calc(${window.innerHeight}px - 45px);
   } 
   
   .accountAvatar{
@@ -315,6 +316,7 @@ export const PageAuth = styled.div`
     padding: 80px 0px 80px 0px;
     background-image: url(${(props) => props.theme.pageBackground});
     margin: 0px 20px 20px 20px;
+
     @media(min-width: 576px) {
       border: 1px solid ${(props) => props.theme.border};
       borderBottomRightRadius: 3px;
@@ -322,7 +324,7 @@ export const PageAuth = styled.div`
     }
 
     @media (max-width: 576px) { 
-      border-top: 1px solid black;
+      border-top: 1px solid ${(props) => props.theme.border};
       display: flex;
       flex-direction: column;
       align-items: center;

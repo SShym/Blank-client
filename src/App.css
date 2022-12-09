@@ -5,6 +5,7 @@
 .app-wrap {
   max-width: 800px;
   margin: 0px auto;
+  position: relative;
 }
 
 input {
@@ -13,6 +14,11 @@ input {
   padding: 10px 0;
   outline: none;
   resize: vertical;
+}
+
+.error-wrap-matches{
+  writing-mode: vertical-rl;
+  text-orientation: upright;
 }
 
 .error-message {
@@ -27,11 +33,30 @@ input {
   top: 100%;
   left: 50%;
   white-space: nowrap;
-  transform: translate(-50%, -70%);
+  transform: translate(-50%, -55%);
   font-size: 13px;
   font-weight: bold;
   color: white;
   background: red;
   padding: 10px 20px;
+}
+
+.error-message-matches {
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: absolute;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid black;
+  z-index: 1;
+  right: 0;
+  bottom: 0;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: bold;
+  color: white;
+  background: red;
+  padding: 10px 4px;
 }
 

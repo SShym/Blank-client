@@ -130,27 +130,25 @@ export function commentUpdate({name, avatar,setTextComment, setEditText, setPhot
 
 export function commentDelete(comment, id, setEditMode, setModal, page, navigate){ 
     return async dispatch => {
-        // dispatch({ type: SET_DISABLED_TRUE });
-            new Promise((resolve) => {
-                  resolve(API.get(`/comments/${page}`).then((res) => {
-                    if(page > 1 && res.data.data.length === 1){
-                        dispatch(commentsLoad(Number(page) - 1));
-                        navigate(`?page=${Number(page) - 1}`);
-                    } else {
-                        dispatch(commentsLoad(page))
-                    }
-                }));
-                API.delete(`/comments/${id}`).then((res) => {
-                    dispatch({ type: COMMENT_DELETE, data: { comment, id} });
-                    setEditMode(false);
-                    setModal(false);
-                }).finally(() => { 
+        dispatch({ type: SET_DISABLED_TRUE });
+        API.get(`/comments/${page}`).then((res) => {
+            API.delete(`/comments/${id}`).then((res) => {
+                dispatch({ type: COMMENT_DELETE, data: { comment, id} });
+                setEditMode(false);
+                setModal(false);
+            }).then(() => {
+                if(page > 1 && res.data.data.length === 1){
+                    dispatch(commentsLoad(Number(page) - 1));
+                    navigate(`?page=${Number(page) - 1}`);
+                } else {
                     dispatch(commentsLoad(page));
-                    dispatch({ type: SET_DISABLED_FALSE });
-                }).catch(res => {
-                    dispatch(errorOn(res.response.data.error));
-                }); 
-            })   
+                }
+            }).finally(() => { 
+                dispatch({ type: SET_DISABLED_FALSE });
+            }).catch(res => {
+                dispatch(errorOn(res.response.data.error));
+            })
+        })   
     }
 }
 

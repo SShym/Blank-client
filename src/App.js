@@ -8,6 +8,7 @@ import Comments from './Components/Comments/Comments';
 import AuthPage from './Components/AuthPage/AuthPage';
 import Settings from './Components/Settings/Settings';
 import EmailVerify from './Components/EmailVerify/EmailVerify';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function useQuery() { return new URLSearchParams(useLocation().search) }
 
@@ -20,6 +21,7 @@ function App() {
                                                               
   const error = useSelector(state => state.appReducer.error); 
   const changes = useSelector(state => state.appReducer.changes);
+  const matches = useMediaQuery('(max-width: 576px)');
   
   const location = useLocation();
   const dispatch = useDispatch();
@@ -47,7 +49,11 @@ function App() {
   return (
     <div className="app">
       <div className="app-wrap">
-        {error && <div className='error-message'>{error}</div>}
+        {error && 
+          <div className={matches && 'error-wrap-matches'}>
+            <div className={matches ? 'error-message-matches' : 'error-message'}>{error}</div>
+          </div>
+        }
         <Navbar />
         <Routes>
           <Route path='/auth' element={<AuthPage />} />
