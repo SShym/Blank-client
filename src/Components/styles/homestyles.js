@@ -130,7 +130,7 @@ export const PageBackground = styled.div`
   @media (max-width: 576px) { 
     height: calc(${window.innerHeight}px - 45px);
     margin: 0px;
-    border-top: 1px solid black;
+    border-top: 1px solid ${(props) => props.theme.border};
   };
 
   @media (min-width: 576px) {
