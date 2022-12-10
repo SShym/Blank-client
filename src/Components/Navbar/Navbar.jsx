@@ -18,6 +18,7 @@ import Logout from '@mui/icons-material/Logout';
 import Layout from '../styles/Layout';
 import { NavbarBlock, NavbarBlockUser, NavbarLogo } from "../styles/homestyles";
 import { ReactComponent as HomeSvg } from '../../png/home.svg';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Navbar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -30,7 +31,9 @@ const Navbar = () => {
   const disabled = useSelector(state => state.appReducer.disabled);
   const loading = useSelector(state => state.appReducer.loading);
   const error = useSelector(state => state.appReducer.error);
-  const authData = useSelector(state => state.authReducer.authData)
+  const authData = useSelector(state => state.authReducer.authData);
+
+  const matches = useMediaQuery('(max-width: 576px)');
   
   useEffect(()=>{
     user && location.pathname === '/auth' && navigate('/comments')
@@ -98,60 +101,61 @@ const Navbar = () => {
                 </NavbarBlockUser>
               </Box>
               <div>
-              <Menu
-                anchorEl={anchorEl}
-                id="account-menu"
-                open={open}
-                onClose={handleClose}
-                onClick={handleClose}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    backgroundColor: 'rgb(232, 232, 232)',
-                    overflow: 'visible',
-                    marginLeft:'-1.5px',
-                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                    mt: 1.0,
-                    '& .MuiAvatar-root': {
-                      bgcolor: 'papper',
-                      color: 'white',
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,
+                <Menu
+                  anchorEl={anchorEl}
+                  id="account-menu"
+                  open={open}
+                  onClose={handleClose}
+                  onClick={handleClose}
+                  className='red'
+                  PaperProps={{
+                    elevation: 0,
+                    sx: {
+                      backgroundColor: 'rgb(232, 232, 232)',
+                      overflow: 'visible',
+                      marginLeft: matches ? '7px' : '-4px',
+                      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                      mt: 1.0,
+                      '& .MuiAvatar-root': {
+                        bgcolor: 'papper',
+                        color: 'white',
+                        width: 32,
+                        height: 32,
+                        ml: -0.5,
+                        mr: 1,
+                      },
+                      '&:before': {
+                        content: '""',
+                        display: 'block',
+                        position: 'absolute',
+                        top: 0,
+                        right: 14,
+                        width: 10,
+                        height: 10,
+                        bgcolor: 'rgb(232, 232, 232)',
+                        transform: 'translateY(-50%) rotate(45deg)',
+                        zIndex: 0,
+                      },
                     },
-                    '&:before': {
-                      content: '""',
-                      display: 'block',
-                      position: 'absolute',
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: 'rgb(232, 232, 232)',
-                      transform: 'translateY(-50%) rotate(45deg)',
-                      zIndex: 0,
-                    },
-                  },
-                }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-              >
-                <Link className='navbar-link' to="/settings">
-                  <MenuItem>
+                  }}
+                  transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                >
+                  <Link className='navbar-link' to="/settings">
+                    <MenuItem>
+                      <ListItemIcon>
+                        <Settings fontSize="small" />
+                      </ListItemIcon>
+                      Settings
+                    </MenuItem>
+                  </Link>
+                  <MenuItem onClick={logout}>
                     <ListItemIcon>
-                      <Settings fontSize="small" />
+                      <Logout fontSize="small" />
                     </ListItemIcon>
-                    Settings
+                    Logout
                   </MenuItem>
-                </Link>
-                <MenuItem onClick={logout}>
-                  <ListItemIcon>
-                    <Logout fontSize="small" />
-                  </ListItemIcon>
-                  Logout
-                </MenuItem>
-              </Menu>
+                </Menu>
               </div>
             </div>
           ) : 
