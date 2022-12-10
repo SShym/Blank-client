@@ -67,9 +67,7 @@ export function commentCreate({comments, page, comment, photo, name, avatar, set
         })
         .then((res) => {
                 if(comments.length > 4){
-                    API.get(`/comments/${page}`).then((res) => {
-                        dispatch({ type: COMMENTS_LOAD, data: res.data });
-                    })
+                    dispatch(commentsLoad(page))
                 } else {
                     dispatch({
                         type: COMMENT_CREATE,

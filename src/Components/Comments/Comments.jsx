@@ -27,6 +27,7 @@ export default function Comments({ setTrackLocation, page }){
     const disabled = useSelector(state => state.appReducer.disabled);
     const loading = useSelector(state => state.appReducer.loading);
     const error = useSelector(state => state.appReducer.error);
+    const numberOfPages = useSelector((state) => state.commentReducer.numberOfPages);
 
     useEffect(() => {
       gapi.load('client:auth2', ()=>{
@@ -163,16 +164,19 @@ export default function Comments({ setTrackLocation, page }){
                             )
                         })}
                     </div>
-                    <div className='pagination-block'>
-                        <Pagination 
-                            setEditPhoto={setEditPhoto} 
-                            setEditMode={setEditMode} 
-                            setEditText={setEditText}
-                            disabled={disabled} 
-                            loading={loading} 
-                            page={page} 
-                        />
-                    </div>
+                    {numberOfPages ?
+                        <div className='pagination-block'>
+                            <Pagination 
+                                setEditPhoto={setEditPhoto} 
+                                setEditMode={setEditMode} 
+                                setEditText={setEditText}
+                                disabled={disabled} 
+                                loading={loading} 
+                                page={page} 
+                            />
+                        </div>
+                        : ''
+                    }
                 </div>
             </CommentsBackground>
         </Layout>

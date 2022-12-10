@@ -45,8 +45,10 @@ export default function SingleComment({page, comments, setId, setEditText, setEd
     const handleInput = (e) => setCommentText(e.target.value);
     
     const handleDelete = (e) => {
-        e.preventDefault();
-        dispatch(commentDelete(commentText, comments.id, setEditMode, setModal, page, navigate));
+        if(!disabled) {
+            e.preventDefault();
+            dispatch(commentDelete(commentText, comments.id, setEditMode, setModal, page, navigate));
+        }
     }
 
     return (

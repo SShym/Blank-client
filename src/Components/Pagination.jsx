@@ -19,26 +19,27 @@ const Paginate = ({ setEditText, setEditPhoto, setEditMode, page, disabled, load
       justifyContent:'center',
     }}>
       {numberOfPages ?
-        <Pagination onClick={func}
-        shape='rounded'
-        count={numberOfPages}
-        page={Number(localStorage.getItem('page'))}
-        variant="outlined"
-        color="primary"
-        disabled={disabled || loading}
-        renderItem={(item) => (
-          <PaginationItem style={{
-            border:'1px solid gray', 
-            color:'gray', 
-            fontSize:'11px',
-            margin:'0px 3px',
-            borderRadius:'4px'
-          }} 
-          color="string" 
-          {...item}
-           component={Link} 
-           to={`/comments?page=${item.page}`} 
-          />
+        <Pagination 
+          onClick={func}
+          shape='rounded'
+          count={numberOfPages}
+          page={Number(localStorage.getItem('page'))}
+          variant="outlined"
+          color="primary"
+          disabled={disabled || loading}
+          renderItem={(item) => (
+            <PaginationItem style={{
+              border:'1px solid gray', 
+              color:'gray', 
+              fontSize:'11px',
+              margin:'0px 3px',
+              borderRadius:'4px'
+            }} 
+              color="string" 
+              {...item}
+              component={Link} 
+              to={`/comments?page=${item.page}`} 
+            />
         )}
       /> 
       : null
