@@ -58,10 +58,10 @@ export const Black = styled.div`
   }
   
   .pick{
-    transition-property: color, border-left;
+    transition-property: color, border-color;
     transition-duration: 0.5s;
     color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(181, 181, 181)'};
-    border-left: 1px solid ${(props) => props.theme.theme === 'light' ? 'white' : 'gray'};
+    border-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'gray'};
   }
 `;
 
