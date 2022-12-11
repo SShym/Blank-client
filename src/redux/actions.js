@@ -155,10 +155,10 @@ export function commentsLoad(page){
         try{
             dispatch(loaderOn());
             await API.get(`/comments/${page}`).then((res) => {
+                dispatch({ type: COMMENTS_LOAD, data: res.data });
                 dispatch(errorOff());
                 dispatch(loaderOff());
-                dispatch({ type: COMMENTS_LOAD, data: res.data })
-                dispatch({type: SET_CHANGES_FALSE})
+                dispatch({type: SET_CHANGES_FALSE});
             })
         } catch(err){
             dispatch(errorOn(`${err.response.status} ${err.response.statusText}`));
