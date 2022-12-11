@@ -14,7 +14,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 
-export default function SingleComment({page, comments, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled }){
+export default function SingleComment({page, comments, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled, loading }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [modal, setModal] = useState(false);
     const [commentText, setCommentText] = useState('');
@@ -45,7 +45,7 @@ export default function SingleComment({page, comments, setId, setEditText, setEd
     const handleInput = (e) => setCommentText(e.target.value);
     
     const handleDelete = (e) => {
-        if(!disabled) {
+        if(!disabled || !loading) {
             e.preventDefault();
             dispatch(commentDelete(commentText, comments.id, setEditMode, setModal, page, navigate));
         }
@@ -66,14 +66,14 @@ export default function SingleComment({page, comments, setId, setEditText, setEd
                             { (user?.result?.googleId === comments?.creator || user?.result?._id === comments?.creator) && user != null &&
                             <div className='single-comment-buttons'>
                                 <div onClick={() => {
-                                    if(!disabled && user != null){
+                                    if(!disabled && user != null && !loading ){
                                         setModal(true)
                                     }
                                 }} className='single-comment-delete'>
                                     <img className='svgDelete' src={deleteSvg} alt="" />
                                 </div>
                                 <div onClick={() => {
-                                    if(!disabled && user != null){
+                                    if(!disabled && user != null && !loading){
                                         setEditText(commentText);
                                         setId(comments.id);
                                         setEditMode(true);

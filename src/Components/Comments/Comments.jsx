@@ -109,7 +109,7 @@ export default function Comments({ setTrackLocation, page }){
                             <FormComments>
                                 <form style={{position:'relative'}} onSubmit={handleUpdate}>
                                     <input disabled={disabled || user == null || error} type="text" value={editText} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} onChange={(e) => setEditText(e.target.value)}/>
-                                    <input disabled={disabled || user == null || error} name="file" id="file" className='comments-item-select-img' type="file" multiple onChange={handleOnChange} />
+                                    <input disabled={disabled || user == null || error} name="file" id="file" className='comments-item-select-img' type="file" accept="image/png, image/gif, image/jpeg" onChange={handleOnChange} />
                                     { (disabled || loading) &&
                                         <img className='comments-item-loader' src={loader} alt="" />
                                     } 
@@ -127,8 +127,8 @@ export default function Comments({ setTrackLocation, page }){
                             </FormComments> :
                             <FormComments>
                                 <form style={{position:'relative'}} onSubmit={handleSubmit}>
-                                    <input disabled={disabled || loading || user == null || error} value={textComment} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} placeholder={!disabled ? 'Сообщение' : 'загрузка'} onChange={handleChange} type="text" />
-                                    <input disabled={disabled || loading || user == null || error} name="file" id="file" className='comments-item-select-img' type="file" multiple onChange={handleOnChange} />
+                                    <input disabled={disabled || loading || user == null || error} value={textComment} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} placeholder={!disabled || !loading ? 'Message' : 'Loading...'} onChange={handleChange} type="text" />
+                                    <input disabled={disabled || loading || user == null || error} name="file" id="file" className='comments-item-select-img' type="file" accept="image/png, image/gif, image/jpeg" onChange={handleOnChange} />
                                     { (disabled || loading) &&
                                         <img className='comments-item-loader' src={loader} alt="" />
                                     } 
@@ -153,6 +153,7 @@ export default function Comments({ setTrackLocation, page }){
                                     <SingleComment 
                                         page={page}
                                         disabled={disabled}
+                                        loading={loading}
                                         comments={res} 
                                         setId={setId} 
                                         setEditText={setEditText} 

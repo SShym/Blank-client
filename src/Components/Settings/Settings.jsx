@@ -337,7 +337,7 @@ const Settings = () => {
                                                         value={!authData ? user.result.name.split(' ')[1] : form.lastName}
                                                         disabled={disabled || loading}
                                                         name="lastName" 
-                                                        label="lastName" 
+                                                        label="Last Name" 
                                                         onChange={handleChange}
                                                         className='settings-input-lname'
                                                     >
