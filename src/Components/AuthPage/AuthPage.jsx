@@ -63,7 +63,7 @@ const SignUp = () => {
 
     try {
       dispatch({ type: AUTH, data: { result, token } });
-      navigate('/comments');
+      navigate('/comments?page=1');
     } catch (error) {
       console.log(error);
     }
