@@ -157,8 +157,8 @@ export default function Comments({ setTrackLocation, page }){
                             }
                         </div>   
                     </div>
-                    <div className={(editPhoto?.photoBase64 || photo?.photoBase64) ? 'comments-block-editMode' : 'comments-block'}>
-                        {!!comments.length && comments.map(res => {
+                    <div className='comments-block'>
+                        {comments.map(res => {
                             return(
                                 <div>
                                     <SingleComment 

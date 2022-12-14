@@ -13,11 +13,13 @@ import { CommentsPage } from '../styles/homestyles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Skeleton from '@mui/material/Skeleton';
 
 export default function SingleComment({page, comments, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled, loading }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [modal, setModal] = useState(false);
     const [commentText, setCommentText] = useState('');
+    const [imageLoad, setImageLoad] = useState(false);
 
     const dispatch = useDispatch();
     const location = useLocation();
@@ -94,9 +96,14 @@ export default function SingleComment({page, comments, setId, setEditText, setEd
                                 <input type='submit' hidden />
                             </div>
                         </div>
-                        { comments.photo && 
+                        { comments.photo &&
                             <div className='single-comment-img'>
-                                <img src={comments.photo} alt="" />
+                                <img 
+                                    style={{visibility: imageLoad ? "visible" : "hidden"}} 
+                                    onLoad={() => setImageLoad(true)} 
+                                    src={comments.photo} 
+                                    alt="" 
+                                />
                             </div>
                         }
                         <PureModal 
