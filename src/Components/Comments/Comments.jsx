@@ -16,8 +16,8 @@ export default function Comments({ setTrackLocation, page }){
     const [id, setId] = useState('');
     const [textComment, setTextComment] = useState('');
     const [editText, setEditText] = useState('');
-    const [photo, setPhoto] = useState('');
-    const [editPhoto, setEditPhoto] = useState('');
+    const [photo, setPhoto] = useState({ photoBase64: '', file: null });
+    const [editPhoto, setEditPhoto] = useState({ photoBase64: '', file: null });
     const [editMode, setEditMode] = useState(false);
 
     const dispatch = useDispatch();
@@ -68,14 +68,16 @@ export default function Comments({ setTrackLocation, page }){
         if(editText.length >= 1){
             e.preventDefault();
             dispatch(commentUpdate({ 
+                photo: editPhoto.photoBase64.length > 0 ? editPhoto : photo,
                 name: user?.result?.name, 
                 avatar: user?.result.avatar ? user?.result.avatar : user?.result.imageUrl,
                 setTextComment,
                 setEditText,
                 setPhoto,
                 setEditPhoto,
-                setEditMode
-            }, editText, id, editPhoto.length > 0 ? editPhoto : photo));
+                setEditMode,
+            }, editText, id,
+            ));
         } else {
             e.preventDefault();
         }
@@ -90,12 +92,21 @@ export default function Comments({ setTrackLocation, page }){
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            if(editPhoto.length > 0){
-                setEditPhoto(reader.result)
-            } else if(editPhoto.length <= 0 && !photo) {
-                setPhoto(reader.result)
-            } else if(photo){
-                setPhoto(reader.result)
+            if(editPhoto.photoBase64.length > 0){
+                setEditPhoto({
+                    photoBase64: reader.result,
+                    file: file
+                })
+            } else if(editPhoto.photoBase64.length <= 0 && !photo.photoBase64) {
+                setPhoto({
+                    photoBase64: reader.result,
+                    file: file
+                })
+            } else if(photo.photoBase64){
+                setPhoto({
+                    photoBase64: reader.result,
+                    file: file
+                })
             }
         }
     }
@@ -116,10 +127,10 @@ export default function Comments({ setTrackLocation, page }){
                                     <label for="file">
                                         <ImageSvg className='comments-item-select-img-svg' />
                                     </label>
-                                    <div className={!editPhoto ? `none` : 'comments-item-img-preview-wrap'}>
-                                        <img className='comments-item-img-preview' src={editPhoto} alt="" />
+                                    <div className={!editPhoto.photoBase64 ? `none` : 'comments-item-img-preview-wrap'}>
+                                        <img className='comments-item-img-preview' src={editPhoto.photoBase64} alt="" />
                                         {!disabled && 
-                                            <div onClick={() => setEditPhoto('')} className='comments-item-close-svg'>×</div>
+                                            <div onClick={() => setEditPhoto({photoBase64: ''})} className='comments-item-close-svg'>×</div>
                                         }
                                     </div>
                                     <input type="submit" hidden/>
@@ -139,14 +150,14 @@ export default function Comments({ setTrackLocation, page }){
                                 </form>
                             </FormComments>
                         }
-                        <div className={!photo ? `none` : 'comments-item-img-preview-wrap'}>            
-                            <img className='comments-item-img-preview' src={photo} alt="" />
+                        <div className={!photo.photoBase64 ? `none` : 'comments-item-img-preview-wrap'}>            
+                            <img className='comments-item-img-preview' src={photo.photoBase64} alt="" />
                             {!disabled && 
                                 <div onClick={() => setPhoto('')} className='comments-item-close-svg'>×</div>
                             }
                         </div>   
                     </div>
-                    <div className={(editPhoto || photo) ? 'comments-block-editMode' : 'comments-block'}>
+                    <div className={(editPhoto?.photoBase64 || photo?.photoBase64) ? 'comments-block-editMode' : 'comments-block'}>
                         {!!comments.length && comments.map(res => {
                             return(
                                 <div>

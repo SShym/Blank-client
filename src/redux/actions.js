@@ -17,8 +17,8 @@ export const SET_CHANGES_TRUE = 'SET_CHANGES_TRUE';
 export const SET_CHANGES_FALSE = 'SET_CHANGES_FALSE';
 
 const API = axios.create({ 
-    // baseURL: 'http://localhost:5000/'
-    baseURL: 'https://sqmr.onrender.com/'
+    baseURL: 'http://localhost:5000/'
+    // baseURL: 'https://sqmr.onrender.com/'
 });
 
 API.interceptors.request.use((req) => {
@@ -60,29 +60,36 @@ export function commentCreate({comments, page, comment, photo, name, avatar, set
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
-        API.post(`/comments/`, { comment, photo, name, avatar, changed: false, timeCreate: date, id }, {
+        API.post(`/comments/`, { 
+            comment, 
+            photo: photo.file || photo.photoBase64,
+            name, avatar, 
+            changed: false, 
+            timeCreate: date, 
+            id 
+        }, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         })
         .then((res) => {
-                if(comments.length > 4){
-                    dispatch(commentsLoad(page))
-                } else {
-                    dispatch({
-                        type: COMMENT_CREATE,
-                        data: {
-                            name,
-                            avatar,
-                            comment, 
-                            photo, 
-                            changed: false, 
-                            timeCreate: date, 
-                            id: res.data._id,
-                        }
-                    });
-                }
-            setPhoto('');
+            if(comments.length > 4){
+                dispatch(commentsLoad(page))
+            } else {
+                dispatch({
+                    type: COMMENT_CREATE,
+                    data: {
+                        name,
+                        avatar,
+                        comment, 
+                        photo: photo.photoBase64, 
+                        changed: false, 
+                        timeCreate: date, 
+                        id: res.data._id,
+                    }
+                });
+            }
+            setPhoto({ photoBase64: '', file: null });
             setTextComment('');
             setEditText('');
             dispatch({ type: SET_DISABLED_FALSE })
@@ -94,12 +101,22 @@ export function commentCreate({comments, page, comment, photo, name, avatar, set
     }
 }
 
-export function commentUpdate({name, avatar,setTextComment, setEditText, setPhoto, setEditPhoto, setEditMode}, comment, id, photo){
+export function commentUpdate({photo, name, avatar, setTextComment, setEditText, setPhoto, setEditPhoto, setEditMode}, comment, id){
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
-
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
-        API.put(`/comments/${id}`, { name, avatar, comment, photo, changed: true, timeChanged: date })
+        API.put(`/comments/${id}`, { 
+            name, 
+            avatar, 
+            comment, 
+            photo: (!photo || photo?.photoBase64?.length === 0) ? '' : photo.file,
+            changed: true, 
+            timeChanged: date 
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
         .then((res) => {
             dispatch({
                 type: COMMENT_UPDATE,
@@ -108,15 +125,15 @@ export function commentUpdate({name, avatar,setTextComment, setEditText, setPhot
                     avatar, 
                     comment, 
                     id, 
-                    photo, 
+                    photo: photo.photoBase64 || '', 
                     changed: true, 
                     timeChanged: date
                 } 
             });
             setTextComment('');
             setEditText('');
-            setPhoto('');
-            setEditPhoto('');
+            setPhoto({ photoBase64: '', file: null });
+            setEditPhoto({ photoBase64: '', file: null });
             setEditMode(false);
             dispatch({ type: SET_DISABLED_FALSE })
         }).catch(res => {

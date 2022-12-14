@@ -67,7 +67,7 @@ export default function SingleComment({page, comments, setId, setEditText, setEd
                             <div className='single-comment-buttons'>
                                 <div onClick={() => {
                                     if(!disabled && user != null && !loading ){
-                                        setModal(true)
+                                        setModal(true);
                                     }
                                 }} className='single-comment-delete'>
                                     <img className='svgDelete' src={deleteSvg} alt="" />
@@ -77,7 +77,9 @@ export default function SingleComment({page, comments, setId, setEditText, setEd
                                         setEditText(commentText);
                                         setId(comments.id);
                                         setEditMode(true);
-                                        setEditPhoto(comments.photo);
+                                        setEditPhoto({
+                                            photoBase64: comments.photo ? comments.photo : ''
+                                        });
                                         setPhoto('');
                                     }
                                 }} className='single-comment-edit'>
