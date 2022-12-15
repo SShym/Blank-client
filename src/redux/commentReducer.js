@@ -52,6 +52,7 @@ export const commentReducer = (state = initialState, action) => {
                     timeChanged: res.timeChanged ? res.timeChanged : '',
                     timeCreate: res.timeCreate,
                     photo: res.photo,
+                    photoSize: res.photoSize,
                     name: res.name,
                     creator: res.creator,
                     avatar: res.avatar

@@ -6,7 +6,9 @@ import {
     SET_DISABLED_TRUE,
     SET_DISABLED_FALSE,
     SET_CHANGES_TRUE,
-    SET_CHANGES_FALSE
+    SET_CHANGES_FALSE,
+    SET_IMAGE_LOAD_FALSE,
+    SET_IMAGE_LOAD_TRUE
 } from './actions';
 
 
@@ -14,7 +16,8 @@ const initialState = {
     loading: false,
     error: null,
     disabled: false,
-    changes: false
+    changes: false,
+    imageLoad: false
 }
 
 export const appReducer = (state = initialState, action) => {
@@ -58,6 +61,16 @@ export const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 changes: false
+            }
+        case SET_IMAGE_LOAD_FALSE:
+            return{
+                ...state,
+                imageLoad: false
+            }
+        case SET_IMAGE_LOAD_TRUE:
+            return{
+                ...state,
+                imageLoad: true
             }
 
         default:

@@ -15,10 +15,12 @@ export const SET_AUTHDATA = 'SET_AUTHDATA';
 export const LOGOUT = 'LOGOUT';
 export const SET_CHANGES_TRUE = 'SET_CHANGES_TRUE';
 export const SET_CHANGES_FALSE = 'SET_CHANGES_FALSE';
+export const SET_IMAGE_LOAD_FALSE = 'SET_IMAGE_LOAD_FALSE';
+export const SET_IMAGE_LOAD_TRUE = 'SET_IMAGE_LOAD_TRUE';
 
 const API = axios.create({ 
-    baseURL: 'http://localhost:5000/'
-    // baseURL: 'https://sqmr.onrender.com/'
+    // baseURL: 'http://localhost:5000/'
+    baseURL: 'https://sqmr.onrender.com/'
 });
 
 API.interceptors.request.use((req) => {
@@ -56,13 +58,14 @@ export function errorOff(){
     }
 }
 
-export function commentCreate({comments, page, comment, photo, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){
+export function commentCreate({comments, page, comment, photo, photoSize, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
         API.post(`/comments/`, { 
             comment, 
             photo: photo.file || photo.photoBase64,
+            photoSize,
             name, avatar, 
             changed: false, 
             timeCreate: date, 
@@ -82,7 +85,8 @@ export function commentCreate({comments, page, comment, photo, name, avatar, set
                         name,
                         avatar,
                         comment, 
-                        photo: photo.photoBase64, 
+                        photo: photo.photoBase64,
+                        photoSize: photoSize, 
                         changed: false, 
                         timeCreate: date, 
                         id: res.data._id,

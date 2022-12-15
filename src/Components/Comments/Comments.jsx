@@ -17,6 +17,7 @@ export default function Comments({ setTrackLocation, page }){
     const [textComment, setTextComment] = useState('');
     const [editText, setEditText] = useState('');
     const [photo, setPhoto] = useState({ photoBase64: '', file: null });
+    const [photoSize, setPhotoSize] = useState({width: '', height: ''});
     const [editPhoto, setEditPhoto] = useState({ photoBase64: '', file: null });
     const [editMode, setEditMode] = useState(false);
 
@@ -51,6 +52,7 @@ export default function Comments({ setTrackLocation, page }){
             dispatch(commentCreate({
                 comment: textComment, 
                 photo: photo, 
+                photoSize,
                 name: user?.result?.name,
                 avatar: user?.result.avatar ? user?.result.avatar : user?.result.imageUrl,
                 setTextComment,
@@ -111,6 +113,13 @@ export default function Comments({ setTrackLocation, page }){
         }
     }
 
+    const onImgLoad = (e) => {
+        setPhotoSize({
+            width: e.target.offsetWidth,
+            height: e.target.offsetHeight
+        });
+    }
+
     return(
         <Layout>
             <CommentsBackground>
@@ -151,7 +160,7 @@ export default function Comments({ setTrackLocation, page }){
                             </FormComments>
                         }
                         <div className={!photo.photoBase64 ? `none` : 'comments-item-img-preview-wrap'}>            
-                            <img className='comments-item-img-preview' src={photo.photoBase64} alt="" />
+                            <img onLoad={onImgLoad} className='comments-item-img-preview' src={photo.photoBase64} alt="" />
                             {!disabled && 
                                 <div onClick={() => setPhoto('')} className='comments-item-close-svg'>×</div>
                             }
@@ -165,7 +174,8 @@ export default function Comments({ setTrackLocation, page }){
                                         page={page}
                                         disabled={disabled}
                                         loading={loading}
-                                        comments={res} 
+                                        comments={res}
+                                        photoSize={res.photoSize} 
                                         setId={setId} 
                                         setEditText={setEditText} 
                                         setEditMode={setEditMode}

@@ -4,8 +4,8 @@ import deleteSvg from '../../png/trash.svg'
 import editSvg from '../../png/edit.svg'
 import PureModal from 'react-pure-modal';
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { commentDelete } from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { commentDelete, SET_IMAGE_LOAD_TRUE } from "../../redux/actions";
 import { gapi } from 'gapi-script';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Layout from '../styles/Layout';
@@ -13,19 +13,20 @@ import { CommentsPage } from '../styles/homestyles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import Skeleton from '@mui/material/Skeleton';
+import React from 'react';
 
-export default function SingleComment({page, comments, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled, loading }){
+export default function SingleComment({page, comments, photoSize, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled, loading }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [modal, setModal] = useState(false);
     const [commentText, setCommentText] = useState('');
-    const [imageLoad, setImageLoad] = useState(false);
-
+    
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
 
-    const matches = useMediaQuery('(min-width: 442px)');
+    const imageLoad = useSelector(state => state.appReducer.imageLoad);
+    const matches = useMediaQuery('(min-width: 460px)');
+    const mobileMatches = useMediaQuery('(min-width: 576px)');
     
     useEffect(() => {
         gapi.load('client:auth2', ()=>{
@@ -52,7 +53,7 @@ export default function SingleComment({page, comments, setId, setEditText, setEd
             dispatch(commentDelete(commentText, comments.id, setEditMode, setModal, page, navigate));
         }
     }
-
+    
     return (
         <Layout>
             <CommentsPage>
@@ -98,12 +99,41 @@ export default function SingleComment({page, comments, setId, setEditText, setEd
                         </div>
                         { comments.photo &&
                             <div className='single-comment-img'>
-                                <img 
-                                    style={{visibility: imageLoad ? "visible" : "hidden"}} 
-                                    onLoad={() => setImageLoad(true)} 
+                                <img style={{
+                                        display: imageLoad ? "block" : "none",
+                                        
+                                        height: `${
+                                            mobileMatches ? photoSize?.height*2.4 
+                                            : matches ? photoSize?.height*2
+                                            : photoSize?.height*1.2
+                                        }px`,
+                                        
+                                        width: `${
+                                            mobileMatches ? photoSize?.width*2.4 
+                                            : matches ? photoSize?.width*2
+                                            : photoSize?.width*1.2
+                                        }px`,
+                                    }} 
+                                    onLoad={() => dispatch({type: SET_IMAGE_LOAD_TRUE})} 
                                     src={comments.photo} 
                                     alt="" 
                                 />
+                                <div className='skeleton' style={{
+                                    display: imageLoad ? "none" : "block",
+
+                                    height: `${
+                                        mobileMatches ? photoSize?.height*2.4 
+                                        : matches ? photoSize?.height*2
+                                        : photoSize?.height*1.2
+                                    }px`,
+                                        
+                                    width: `${
+                                        mobileMatches ? photoSize?.width*2.4 
+                                        : matches ? photoSize?.width*2
+                                        : photoSize?.width*1.2
+                                    }px`,
+                                }}>
+                                </div>
                             </div>
                         }
                         <PureModal 
