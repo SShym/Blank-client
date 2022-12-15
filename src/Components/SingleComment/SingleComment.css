@@ -12,6 +12,7 @@
     align-items: center;
     padding: 8px 6px;
     margin: 6px 0px 0px 0px;
+    min-width: 150px;
     margin-right: 10px;
 }
 
