@@ -71,6 +71,7 @@ export default function Comments({ setTrackLocation, page }){
             e.preventDefault();
             dispatch(commentUpdate({ 
                 photo: editPhoto.photoBase64.length > 0 ? editPhoto : photo,
+                photoSize,
                 name: user?.result?.name, 
                 avatar: user?.result.avatar ? user?.result.avatar : user?.result.imageUrl,
                 setTextComment,
@@ -137,7 +138,7 @@ export default function Comments({ setTrackLocation, page }){
                                         <ImageSvg className='comments-item-select-img-svg' />
                                     </label>
                                     <div className={!editPhoto.photoBase64 ? `none` : 'comments-item-img-preview-wrap'}>
-                                        <img className='comments-item-img-preview' src={editPhoto.photoBase64} alt="" />
+                                        <img onLoad={onImgLoad} className='comments-item-img-preview' src={editPhoto.photoBase64} alt="" />
                                         {!disabled && 
                                             <div onClick={() => setEditPhoto({photoBase64: ''})} className='comments-item-close-svg'>×</div>
                                         }
