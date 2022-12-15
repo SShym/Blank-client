@@ -9,7 +9,6 @@
     border: 1px solid;
     font-size: 18px;
     border-radius: 8px;
-    min-width: 200px;
     align-items: center;
     padding: 8px 6px;
     margin: 6px 0px 0px 0px;
@@ -49,6 +48,7 @@
 }
 
 .single-comment-block-BtnAndText{
+  margin: 0px 0px 5px 0px;
   display: flex;
   align-items: center;
 }
@@ -88,12 +88,13 @@
 
 .single-comment-text{
   margin-left: 8px;
+  margin-right: 20px;
   word-break: normal;
   white-space: normal;
   overflow-wrap: anywhere;
   width: 100%;
   background: none;
-  padding: 7px 0px;
+  padding: 7px 5px;
 }
 
 .single-comment-changed-status-true, .single-comment-time-create{

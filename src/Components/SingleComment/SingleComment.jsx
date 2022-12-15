@@ -3,7 +3,7 @@ import 'react-pure-modal/dist/react-pure-modal.min.css';
 import deleteSvg from '../../png/trash.svg'
 import editSvg from '../../png/edit.svg'
 import PureModal from 'react-pure-modal';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { commentDelete, SET_IMAGE_LOAD_TRUE } from "../../redux/actions";
 import { gapi } from 'gapi-script';
@@ -53,7 +53,7 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
             dispatch(commentDelete(commentText, comments.id, setEditMode, setModal, page, navigate));
         }
     }
-    
+
     return (
         <Layout>
             <CommentsPage>
@@ -66,6 +66,12 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
                     </div>
                     <form className='single-comment'>
                         <div className='single-comment-block-BtnAndText'>
+                            <div className='single-comment-text'>
+                                <div className='single-comment-message' onChange={handleInput}>{commentText}</div>
+                                {comments.changed && <div className="single-comment-changed-status-true">изменено в {comments.timeChanged}</div>}
+                                {!comments.changed && <div className="single-comment-time-create">{comments.timeCreate}</div>}
+                                <input type='submit' hidden />
+                            </div>
                             { (user?.result?.googleId === comments?.creator || user?.result?._id === comments?.creator) && user != null &&
                             <div className='single-comment-buttons'>
                                 <div onClick={() => {
@@ -90,12 +96,6 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
                                 </div>
                             </div>
                             }
-                            <div className='single-comment-text'>
-                                <div onChange={handleInput}>{commentText}</div>
-                                {comments.changed && <div className="single-comment-changed-status-true">изменено в {comments.timeChanged}</div>}
-                                {!comments.changed && <div className="single-comment-time-create">{comments.timeCreate}</div>}
-                                <input type='submit' hidden />
-                            </div>
                         </div>
                         { comments.photo &&
                             <div className='single-comment-img'>
@@ -143,9 +143,9 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
                                 </div>
                             }
                             footer={
-                                <div>
+                                <div >
                                     { matches ?
-                                        <div style={{display:'flex', justifyContent:'space-around', textAlign:'center'}}>
+                                        <div style={{ display:'flex', justifyContent:'space-around', textAlign:'center' }}>
                                             <Button disabled={disabled} style={{fontFamily:'sans-serif', fontSize:'13px' }} onClick={()=>setModal(false)} variant="outlined">
                                                 cancel
                                             </Button>   
@@ -179,7 +179,7 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
                                     }
                                 </div>
                             }
-                            width={ matches ? '415px' : '325px' }
+                            width={ matches ? '415px' : '300px' }
                             isOpen={modal} 
                             onClose={() => {
                                 if(!disabled){
@@ -189,8 +189,8 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
                             }}
                             >
                             { matches ?
-                                <div style={{ fontFamily:'Georgia', letterSpacing:'0.3px', padding:'5px 0px' }}>Are you sure you want to delete the message?</div>
-                                : <div style={{ fontSize:'14px', fontFamily:'Georgia', letterSpacing:'0.3px', padding:'5px 0px' }}>Are you sure you want to delete the message?</div>
+                                <div style={{ textAlign:'center', fontFamily:'Georgia', letterSpacing:'0.3px', padding:'5px 0px' }}>Delete the message?</div>
+                                : <div style={{ textAlign:'center', fontSize:'14px', fontFamily:'Georgia', letterSpacing:'0.3px', padding:'5px 0px' }}>Delete the message?</div>
                             }
                         </PureModal>
                     </form>
