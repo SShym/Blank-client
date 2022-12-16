@@ -294,6 +294,46 @@ export const CommentsPage = styled.div`
     border: 1px solid black;
   }
 
+  .single-comment-avatar{
+    position: relative;
+  }
+
+  .single-comment-img{
+    position: relative;
+  }
+
+  .single-comment-img{
+    position: relative;
+  }
+
+  .single-comment-img img{
+    border-radius: 6px;
+  }
+
+  .single-comment-block-photo{
+    border-radius: 6px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.1)'};
+  }
+  
+  .single-comment-block{
+    position: absolute;
+    left: 0;
+    top: 14px;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    z-index: 1;
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.1)'};
+  }
+
   .single-comment{
     background-color: ${(props) => props.theme.theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(185, 185, 185, 0.7)'};
   }
@@ -310,6 +350,27 @@ export const CommentsPage = styled.div`
 export const IconAvatar = styled.div`
   background: black
 `;
+
+export const UserName = styled.div`
+  color: black;
+  margin-top: 10px;
+  font-size: 24px;
+`
+
+export const LightDrope = styled.div`
+  display: ${(props) => props.theme.theme === 'light' ? 'none' : 'block'};
+`
+
+export const UserNameAndAvatar = styled.div`
+  border: 1px solid gray;
+  border-radius: 10px;
+  background: ${(props) => props.theme.theme === 'light' ? 'rgb(222, 222, 222)' : 'rgb(0,90,90)'};
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 
 export const PageAuth = styled.div`
   .authpage-wrap {

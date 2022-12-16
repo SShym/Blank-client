@@ -17,6 +17,7 @@ export const SET_CHANGES_TRUE = 'SET_CHANGES_TRUE';
 export const SET_CHANGES_FALSE = 'SET_CHANGES_FALSE';
 export const SET_IMAGE_LOAD_FALSE = 'SET_IMAGE_LOAD_FALSE';
 export const SET_IMAGE_LOAD_TRUE = 'SET_IMAGE_LOAD_TRUE';
+export const SET_PROFILE = 'SET_PROFILE';
 
 const API = axios.create({ 
     // baseURL: 'http://localhost:5000/'
@@ -293,5 +294,17 @@ export const loadAuthData = ({ data }, setLoading) => async (dispatch) => {
         })
     } catch (error) {
       dispatch(errorOn(error.response.data.message));
+    }
+}
+
+export const getUserProfile = (id) => async (dispatch) => {
+    try {
+        await API.post(`/profile`, id).then((res) => {
+            console.log(res)
+            dispatch({ type: SET_PROFILE, data: res.data });
+        })
+    } catch (error) {
+        dispatch(errorOn(error.response.data.message));
+        console.log(error)
     }
 }

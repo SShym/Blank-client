@@ -1,12 +1,14 @@
 import { 
     AUTH,
     LOGOUT,
-    SET_AUTHDATA
+    SET_AUTHDATA,
+    SET_PROFILE
 } from './actions';
 
 
 const initialState = {
-    authData: null
+    authData: null,
+    profile: null
 }
 
 export const authReducer = (state = initialState, action) => {
@@ -33,6 +35,11 @@ export const authReducer = (state = initialState, action) => {
                 ...state,
                 authData: action.data, 
             };
+        case SET_PROFILE:
+            return {
+                ...state,
+                profile: action.data
+            }
         
         default:
             return state;

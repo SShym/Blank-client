@@ -8,6 +8,7 @@ import Comments from './Components/Comments/Comments';
 import AuthPage from './Components/AuthPage/AuthPage';
 import Settings from './Components/Settings/Settings';
 import EmailVerify from './Components/EmailVerify/EmailVerify';
+import Profile from './Components/Profile/Profile'
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 function useQuery() { return new URLSearchParams(useLocation().search) }
@@ -60,6 +61,7 @@ function App() {
           <Route path="/:id/verify/:token" element={<EmailVerify />} />
           <Route path='/' element={<Navigate to={'/comments'} />} />
           <Route path='/comments' element={<Comments page={page} setTrackLocation={setTrackLocation} />} />
+          <Route path='/profile/:id' element={<Profile />} />
           <Route path='/settings' element={<Settings />} />
         </Routes>
       </div>

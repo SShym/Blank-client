@@ -54,15 +54,20 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
         }
     }
 
+    const redirectToProfile = () => navigate(`/profile/${comments.id}`);
+
     return (
         <Layout>
             <CommentsPage>
                 <div className='single-comment-wrap'>
-                    <div>
-                        {!comments.avatar 
-                            ? <div className='single-comment-without-profileImg'>{comments.name.charAt(0)}</div>  
-                            : <img className='single-comment-profile-img' src={comments.avatar} alt="" />
-                        }
+                    <div style={{ cursor:'pointer' }} className="single-comment-avatar" onClick={redirectToProfile}>
+                        <div>
+                            {!comments.avatar 
+                                ? <div className='single-comment-without-profileImg'>{comments.name.charAt(0)}</div>  
+                                : <img className='single-comment-profile-img' src={comments.avatar} alt="" />
+                            }
+                        </div>
+                        <div className='single-comment-block'></div>
                     </div>
                     <form className='single-comment'>
                         <div className='single-comment-block-BtnAndText'>
@@ -118,6 +123,7 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
                                     src={comments.photo} 
                                     alt="" 
                                 />
+                                <div className='single-comment-block-photo'></div>
                                 <div className='skeleton' style={{
                                     display: imageLoad ? "none" : "block",
 
