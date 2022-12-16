@@ -76,24 +76,8 @@ export function commentCreate({comments, page, comment, photo, photoSize, name, 
                 'Content-Type': 'multipart/form-data'
             }
         })
-        .then((res) => {
-            if(comments.length > 4){
-                dispatch(commentsLoad(page))
-            } else {
-                dispatch({
-                    type: COMMENT_CREATE,
-                    data: {
-                        name,
-                        avatar,
-                        comment, 
-                        photo: photo.photoBase64,
-                        photoSize: photoSize, 
-                        changed: false, 
-                        timeCreate: date, 
-                        id: res.data._id,
-                    }
-                });
-            }
+        .then(() => {
+            dispatch(commentsLoad(page))
             setPhoto({ photoBase64: '', file: null });
             setTextComment('');
             setEditText('');
@@ -220,6 +204,21 @@ export const signup = (formData, navigate, setVerifyStatus) => async (dispatch) 
     }
 };
 
+export const googleAuth = (formData, navigate) => async (dispatch) => {
+    try {
+      dispatch({ type: SET_DISABLED_TRUE })
+      await API.post('/googleAuth', formData).then(() => {
+        dispatch({ type: AUTH, data: formData });
+        navigate('/comments?page=1');
+        dispatch(errorOff());
+        dispatch({ type: SET_DISABLED_FALSE });
+      })
+    } catch (error) {
+      dispatch(errorOn(error.response.data.message));
+      dispatch({ type: SET_DISABLED_FALSE });
+    }
+};
+
 export const verifyMail = (formData, setVerifyStatus) => async (dispatch) => {
     try {
         await API.post('/resend-verification', formData).then(() => {
@@ -300,7 +299,6 @@ export const loadAuthData = ({ data }, setLoading) => async (dispatch) => {
 export const getUserProfile = (id) => async (dispatch) => {
     try {
         await API.post(`/profile`, id).then((res) => {
-            console.log(res)
             dispatch({ type: SET_PROFILE, data: res.data });
         })
     } catch (error) {

@@ -53,8 +53,7 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
             dispatch(commentDelete(commentText, comments.id, setEditMode, setModal, page, navigate));
         }
     }
-
-    const redirectToProfile = () => navigate(`/profile/${comments.id}`);
+    const redirectToProfile = () => navigate(`/profile/${comments.creator}`);
 
     return (
         <Layout>

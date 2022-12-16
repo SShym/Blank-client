@@ -363,13 +363,14 @@ export const LightDrope = styled.div`
 
 export const UserNameAndAvatar = styled.div`
   border: 1px solid gray;
-  border-radius: 10px;
   background: ${(props) => props.theme.theme === 'light' ? 'rgb(222, 222, 222)' : 'rgb(0,90,90)'};
-  padding: 25px;
+  padding: 5px;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 30px;
 `
 
 export const PageAuth = styled.div`

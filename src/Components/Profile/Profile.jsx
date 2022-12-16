@@ -27,7 +27,7 @@ const Profile = () => {
                             <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
                         </ul>
                     </LightDrope>
-                    <UserNameAndAvatar className={x.profileAvatarName}>
+                    <UserNameAndAvatar>
                         <Avatar sx={{width:200, height:200, border: '1px solid gray'}} src={profile?.userAvatar} />
                         <UserName>{profile?.userName}</UserName>
                     </UserNameAndAvatar>

@@ -45,6 +45,7 @@ export const commentReducer = (state = initialState, action) => {
             
         case COMMENTS_LOAD:
             const commentsNew = action.data.data.map(res => {
+
                 return{
                     comment: res.comment,
                     id: res._id,

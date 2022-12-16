@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import Icon from './icon';
 import successSvg from '../../png/success.svg';
-import { signin, signup, AUTH, errorOff } from '../../redux/actions';
+import { signin, signup, AUTH, errorOff, googleAuth } from '../../redux/actions';
 import useStyles from './styles';
 import Input from './Input';
 import Layout from '../styles/Layout';
@@ -61,9 +61,13 @@ const SignUp = () => {
     const result = res?.profileObj;
     const token = res?.tokenId;
 
+    const formData = {
+      result: result,
+      token: token
+    }
+    
     try {
-      dispatch({ type: AUTH, data: { result, token } });
-      navigate('/comments?page=1');
+      dispatch(googleAuth(formData, navigate));
     } catch (error) {
       console.log(error);
     }
