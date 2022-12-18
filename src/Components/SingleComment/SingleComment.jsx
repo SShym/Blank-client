@@ -118,7 +118,7 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
                                             : photoSize?.width*1.2
                                         }px`,
                                     }} 
-                                    onLoad={() => dispatch({type: SET_IMAGE_LOAD_TRUE})} 
+                                    onLoad={() => dispatch({ type: SET_IMAGE_LOAD_TRUE })} 
                                     src={comments.photo} 
                                     alt="" 
                                 />

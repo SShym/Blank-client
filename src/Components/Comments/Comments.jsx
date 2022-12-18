@@ -49,6 +49,7 @@ export default function Comments({ setTrackLocation, page }){
     const handleSubmit = (e) => {
         if(textComment.length >= 1){
             e.preventDefault();
+
             dispatch(commentCreate({
                 comment: textComment, 
                 photo: photo, 
@@ -79,6 +80,7 @@ export default function Comments({ setTrackLocation, page }){
                 setPhoto,
                 setEditPhoto,
                 setEditMode,
+                page
             }, editText, id,
             ));
         } else {

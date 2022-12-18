@@ -66,7 +66,8 @@ const style = {
 const initialState = { 
     firstName: '', 
     lastName: '', 
-    imageUrl: '', 
+    imageUrl: '',
+    photo: null,
 };
 
 const Settings = () => {
@@ -118,16 +119,19 @@ const Settings = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         const formData = {
             token: user.token,
             id: user.result._id,
-            imageUrl: form.imageUrl, 
+            photo: form.photo,
             firstName: form.firstName,
             lastName: form.lastName,
         }
 
-        dispatch(changeSettings(formData))
+        dispatch(changeSettings(formData));
     };
+
+    const formData = { id: user.result._id };
 
     const handleDeleteProfile = () => {
         dispatch(deleteSchema(formData, navigate))
@@ -142,15 +146,13 @@ const Settings = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setForm({...form, imageUrl: reader.result});
+            setForm({...form, imageUrl: reader.result, photo: file});
         }
     }
 
     const handleDeleteAvatar = () => {
         !disabled && setForm({...form, imageUrl: null});
     }
-
-    const formData = { id: user.result._id };
     
     useEffect(()=>{
         const page = localStorage.getItem('settings-page');
@@ -313,7 +315,7 @@ const Settings = () => {
                                                 <div className={(disabled || loading) ? 'settings-delete-avatar-loading' : 'settings-delete-avatar'} onClick={handleDeleteAvatar}>
                                                     <div>delete</div>
                                                 </div>
-                                                <input disabled={disabled || loading} onChange={handleOnChange} name="imageUrl" id="file" className='comments-item-select-img' type="file" multiple />
+                                                <input disabled={disabled || loading} onChange={handleOnChange} name="photo" id="file" className='comments-item-select-img' type="file" />
                                             </div>
                                             <div className='change-user-settings-two'>
                                                 <div className='change-user-settings-two-box'>

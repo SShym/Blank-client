@@ -59,14 +59,14 @@ export function errorOff(){
     }
 }
 
-export function commentCreate({comments, page, comment, photo, photoSize, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){
+export function commentCreate({comments, page, comment, photo, photoSize, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){ 
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
         API.post(`/comments/`, { 
             comment, 
             photo: photo.file || photo.photoBase64,
-            photoSize: photoSize,
+            photoSize,
             name, avatar, 
             changed: false, 
             timeCreate: date, 
@@ -76,8 +76,25 @@ export function commentCreate({comments, page, comment, photo, photoSize, name, 
                 'Content-Type': 'multipart/form-data'
             }
         })
-        .then(() => {
-            dispatch(commentsLoad(page))
+        .then((res) => {
+            if(comments.length === 5){
+                dispatch(commentsLoad(page))
+            } else {
+                dispatch({
+                    type: COMMENT_CREATE,
+                    data: {
+                        name,
+                        creator: res.data.creator,
+                        avatar,
+                        comment, 
+                        photo: photo.photoBase64,
+                        photoSize: photoSize, 
+                        changed: false, 
+                        timeCreate: date, 
+                        id: res.data._id,
+                    }
+                });
+            }
             setPhoto({ photoBase64: '', file: null });
             setTextComment('');
             setEditText('');
@@ -90,11 +107,32 @@ export function commentCreate({comments, page, comment, photo, photoSize, name, 
     }
 }
 
+export const changeSettings = (formData) => async (dispatch) => {
+    try {
+        dispatch({ type: SET_DISABLED_TRUE });
+        await API.put('/change-settings', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((res) => {
+            dispatch({ type: AUTH, data: {
+                result: res.data.user,
+                token: res.data.token
+            }});
+            dispatch({ type: SET_CHANGES_TRUE });
+            dispatch({ type: SET_DISABLED_FALSE });
+        })
+    } catch (error) {
+      dispatch(errorOn(error.response.data.message));
+      dispatch({ type: SET_DISABLED_FALSE });
+    }
+};
+
 export function commentUpdate({photo, photoSize, name, avatar, setTextComment, setEditText, setPhoto, setEditPhoto, setEditMode}, comment, id){
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
-        API.put(`/comments/${id}`, { 
+        await API.put(`/comments/${id}`, { 
             name, 
             avatar, 
             comment, 
@@ -112,7 +150,8 @@ export function commentUpdate({photo, photoSize, name, avatar, setTextComment, s
                 type: COMMENT_UPDATE,
                 data: {
                     name,
-                    avatar, 
+                    avatar,
+                    creator: res.data.creator, 
                     comment, 
                     id, 
                     photo: photo.photoBase64 || '', 
@@ -137,7 +176,7 @@ export function commentUpdate({photo, photoSize, name, avatar, setTextComment, s
 export function commentDelete(comment, id, setEditMode, setModal, page, navigate){ 
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE });
-        API.get(`/comments/${page}`).then((res) => {
+        await API.get(`/comments/${page}`).then((res) => {
             API.delete(`/comments/${id}`).then((res) => {
                 dispatch({ type: COMMENT_DELETE, data: { comment, id} });
                 setEditMode(false);
@@ -262,23 +301,6 @@ export const deleteSchema = (formData, navigate) => async (dispatch) => {
         })
     } catch (error) {
       dispatch(errorOn(error.response.data.message));
-    }
-};
-
-export const changeSettings = (formData) => async (dispatch) => {
-    try {
-        dispatch({ type: SET_DISABLED_TRUE });
-        await API.put('/change-settings', formData).then((res) => {
-            dispatch({ type: AUTH, data: {
-                result: res.data.user,
-                token: res.data.token
-            }});
-            dispatch({ type: SET_CHANGES_TRUE });
-            dispatch({ type: SET_DISABLED_FALSE });
-        })
-    } catch (error) {
-      dispatch(errorOn(error.response.data.message));
-      dispatch({ type: SET_DISABLED_FALSE });
     }
 };
 
