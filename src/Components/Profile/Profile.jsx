@@ -21,14 +21,14 @@ const Profile = () => {
     return(
         <Layout>
             <CommentsBackground>
+                <LightDrope>
+                    <ul className={x.lightrope}>
+                        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+                    </ul>
+                </LightDrope>
                 <div style={{display: profile ? 'flex' : 'none', userSelect:'none'}} className={x.profile}>
-                    <LightDrope>
-                        <ul className={x.lightrope}>
-                            <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
-                        </ul>
-                    </LightDrope>
                     <UserNameAndAvatar>
-                        <Avatar sx={{width:200, height:200, border: '1px solid gray'}} src={profile?.userAvatar} />
+                        <Avatar sx={{width:160, height:160, border: '1px solid gray'}} src={profile?.userAvatar} />
                         <UserName>{profile?.userName}</UserName>
                     </UserNameAndAvatar>
                 </div>

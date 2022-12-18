@@ -1,0 +1,85 @@
+.modal {
+    opacity: 0;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Overlay effect: translucent background: black w/ partial opacity */
+    z-index: 1; /* Overlay effect: positioned over other containers */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    position: fixed; /* Fix position on the top-left corner*/
+    top: 0;
+    left: 0;
+    overflow: auto; /* Enable scroll if needed */
+    transition: all 0.35s;
+    pointer-events: none;
+}
+
+@media (min-width: 576px) {
+  .modal{
+    padding-top: 80px; /* Location of the content container */
+  }
+}
+
+.modal.active{
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modalContent {
+    animation-fill-mode: both;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    transform: scale(1) translate(0, -200%);
+    max-width: 640px; /* Max width where it stops expanding */
+    height: 300px; /* Height in proportion to its parent container */
+    width: 300px;
+    margin: auto; /* Auto margin according to the element width */
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px; /* Optional. Rounds container corners */
+    transition: all 0.35s;
+
+}
+
+.modalContent.active{
+  transform: scale(1) translate(0, 50%);
+}
+
+.svg{
+    fill: rgb(255, 77, 77);
+    width: 100px;
+    height: 100px;
+}
+
+.sure{
+    margin-top: 20px;
+    font-size: 22px;
+    color: rgb(70, 70, 70);
+}
+
+.text{
+    text-align: center;
+    color: rgb(182, 182, 182);
+    margin: 15px 5px 25px 5px;
+    font-size: 12px;
+}
+ 
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 6px 12px;
+    color: #aaaaaa;
+    float: right; /* Positioned to the right of the parent container whichever size it is */
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.close:hover, 
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}

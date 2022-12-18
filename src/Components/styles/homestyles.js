@@ -365,7 +365,7 @@ export const UserNameAndAvatar = styled.div`
   border: 1px solid gray;
   background: ${(props) => props.theme.theme === 'light' ? 'rgb(222, 222, 222)' : 'rgb(0,90,90)'};
   padding: 5px;
-  border-radius: 15px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;

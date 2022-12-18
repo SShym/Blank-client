@@ -2,7 +2,7 @@
   "name": "mini-messenger",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://sqmr.onrender.com/",
+  "proxy": "http://localhost:5000/",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -36,7 +36,6 @@
     "react-google-login": "^5.2.2",
     "react-loader-spinner": "^4.0.0",
     "react-paginate": "^8.1.4",
-    "react-pure-modal": "^2.2.0",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.3",
     "react-scripts": "4.0.3",

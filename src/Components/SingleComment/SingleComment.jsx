@@ -1,9 +1,7 @@
 import '../SingleComment/SingleComment.css'
-import 'react-pure-modal/dist/react-pure-modal.min.css';
 import deleteSvg from '../../png/trash.svg'
 import editSvg from '../../png/edit.svg'
-import PureModal from 'react-pure-modal';
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { commentDelete, SET_IMAGE_LOAD_TRUE } from "../../redux/actions";
 import { gapi } from 'gapi-script';
@@ -11,9 +9,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Layout from '../styles/Layout';
 import { CommentsPage } from '../styles/homestyles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
 import React from 'react';
+import Modal from '../Modal/Modal';
 
 export default function SingleComment({page, comments, photoSize, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled, loading }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -53,6 +50,7 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
             dispatch(commentDelete(commentText, comments.id, setEditMode, setModal, page, navigate));
         }
     }
+
     const redirectToProfile = () => navigate(`/profile/${comments.creator}`);
 
     return (
@@ -141,63 +139,13 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
                                 </div>
                             </div>
                         }
-                        <PureModal 
-                            header={
-                                <div style={{textAlign:'center'}}>
-                                    Сonfirmation
-                                </div>
-                            }
-                            footer={
-                                <div >
-                                    { matches ?
-                                        <div style={{ display:'flex', justifyContent:'space-around', textAlign:'center' }}>
-                                            <Button disabled={disabled} style={{fontFamily:'sans-serif', fontSize:'13px' }} onClick={()=>setModal(false)} variant="outlined">
-                                                cancel
-                                            </Button>   
-                                            {disabled ?
-                                                <Button style={{fontFamily:'sans-serif', fontSize:'12px' }} onClick={handleDelete} variant="outlined">
-                                                    <CircularProgress sx={{ display:'flex', flexDirection:'column', justifyContent:'center', mr: 1}} size={15} />
-                                                    delete
-                                                </Button> 
-                                                :
-                                                <Button style={{fontFamily:'sans-serif', fontSize:'13px' }} onClick={handleDelete} variant="outlined">
-                                                    delete
-                                                </Button>   
-                                            }
-                                        </div>
-                                    :
-                                        <div style={{display:'flex', justifyContent:'space-around', textAlign:'center'}}>
-                                            <Button disabled={disabled} style={{fontFamily:'sans-serif', fontSize:'10px' }} onClick={()=>setModal(false)} variant="outlined">
-                                                cancel
-                                            </Button>   
-                                            {disabled ?
-                                                <Button style={{fontFamily:'sans-serif', fontSize:'10px' }} onClick={handleDelete} variant="outlined">
-                                                    <CircularProgress sx={{ display:'flex', flexDirection:'column', justifyContent:'center', mr: 1}} size={15} />
-                                                    delete
-                                                </Button> 
-                                                :
-                                                <Button style={{fontFamily:'sans-serif', fontSize:'10px' }} onClick={handleDelete} variant="outlined">
-                                                    delete
-                                                </Button>   
-                                            }
-                                        </div>
-                                    }
-                                </div>
-                            }
-                            width={ matches ? '415px' : '300px' }
-                            isOpen={modal} 
-                            onClose={() => {
-                                if(!disabled){
-                                    setModal(false);
-                                    return true;
-                                }
-                            }}
-                            >
-                            { matches ?
-                                <div style={{ textAlign:'center', fontFamily:'Georgia', letterSpacing:'0.3px', padding:'5px 0px' }}>Delete the message?</div>
-                                : <div style={{ textAlign:'center', fontSize:'14px', fontFamily:'Georgia', letterSpacing:'0.3px', padding:'5px 0px' }}>Delete the message?</div>
-                            }
-                        </PureModal>
+                        <Modal 
+                            modal={modal} 
+                            setModal={setModal} 
+                            matches={matches}
+                            disabled={disabled}
+                            handleDelete={handleDelete}
+                        />
                     </form>
                 </div>
             </CommentsPage>
