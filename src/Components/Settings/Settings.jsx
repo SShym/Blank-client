@@ -78,8 +78,8 @@ const Settings = () => {
     const [color,  setColor] = useState(false);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [one, setOne] = useState({ status: true, className: 'pick' });
-    const [two, setTwo] = useState({ status: false, className: '' }); 
+    const [one, setOne] = useState({ status: false, className: '' });
+    const [two, setTwo] = useState({ status: true, className: 'pick' }); 
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -108,12 +108,15 @@ const Settings = () => {
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value.length > 0 ? e.target.value : '' });
     }
+
+    console.log(form)
     
     useEffect(()=>{
         !user.result.googleId && setForm(authData ? { ...form, 
             firstName: authData?.result.name.split(' ')[0],
             lastName: authData?.result.name.split(' ')[1],
-            imageUrl: authData?.result.avatar
+            imageUrl: authData?.result.avatar,
+            photo: authData?.result.avatar,
         } : {...form});
     }, [authData]); // eslint-disable-line
 
@@ -151,7 +154,7 @@ const Settings = () => {
     }
 
     const handleDeleteAvatar = () => {
-        !disabled && setForm({...form, imageUrl: null});
+        !disabled && setForm({...form, imageUrl: null, photo: null});
     }
     
     useEffect(()=>{
