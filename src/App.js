@@ -34,10 +34,9 @@ function App() {
     if(location.pathname === '/comments' && trackLocation){
       dispatch(commentsLoad(page));
       localStorage.setItem('page', page);
+      localStorage.removeItem('settings-page');
     }
   }, [page, trackLocation]); // eslint-disable-line
-
-  useEffect(() => localStorage.removeItem('settings-page'), []);
 
   useEffect(() => {
     if(location.pathname === '/comments' && changes){

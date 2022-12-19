@@ -87,7 +87,7 @@ const Navbar = () => {
                   <Tooltip title="Account settings" PopperProps={{modifiers: [{name: "offset", options: {offset: [2, -12]}}]}}>
                     <Typography sx={{ fontSize:'17px', marginLeft:'15px', userSelect:'none' }}>
                       {authData ? authData.result.name.split(' ')[0] : user.result.name.split(' ')[0]}
-                        <IconButton>
+                        <IconButton style={{position:'relative'}}>
                           {user.result.googleId ?
                             <Avatar className='navAvatar' src={user.result.imageUrl} sx={{ width: 30, height: 30 }}></Avatar>
                             :
@@ -95,6 +95,7 @@ const Navbar = () => {
                               {authData ? authData?.result?.name.charAt(0) : user.result.name.charAt(0)}
                             </Avatar>
                           }
+                          <div className='block-navbar'></div>
                         </IconButton>
                     </Typography>
                   </Tooltip>

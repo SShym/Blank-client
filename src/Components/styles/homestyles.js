@@ -108,6 +108,15 @@ export const NavbarBlockUser = styled.div`
     background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 100, 100)'};
     color: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(199, 199, 199)'};
   }
+
+  .block-navbar{
+    transition: all 0.5s;
+    position: absolute;
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.2)'};
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
 `;
 
 export const NavbarLogo = styled.div`
@@ -183,6 +192,19 @@ export const CommentsBackground = styled.div`
 
   .comments-item-close-svg{
     color: ${(props) => props.theme.theme === 'light' ? 'black' : 'rgba(125, 125, 124 , 1)'};
+  }
+
+  .comments-block-black{
+    pointer-events: none;
+    transition: all 0.5s;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.2)'};
   }
 `;
 
@@ -274,6 +296,30 @@ export const SettingsRightBlock = styled.div`
     }
   }
 
+  .settings-block-black{
+    pointer-events: none;
+    transition: all 0.5s;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.2)'};
+  }
+
+  .settings-block-avatar-black{
+    transition: background 0.5s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    z-index: 1;
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.2)'};
+  }
 `;
 
 export const FormComments = styled.div`
@@ -302,27 +348,37 @@ export const CommentsPage = styled.div`
     position: relative;
   }
 
-  .single-comment-img{
-    position: relative;
-  }
-
-  .single-comment-img img{
-    border-radius: 6px;
-  }
-
   .single-comment-block-photo{
-    border-radius: 6px;
+    transition: all 0.5s;
     position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
     z-index: 1;
-    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.1)'};
+
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.2)'};
+  }
+  
+  @media(max-width: 460px){
+    .single-comment-block-photo{
+      width: ${(props) => props.photoSize.width*1.2}px;
+      height: ${(props) => props.photoSize.height*1.2}px;
+    }
+  }
+
+  @media(min-width: 460px) and (max-width: 576px){
+    .single-comment-block-photo{
+      width: ${(props) => props.photoSize.width*2}px;
+      height: ${(props) => props.photoSize.height*2}px;
+    }
+  }
+
+  @media(min-width: 576px){
+    .single-comment-block-photo{
+      width: ${(props) => props.photoSize.width*2.4}px;
+      height: ${(props) => props.photoSize.height*2.4}px;
+    }
   }
   
   .single-comment-block{
+    transition: all 0.5s;
     position: absolute;
     left: 0;
     top: 14px;
@@ -331,7 +387,7 @@ export const CommentsPage = styled.div`
     height: 40px;
     border-radius: 50%;
     z-index: 1;
-    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.1)'};
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.2)'};
   }
 
   .single-comment{

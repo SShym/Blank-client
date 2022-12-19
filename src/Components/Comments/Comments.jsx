@@ -140,7 +140,10 @@ export default function Comments({ setTrackLocation, page }){
                                         <ImageSvg className='comments-item-select-img-svg' />
                                     </label>
                                     <div className={!editPhoto.photoBase64 ? `none` : 'comments-item-img-preview-wrap'}>
-                                        <img onLoad={onImgLoad} className='comments-item-img-preview' src={editPhoto.photoBase64} alt="" />
+                                        <div style={{ position:'relative', display:'flex' }}>         
+                                            <img onLoad={onImgLoad} className='comments-item-img-preview' src={editPhoto.photoBase64} alt="" />
+                                            <div className='comments-block-black'></div>
+                                        </div>
                                         {!disabled && 
                                             <div onClick={() => setEditPhoto({photoBase64: ''})} className='comments-item-close-svg'>×</div>
                                         }
@@ -162,8 +165,11 @@ export default function Comments({ setTrackLocation, page }){
                                 </form>
                             </FormComments>
                         }
-                        <div className={!photo.photoBase64 ? `none` : 'comments-item-img-preview-wrap'}>            
-                            <img onLoad={onImgLoad} className='comments-item-img-preview' src={photo.photoBase64} alt="" />
+                        <div className={!photo.photoBase64 ? `none` : 'comments-item-img-preview-wrap'}>  
+                            <div style={{ position:'relative', display:'flex' }}>         
+                                <img onLoad={onImgLoad} className='comments-item-img-preview' src={photo.photoBase64} alt="" />
+                                <div className='comments-block-black'></div>
+                            </div> 
                             {!disabled && 
                                 <div onClick={() => setPhoto('')} className='comments-item-close-svg'>×</div>
                             }

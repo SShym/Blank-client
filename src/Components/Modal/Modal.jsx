@@ -6,13 +6,8 @@ import { createTheme } from '@mui/material/styles';
 
 
 const Modal = ({ modal, setModal, matches, disabled, handleDelete }) => {
-    console.log(modal)
-
-    const closeModal = (e) => {
-        // e.stopPropagation();
-        setModal(false);
-    }
-
+    const closeModal = (e) => setModal(false);
+    
     const red = createTheme({
         palette: {
           primary: {

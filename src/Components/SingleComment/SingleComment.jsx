@@ -55,7 +55,7 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
 
     return (
         <Layout>
-            <CommentsPage>
+            <CommentsPage photoSize={photoSize}>
                 <div className='single-comment-wrap'>
                     <div style={{ cursor:'pointer' }} className="single-comment-avatar" onClick={redirectToProfile}>
                         <div>

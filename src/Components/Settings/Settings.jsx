@@ -78,8 +78,8 @@ const Settings = () => {
     const [color,  setColor] = useState(false);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [one, setOne] = useState({ status: false, className: '' });
-    const [two, setTwo] = useState({ status: true, className: 'pick' }); 
+    const [one, setOne] = useState({ status: true, className: 'pick' });
+    const [two, setTwo] = useState({ status: false, className: '' }); 
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -108,8 +108,6 @@ const Settings = () => {
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value.length > 0 ? e.target.value : '' });
     }
-
-    console.log(form)
     
     useEffect(()=>{
         !user.result.googleId && setForm(authData ? { ...form, 
@@ -166,9 +164,7 @@ const Settings = () => {
         } else if(page === 'settings'){
             setOne({satus: false, className: ''})
             setTwo({status: true, className: 'pick'}); 
-        } else {
-
-        }
+        } 
         return () => localStorage.removeItem('settings-page');
     }, [])
     
@@ -195,19 +191,20 @@ const Settings = () => {
                             <div className='settings-block-two-general'>
                                 <div className='settings-block-two-general-one'>
                                     { user.result.imageUrl ?
-                                        <div>
+                                        <div style={{ display:'inline-flex', position:'relative' }}>
                                             { user.result.imageUrl ?
                                                 <img className='settings-avatar' src={user.result.imageUrl} alt="" /> :
                                                 <img className='settings-avatar' src={profile} alt="" />
                                             }
+                                            <div className='settings-block-avatar-black'></div>
                                         </div>
                                         :
-                                        <div style={{
-                                            display:'flex',
-                                            justifyContent:'center',
-                                            marginBottom:'5px'
+                                        <div style={{ 
+                                            display:'inline-block', 
+                                            position:'relative',
                                         }}>
                                             <Avatar className='accountAvatar'src={authData ? authData?.result?.avatar : user.result.avatar}></Avatar>
+                                            <div className='settings-block-avatar-black'></div>
                                         </div>
                                     }
                                     <div className='settings-block-user-name'>{authData ? authData.result.name : user.result.name}</div>
@@ -307,6 +304,7 @@ const Settings = () => {
                                                             }
                                                             alt="" 
                                                         />
+                                                        <div className='settings-block-black'></div>
                                                     </div>
                                                     <label for="file">
                                                         <div className='block'>
