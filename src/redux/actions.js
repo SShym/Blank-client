@@ -20,8 +20,8 @@ export const SET_IMAGE_LOAD_TRUE = 'SET_IMAGE_LOAD_TRUE';
 export const SET_PROFILE = 'SET_PROFILE';
 
 const API = axios.create({ 
-    // baseURL: 'http://localhost:5000/'
-    baseURL: 'https://sqmr.onrender.com/'
+    baseURL: 'http://localhost:5000/'
+    // baseURL: 'https://sqmr.onrender.com/'
 });
 
 API.interceptors.request.use((req) => {
