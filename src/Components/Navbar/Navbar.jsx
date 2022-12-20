@@ -3,7 +3,7 @@ import { Button} from '@material-ui/core';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { errorOff, LOGOUT } from '../../redux/actions';
+import { errorOff, LOGOUT, loadAuthData } from '../../redux/actions';
 import { gapi } from 'gapi-script';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -20,7 +20,7 @@ import { NavbarBlock, NavbarBlockUser, NavbarLogo } from "../styles/homestyles";
 import { ReactComponent as HomeSvg } from '../../png/home.svg';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const Navbar = () => {
+const Navbar = ({ socket }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const [anchorEl, setAnchorEl] = useState(null);
   
@@ -32,6 +32,16 @@ const Navbar = () => {
   const loading = useSelector(state => state.appReducer.loading);
   const error = useSelector(state => state.appReducer.error);
   const authData = useSelector(state => state.authReducer.authData);
+
+  useEffect(() => {
+    (user && !user.result.googleId) && dispatch(loadAuthData({
+        socket,
+        data: {
+            id: user.result._id, 
+            token: user.token
+        }
+    }));
+  }, []); //eslint-disable-line 
 
   const matches = useMediaQuery('(max-width: 576px)');
   

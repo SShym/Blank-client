@@ -71,6 +71,7 @@ export default function Comments({ socket, setTrackLocation, page }){
         if(editText.length >= 1){
             e.preventDefault();
             dispatch(commentUpdate({ 
+                socket,
                 photo: editPhoto.photoBase64.length > 0 ? editPhoto : photo,
                 photoSize,
                 name: user?.result?.name, 

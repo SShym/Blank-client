@@ -76,7 +76,7 @@ export function commentCreate({socket, page, comment, photo, photoSize, name, av
                 'Content-Type': 'multipart/form-data'
             }
         })
-        .then((res) => {
+        .then(() => {
             dispatch(commentsLoad(socket, page)) 
             setPhoto({ photoBase64: '', file: null });
             setTextComment('');
@@ -90,18 +90,22 @@ export function commentCreate({socket, page, comment, photo, photoSize, name, av
     }
 }
 
-export const changeSettings = (formData) => async (dispatch) => {
+export const changeSettings = (formData, socket, page) => async (dispatch) => {
     try {
         dispatch({ type: SET_DISABLED_TRUE });
         await API.put('/change-settings', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        }).then((res) => {
-            dispatch({ type: AUTH, data: {
-                result: res.data.user,
-                token: res.data.token
-            }});
+        }).then(() => {
+            dispatch(commentsLoad(socket, page));
+            socket.emit('profile:get', formData.id);
+            socket.on('profile', (profile) => { 
+                dispatch({ type: AUTH, data: {
+                    result: profile,
+                    token: formData.token
+                }});
+            })
             dispatch({ type: SET_CHANGES_TRUE });
             dispatch({ type: SET_DISABLED_FALSE });
         })
@@ -111,7 +115,27 @@ export const changeSettings = (formData) => async (dispatch) => {
     }
 };
 
-export function commentUpdate({photo, photoSize, name, avatar, setTextComment, setEditText, setPhoto, setEditPhoto, setEditMode}, comment, id){
+export const loadAuthData = ({ socket, data }, setLoading) => async (dispatch) => {
+    try {
+        await API.post(`/account`, data).then((res) => {
+            setLoading && setLoading(false);
+            socket.emit('profile:get', data.id);
+            socket.on('profile', (profile) => { 
+                dispatch({
+                    type: SET_AUTHDATA,
+                    data: {
+                        result: profile,
+                        token: data.token
+                    }
+                });
+            })
+        })
+    } catch (error) {
+      dispatch(errorOn(error.response.data.message));
+    }
+}
+
+export function commentUpdate({socket, photo, page, photoSize, name, avatar, setTextComment, setEditText, setPhoto, setEditPhoto, setEditMode}, comment, id){
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
@@ -129,6 +153,7 @@ export function commentUpdate({photo, photoSize, name, avatar, setTextComment, s
             }
         })
         .then((res) => {
+            dispatch(commentsLoad(socket, page))
             dispatch({
                 type: COMMENT_UPDATE,
                 data: {
@@ -143,6 +168,7 @@ export function commentUpdate({photo, photoSize, name, avatar, setTextComment, s
                     timeChanged: date
                 } 
             });
+            
             setTextComment('');
             setEditText('');
             setPhoto({ photoBase64: '', file: null });
@@ -159,14 +185,14 @@ export function commentUpdate({photo, photoSize, name, avatar, setTextComment, s
 export function commentDelete(socket, comment, id, setEditMode, setModal, page, navigate){ 
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE });
-        await API.get(`/comments/${page}`).then((res) => {
-            API.delete(`/comments/${id}`).then((res) => {
+        await API.get(`/comments-length/${page}`).then((res) => {
+            API.delete(`/comments/${id}`).then(() => {
                 dispatch({ type: COMMENT_DELETE, data: { comment, id} });
                 setEditMode(false);
                 setModal(false);
             }).then(() => {
-                if(page > 1 && res.data.data.length === 1){
-                    dispatch(commentsLoad(socket, (Number(page) - 1))) 
+                if(page > 1 && res.data.dataLength === 1){
+                    dispatch(commentsLoad(socket, page));
                     navigate(`?page=${Number(page) - 1}`);
                 } else {
                     dispatch(commentsLoad(socket, page))
@@ -184,8 +210,7 @@ export function commentsLoad(socket, page){
     return async dispatch => {
         try{
             dispatch(loaderOn());
-            await API.get(`/comments/${page}`).then((res) => {
-                console.log(res)
+            // await API.get(`/comments/${page}`).then((res) => {
                 socket.on('comments', (messages) => { 
                     dispatch({ type: COMMENTS_LOAD, data: messages });
                     dispatch(errorOff());
@@ -193,7 +218,7 @@ export function commentsLoad(socket, page){
                     dispatch({type: SET_CHANGES_FALSE});
                 })
                 socket.emit('comment:get', page);
-            })
+            // })
         } catch(err){
             dispatch(errorOn(`${err.response.status} ${err.response.statusText}`));
             dispatch(loaderOff());
@@ -291,23 +316,10 @@ export const deleteSchema = (formData, navigate) => async (dispatch) => {
     }
 };
 
-export const loadAuthData = ({ data }, setLoading) => async (dispatch) => {
-    try {
-        await API.post(`/account`, data).then((res) => {
-            dispatch({
-                type: SET_AUTHDATA,
-                data: res.data
-            });
-            setLoading(false);
-        })
-    } catch (error) {
-      dispatch(errorOn(error.response.data.message));
-    }
-}
-
 export const getUserProfile = (id) => async (dispatch) => {
     try {
         await API.post(`/profile`, id).then((res) => {
+            
             dispatch({ type: SET_PROFILE, data: res.data });
         })
     } catch (error) {

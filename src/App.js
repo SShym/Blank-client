@@ -12,7 +12,7 @@ import Profile from './Components/Profile/Profile'
 import useMediaQuery from '@mui/material/useMediaQuery';
 import io from 'socket.io-client';
 
-const socket = io.connect('https://sqmr.onrender.com');
+const socket = io.connect('https://sqmr.onrender.com/');
 
 function useQuery() { return new URLSearchParams(useLocation().search) }
 
@@ -35,7 +35,7 @@ function App() {
 
   useEffect(() => {
     if(location.pathname === '/comments' && trackLocation){
-      dispatch(commentsLoad(socket, page)) 
+      dispatch(commentsLoad(socket, page));
       localStorage.setItem('page', page);
       localStorage.removeItem('settings-page');
     }
@@ -57,14 +57,14 @@ function App() {
             <div className={matches ? 'error-message-matches' : 'error-message'}>{error}</div>
           </div>
         }
-        <Navbar />
+        <Navbar socket={socket} />
         <Routes>
           <Route path='/auth' element={<AuthPage />} />
           <Route path="/:id/verify/:token" element={<EmailVerify />} />
           <Route path='/' element={<Navigate to={'/comments'} />} />
           <Route path='/comments' element={<Comments socket={socket} page={page} setTrackLocation={setTrackLocation} />} />
           <Route path='/profile/:id' element={<Profile />} />
-          <Route path='/settings' element={<Settings />} />
+          <Route path='/settings' element={<Settings socket={socket} page={page} />} />
         </Routes>
       </div>
     </div>

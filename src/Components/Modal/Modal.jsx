@@ -68,7 +68,7 @@ const Modal = ({ modal, setModal, matches, disabled, handleDelete }) => {
                         <div style={{display:'flex', justifyContent:'space-around', textAlign:'center'}}>
                             <Button 
                                 disabled={disabled} 
-                                style={{fontFamily:'sans-serif', fontSize:'10px' }} 
+                                style={{fontFamily:'sans-serif', fontSize:'10px', color: 'white' }} 
                                 onClick={()=>setModal(false)}                                    
                                 size="large" 
                                 variant="contained"

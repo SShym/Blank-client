@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import Icon from './icon';
 import successSvg from '../../png/success.svg';
-import { signin, signup, AUTH, errorOff, googleAuth } from '../../redux/actions';
+import { signin, signup, errorOff, googleAuth } from '../../redux/actions';
 import useStyles from './styles';
 import Input from './Input';
 import Layout from '../styles/Layout';

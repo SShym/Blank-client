@@ -70,7 +70,7 @@ const initialState = {
     photo: null,
 };
 
-const Settings = () => {
+const Settings = ({ socket }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); // eslint-disable-line
     const { theme, themeSwitchHandler } = useContext(GlobalContext);
     const [form, setForm] = useState(initialState);
@@ -90,8 +90,9 @@ const Settings = () => {
     
     useEffect(() => {
         !user.result.googleId && dispatch(loadAuthData({ 
+            socket,
             data: {
-                id:user.result._id, 
+                id: user.result._id, 
                 token: user.token
             }
         }, setLoading));
@@ -118,6 +119,8 @@ const Settings = () => {
         } : {...form});
     }, [authData]); // eslint-disable-line
 
+    const page = localStorage.getItem('page');
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -129,7 +132,7 @@ const Settings = () => {
             lastName: form.lastName,
         }
 
-        dispatch(changeSettings(formData));
+        dispatch(changeSettings(formData, socket, page));
     };
 
     const formData = { id: user.result._id };
