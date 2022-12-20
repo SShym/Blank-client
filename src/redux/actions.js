@@ -59,7 +59,7 @@ export function errorOff(){
     }
 }
 
-export function commentCreate({comments, page, comment, photo, photoSize, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){ 
+export function commentCreate({socket, page, comment, photo, photoSize, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){ 
     const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
@@ -77,24 +77,7 @@ export function commentCreate({comments, page, comment, photo, photoSize, name, 
             }
         })
         .then((res) => {
-            if(comments.length === 5){
-                dispatch(commentsLoad(page))
-            } else {
-                dispatch({
-                    type: COMMENT_CREATE,
-                    data: {
-                        name,
-                        creator: res.data.creator,
-                        avatar,
-                        comment, 
-                        photo: photo.photoBase64,
-                        photoSize: photoSize, 
-                        changed: false, 
-                        timeCreate: date, 
-                        id: res.data._id,
-                    }
-                });
-            }
+            dispatch(commentsLoad(socket, page)) 
             setPhoto({ photoBase64: '', file: null });
             setTextComment('');
             setEditText('');
@@ -173,7 +156,7 @@ export function commentUpdate({photo, photoSize, name, avatar, setTextComment, s
     }
 }
 
-export function commentDelete(comment, id, setEditMode, setModal, page, navigate){ 
+export function commentDelete(socket, comment, id, setEditMode, setModal, page, navigate){ 
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE });
         await API.get(`/comments/${page}`).then((res) => {
@@ -183,29 +166,33 @@ export function commentDelete(comment, id, setEditMode, setModal, page, navigate
                 setModal(false);
             }).then(() => {
                 if(page > 1 && res.data.data.length === 1){
-                    dispatch(commentsLoad(Number(page) - 1));
+                    dispatch(commentsLoad(socket, (Number(page) - 1))) 
                     navigate(`?page=${Number(page) - 1}`);
                 } else {
-                    dispatch(commentsLoad(page));
+                    dispatch(commentsLoad(socket, page))
                 }
             }).finally(() => { 
                 dispatch({ type: SET_DISABLED_FALSE });
             }).catch(res => {
                 dispatch(errorOn(res.response.data.error));
             })
-        })   
+        }) 
     }
 }
 
-export function commentsLoad(page){
+export function commentsLoad(socket, page){
     return async dispatch => {
         try{
             dispatch(loaderOn());
             await API.get(`/comments/${page}`).then((res) => {
-                dispatch({ type: COMMENTS_LOAD, data: res.data });
-                dispatch(errorOff());
-                dispatch(loaderOff());
-                dispatch({type: SET_CHANGES_FALSE});
+                console.log(res)
+                socket.on('comments', (messages) => { 
+                    dispatch({ type: COMMENTS_LOAD, data: messages });
+                    dispatch(errorOff());
+                    dispatch(loaderOff());
+                    dispatch({type: SET_CHANGES_FALSE});
+                })
+                socket.emit('comment:get', page);
             })
         } catch(err){
             dispatch(errorOn(`${err.response.status} ${err.response.statusText}`));

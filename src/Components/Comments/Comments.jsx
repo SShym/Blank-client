@@ -11,7 +11,7 @@ import Layout from '../styles/Layout';
 import SingleComment from "../SingleComment/SingleComment";
 import Pagination from '../Pagination';
 
-export default function Comments({ setTrackLocation, page }){
+export default function Comments({ socket, setTrackLocation, page }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [id, setId] = useState('');
     const [textComment, setTextComment] = useState('');
@@ -49,8 +49,8 @@ export default function Comments({ setTrackLocation, page }){
     const handleSubmit = (e) => {
         if(textComment.length >= 1){
             e.preventDefault();
-
             dispatch(commentCreate({
+                socket,
                 comment: textComment, 
                 photo: photo, 
                 photoSize,
@@ -180,6 +180,7 @@ export default function Comments({ setTrackLocation, page }){
                             return(
                                 <div>
                                     <SingleComment 
+                                        socket={socket}
                                         page={page}
                                         disabled={disabled}
                                         loading={loading}

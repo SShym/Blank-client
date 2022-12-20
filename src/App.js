@@ -10,7 +10,9 @@ import Settings from './Components/Settings/Settings';
 import EmailVerify from './Components/EmailVerify/EmailVerify';
 import Profile from './Components/Profile/Profile'
 import useMediaQuery from '@mui/material/useMediaQuery';
+import io from 'socket.io-client';
 
+const socket = io.connect('http://localhost:3001');
 function useQuery() { return new URLSearchParams(useLocation().search) }
 
 function App() {
@@ -32,7 +34,7 @@ function App() {
 
   useEffect(() => {
     if(location.pathname === '/comments' && trackLocation){
-      dispatch(commentsLoad(page));
+      dispatch(commentsLoad(socket, page)) 
       localStorage.setItem('page', page);
       localStorage.removeItem('settings-page');
     }
@@ -59,7 +61,7 @@ function App() {
           <Route path='/auth' element={<AuthPage />} />
           <Route path="/:id/verify/:token" element={<EmailVerify />} />
           <Route path='/' element={<Navigate to={'/comments'} />} />
-          <Route path='/comments' element={<Comments page={page} setTrackLocation={setTrackLocation} />} />
+          <Route path='/comments' element={<Comments socket={socket} page={page} setTrackLocation={setTrackLocation} />} />
           <Route path='/profile/:id' element={<Profile />} />
           <Route path='/settings' element={<Settings />} />
         </Routes>

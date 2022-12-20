@@ -12,7 +12,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import React from 'react';
 import Modal from '../Modal/Modal';
 
-export default function SingleComment({page, comments, photoSize, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled, loading }){
+export default function SingleComment({socket, page, comments, photoSize, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled, loading }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [modal, setModal] = useState(false);
     const [commentText, setCommentText] = useState('');
@@ -47,7 +47,7 @@ export default function SingleComment({page, comments, photoSize, setId, setEdit
     const handleDelete = (e) => {
         if(!disabled || !loading) {
             e.preventDefault();
-            dispatch(commentDelete(commentText, comments.id, setEditMode, setModal, page, navigate));
+            dispatch(commentDelete(socket, commentText, comments.id, setEditMode, setModal, page, navigate));
         }
     }
 
