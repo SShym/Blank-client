@@ -89,6 +89,10 @@ export const NavbarBlock = styled.div`
     border: 1px solid ${(props) => props.theme.border};
     color: ${(props) => props.theme.border};
   }
+
+  .verification-text{
+    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};
+  }
 `;
 
 export const NavbarBlockUser = styled.div`
@@ -117,6 +121,7 @@ export const NavbarBlockUser = styled.div`
     height: 30px;
     border-radius: 50%;
   }
+  
 `;
 
 export const NavbarLogo = styled.div`
@@ -224,6 +229,15 @@ export const EmailVerifyBackground = styled.div`
   flex-shrink: 0;
   margin: 0px 20px 20px 20px;
   position: relative;
+
+  @media (max-width: 576px) { 
+    height: calc(${window.innerHeight}px - 45px);
+    margin: 0px;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 0px;
+  }
 
   .SuccessVerificationEmail{
     text-align: center;
