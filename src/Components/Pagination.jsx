@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 
-const Paginate = ({ setEditText, setEditPhoto, setEditMode, disabled, loading, commentsLength }) => {
+const Paginate = ({ setEditText, setEditPhoto, setEditMode, disabled, loading }) => {
   const numberOfPages = useSelector((state) => state.commentReducer.numberOfPages);
 
   const func = () => {

@@ -205,7 +205,6 @@ export default function Comments({ socket, setTrackLocation, page }){
                                 setEditText={setEditText}
                                 disabled={disabled} 
                                 loading={loading} 
-                                page={page} 
                             />
                         </div>
                         : ''
