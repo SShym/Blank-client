@@ -319,7 +319,7 @@ export const deleteSchema = (formData, navigate) => async (dispatch) => {
 export const getUserProfile = (id) => async (dispatch) => {
     try {
         await API.post(`/profile`, id).then((res) => {
-            
+            console.log(res)
             dispatch({ type: SET_PROFILE, data: res.data });
         })
     } catch (error) {

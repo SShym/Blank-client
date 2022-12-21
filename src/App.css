@@ -16,11 +16,6 @@ input {
   resize: vertical;
 }
 
-.error-wrap-matches{
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-}
-
 .error-message {
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -50,13 +45,14 @@ input {
   justify-content: center;
   border: 1px solid black;
   z-index: 1;
-  right: 0;
-  bottom: 0;
+  top: 100%;
+  left: 50%;
   white-space: nowrap;
+  transform: translate(-50%, -100%);
   font-size: 13px;
   font-weight: bold;
   color: white;
   background: red;
-  padding: 10px 4px;
+  padding: 10px 20px;
 }
 
