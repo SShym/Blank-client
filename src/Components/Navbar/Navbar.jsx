@@ -3,7 +3,7 @@ import { Button} from '@material-ui/core';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { errorOff, LOGOUT, loadAuthData } from '../../redux/actions';
+import { errorOff, LOGOUT, loadAuthData, getUsersOnline } from '../../redux/actions';
 import { gapi } from 'gapi-script';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -23,7 +23,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 const Navbar = ({ socket }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const [anchorEl, setAnchorEl] = useState(null);
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,6 +41,7 @@ const Navbar = ({ socket }) => {
             token: user.token
         }
     }));
+    dispatch(getUsersOnline(user, socket))
   }, []); //eslint-disable-line 
 
   const matches = useMediaQuery('(max-width: 576px)');
@@ -66,6 +67,7 @@ const Navbar = ({ socket }) => {
 
   const logout = () => {
     dispatch({ type: LOGOUT });
+    socket.emit('disconnectById', { id: user.result._id ? user.result._id : user.result.googleId });
     dispatch(errorOff());
     navigate('/comments');
     setUser(null);

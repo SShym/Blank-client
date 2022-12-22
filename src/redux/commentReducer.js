@@ -7,8 +7,6 @@ import {
 
 const initialState = {
     comments: [],
-    currentPage: null,
-    numberOfPages: null
 }
 
 export const commentReducer = (state = initialState, action) => {
@@ -63,8 +61,6 @@ export const commentReducer = (state = initialState, action) => {
             return {
                 ...state,
                 comments: commentsNew,
-                currentPage: action.data.currentPage,
-                numberOfPages: action.data.numberOfPages
             }
 
         default:

@@ -18,6 +18,7 @@ export const SET_CHANGES_FALSE = 'SET_CHANGES_FALSE';
 export const SET_IMAGE_LOAD_FALSE = 'SET_IMAGE_LOAD_FALSE';
 export const SET_IMAGE_LOAD_TRUE = 'SET_IMAGE_LOAD_TRUE';
 export const SET_PROFILE = 'SET_PROFILE';
+export const SET_USERS_ONLINE = 'SET_USERS_ONLINE';
 
 const API = axios.create({ 
     // baseURL: 'http://localhost:5000/'
@@ -46,10 +47,10 @@ export function loaderOff(){
 
 export function errorOn(text){
     return dispatch => {
-        dispatch({
-            type: ERROR_DISPLAY_ON,
-            text
-        })
+        dispatch({ type: ERROR_DISPLAY_ON, text });
+        setTimeout(() => {
+            dispatch({ type: ERROR_DISPLAY_OFF })      
+        }, 3000);
     }
 }
 
@@ -59,29 +60,19 @@ export function errorOff(){
     }
 }
 
-export function commentCreate({socket, page, comment, photo, photoSize, name, avatar, setTextComment, setEditText, setPhoto}, timeCreate, id){ 
-    const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
+export function commentCreate(formData, {socket, setTextComment, setEditText, setPhoto}){ 
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
-        API.post(`/comments/`, { 
-            comment, 
-            photo: photo.file || photo.photoBase64,
-            photoSize,
-            name, avatar, 
-            changed: false, 
-            timeCreate: date, 
-            id 
-        }, {
+        API.post(`/comments/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        })
-        .then(() => {
-            dispatch(commentsLoad(socket, page)) 
+        }).then(() => {
+            dispatch(commentsLoad(socket));
             setPhoto({ photoBase64: '', file: null });
             setTextComment('');
             setEditText('');
-            dispatch({ type: SET_DISABLED_FALSE })
+            dispatch({ type: SET_DISABLED_FALSE });
             dispatch(errorOff());
         }).catch(res => {
             dispatch(errorOn(res.response.data.error));
@@ -90,7 +81,29 @@ export function commentCreate({socket, page, comment, photo, photoSize, name, av
     }
 }
 
-export const changeSettings = (formData, socket, page) => async (dispatch) => {
+export function commentUpdate(formData, {id, socket, setTextComment, setEditText, setPhoto, setEditPhoto, setEditMode}){
+    return async dispatch => {
+        dispatch({ type: SET_DISABLED_TRUE })
+        await API.put(`/comments/${id}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(() => {
+            dispatch(commentsLoad(socket))
+            setTextComment('');
+            setEditText('');
+            setPhoto({ photoBase64: '', file: null });
+            setEditPhoto({ photoBase64: '', file: null });
+            setEditMode(false);
+            dispatch({ type: SET_DISABLED_FALSE })
+        }).catch(res => {
+            dispatch(errorOn(res.response.data.error));
+            dispatch({ type: SET_DISABLED_FALSE })
+        })
+    }
+}
+
+export const changeSettings = (formData, socket) => async (dispatch) => {
     try {
         dispatch({ type: SET_DISABLED_TRUE });
         await API.put('/change-settings', formData, {
@@ -98,7 +111,7 @@ export const changeSettings = (formData, socket, page) => async (dispatch) => {
                 'Content-Type': 'multipart/form-data'
             }
         }).then(() => {
-            dispatch(commentsLoad(socket, page));
+            dispatch(commentsLoad(socket));
             socket.emit('profile:get', formData.id);
             socket.on('profile', (profile) => { 
                 dispatch({ type: AUTH, data: {
@@ -135,90 +148,34 @@ export const loadAuthData = ({ socket, data }, setLoading) => async (dispatch) =
     }
 }
 
-export function commentUpdate({socket, photo, page, photoSize, name, avatar, setTextComment, setEditText, setPhoto, setEditPhoto, setEditMode}, comment, id){
-    const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
-    return async dispatch => {
-        dispatch({ type: SET_DISABLED_TRUE })
-        await API.put(`/comments/${id}`, { 
-            name, 
-            avatar, 
-            comment, 
-            photo: (!photo || photo?.photoBase64?.length === 0) ? '' : photo.file,
-            photoSize: photoSize,
-            changed: true, 
-            timeChanged: date 
-        }, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        .then((res) => {
-            dispatch(commentsLoad(socket, page))
-            dispatch({
-                type: COMMENT_UPDATE,
-                data: {
-                    name,
-                    avatar,
-                    creator: res.data.creator, 
-                    comment, 
-                    id, 
-                    photo: photo.photoBase64 || '', 
-                    photoSize: photoSize,
-                    changed: true, 
-                    timeChanged: date
-                } 
-            });
-            
-            setTextComment('');
-            setEditText('');
-            setPhoto({ photoBase64: '', file: null });
-            setEditPhoto({ photoBase64: '', file: null });
-            setEditMode(false);
-            dispatch({ type: SET_DISABLED_FALSE })
-        }).catch(res => {
-            dispatch(errorOn(res.response.data.error));
-            dispatch({ type: SET_DISABLED_FALSE })
-        })
-    }
-}
-
-export function commentDelete(socket, comment, id, setEditMode, setModal, page, navigate){ 
+export function commentDelete(socket, comment, id, setEditMode, setModal, navigate){ 
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE });
-        await API.get(`/comments-length/${page}`).then((res) => {
             API.delete(`/comments/${id}`).then(() => {
                 dispatch({ type: COMMENT_DELETE, data: { comment, id} });
                 setEditMode(false);
                 setModal(false);
             }).then(() => {
-                if(page > 1 && res.data.dataLength === 1){
-                    dispatch(commentsLoad(socket, page));
-                    navigate(`?page=${Number(page) - 1}`);
-                } else {
-                    dispatch(commentsLoad(socket, page))
-                }
+                dispatch(commentsLoad(socket));
             }).finally(() => { 
                 dispatch({ type: SET_DISABLED_FALSE });
             }).catch(res => {
                 dispatch(errorOn(res.response.data.error));
             })
-        }) 
     }
 }
 
-export function commentsLoad(socket, page){
+export function commentsLoad(socket){
     return async dispatch => {
         try{
             dispatch(loaderOn());
-            // await API.get(`/comments/${page}`).then((res) => {
-                socket.on('comments', (messages) => { 
+                socket.emit('comments:get');
+                socket.on('comments', (messages) => {
                     dispatch({ type: COMMENTS_LOAD, data: messages });
                     dispatch(errorOff());
                     dispatch(loaderOff());
                     dispatch({type: SET_CHANGES_FALSE});
-                })
-                socket.emit('comment:get', page);
-            // })
+                })                
         } catch(err){
             dispatch(errorOn(`${err.response.status} ${err.response.statusText}`));
             dispatch(loaderOff());
@@ -226,14 +183,15 @@ export function commentsLoad(socket, page){
     }
 }
 
-export const signin = (formData, navigate) => async (dispatch) => {
+export const signin = (formData, navigate, socket) => async (dispatch) => {
     try {
       dispatch({ type: SET_DISABLED_TRUE })
       await API.post('/login', formData).then(res => {
+        socket.emit('login', { id: res.data.result._id });
         dispatch({ type: AUTH, data: res.data });
         dispatch({ type: SET_DISABLED_FALSE });
         dispatch(errorOff());
-        navigate('/comments?page=1');
+        navigate('/comments');
       });
     } catch (error) {
         dispatch(errorOn(error.response.data.message));
@@ -255,12 +213,13 @@ export const signup = (formData, navigate, setVerifyStatus) => async (dispatch) 
     }
 };
 
-export const googleAuth = (formData, navigate) => async (dispatch) => {
+export const googleAuth = (formData, navigate, socket) => async (dispatch) => {
     try {
       dispatch({ type: SET_DISABLED_TRUE })
-      await API.post('/googleAuth', formData).then(() => {
+      await API.post('/googleAuth', formData).then((res) => {
+        socket.emit('login', { id: res.data.result.googleId });
         dispatch({ type: AUTH, data: formData });
-        navigate('/comments?page=1');
+        navigate('/comments');
         dispatch(errorOff());
         dispatch({ type: SET_DISABLED_FALSE });
       })
@@ -305,10 +264,11 @@ export const verifyMailOnLoad = (formData, navigate, decode, setValidUrl) => asy
     }
 };
 
-export const deleteSchema = (formData, navigate) => async (dispatch) => {
+export const deleteSchema = (formData, navigate, socket) => async (dispatch) => {
     try {
         await API.post(`/delete/${formData.id}`, formData).then((res) => {
             dispatch({type: LOGOUT});
+            dispatch(commentsLoad(socket));
             navigate('/comments');
         })
     } catch (error) {
@@ -316,14 +276,37 @@ export const deleteSchema = (formData, navigate) => async (dispatch) => {
     }
 };
 
-export const getUserProfile = (id) => async (dispatch) => {
+export const getUserProfile = (id, setValidProfile) => async (dispatch) => {
     try {
         await API.post(`/profile`, id).then((res) => {
-            console.log(res)
-            dispatch({ type: SET_PROFILE, data: res.data });
+            if(res.data.message === `User doesn't exist`){
+                setValidProfile('invalid');
+            } else {
+                setValidProfile('valid');
+                dispatch({ type: SET_PROFILE, data: res.data });
+            }
         })
     } catch (error) {
         dispatch(errorOn(error.response.data.message));
-        console.log(error)
+    }
+}
+
+export const getUsersOnline = (user, socket) => async (dispatch) => {
+    try {
+        socket.on('count', data => {
+            dispatch({type: SET_USERS_ONLINE, data})
+        });
+
+        if(user){
+            if(user.result._id){
+                socket.emit('login', { id: user.result._id })
+            } else if(user.result.googleId){
+                socket.emit('login', { id: user.result.googleId })
+            } else {
+                socket.emit('login', { id: 'without' })
+            }
+        }
+    } catch (error) {
+        dispatch(errorOn(error.response.data.message));
     }
 }

@@ -9,9 +9,8 @@ import { CommentsBackground, FormComments } from '../styles/homestyles';
 import loader from '../../png/loaderGear.svg';
 import Layout from '../styles/Layout';
 import SingleComment from "../SingleComment/SingleComment";
-import Pagination from '../Pagination';
 
-export default function Comments({ socket, setTrackLocation, page }){
+export default function Comments({ socket, setTrackLocation }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [id, setId] = useState('');
     const [textComment, setTextComment] = useState('');
@@ -28,7 +27,6 @@ export default function Comments({ socket, setTrackLocation, page }){
     const disabled = useSelector(state => state.appReducer.disabled);
     const loading = useSelector(state => state.appReducer.loading);
     const error = useSelector(state => state.appReducer.error);
-    const numberOfPages = useSelector((state) => state.commentReducer.numberOfPages);
 
     useEffect(() => {
       gapi.load('client:auth2', ()=>{
@@ -47,45 +45,54 @@ export default function Comments({ socket, setTrackLocation, page }){
     useEffect(() => setTrackLocation(location.pathname), []);
 
     const handleSubmit = (e) => {
+        e.preventDefault();
         if(textComment.length >= 1){
-            e.preventDefault();
-            dispatch(commentCreate({
-                socket,
+            const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
+
+            const formData = {
                 comment: textComment, 
-                photo: photo, 
+                photo: photo.file || photo.photoBase64, 
                 photoSize,
-                name: user?.result?.name,
-                avatar: user?.result.avatar ? user?.result.avatar : user?.result.imageUrl,
+                name: user.result.name,
+                avatar: user.result.avatar ? user.result.avatar : user.result.imageUrl,
+                timeCreate: date,
+                changed: false, 
+            }
+            
+            dispatch(commentCreate(formData, {
                 setTextComment,
                 setEditText,
                 setPhoto,
-                page,
+                socket,
                 comments
             }));
-        } else {
-            e.preventDefault();
         }
     }
 
     const handleUpdate = (e) => {
+        e.preventDefault();
         if(editText.length >= 1){
-            e.preventDefault();
-            dispatch(commentUpdate({ 
-                socket,
-                photo: editPhoto.photoBase64.length > 0 ? editPhoto : photo,
+            const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
+
+            const formData = {
+                comment: editText,
+                photo: (!(editPhoto.photoBase64.length > 0 ? editPhoto : photo) || (editPhoto.photoBase64.length > 0 ? editPhoto : photo)?.photoBase64?.length === 0) ? '' : (editPhoto.photoBase64.length > 0 ? editPhoto : photo).file,
                 photoSize,
                 name: user?.result?.name, 
                 avatar: user?.result.avatar ? user?.result.avatar : user?.result.imageUrl,
+                changed: true, 
+                timeChanged: date
+            }
+
+            dispatch(commentUpdate(formData, { 
+                id,
+                socket,
                 setTextComment,
                 setEditText,
                 setPhoto,
                 setEditPhoto,
                 setEditMode,
-                page
-            }, editText, id,
-            ));
-        } else {
-            e.preventDefault();
+            }));
         }
     }
 
@@ -182,7 +189,6 @@ export default function Comments({ socket, setTrackLocation, page }){
                                 <div>
                                     <SingleComment 
                                         socket={socket}
-                                        page={page}
                                         disabled={disabled}
                                         loading={loading}
                                         comments={res}
@@ -197,18 +203,6 @@ export default function Comments({ socket, setTrackLocation, page }){
                             )
                         })}
                     </div>
-                    {numberOfPages ?
-                        <div className='pagination-block'>
-                            <Pagination 
-                                setEditPhoto={setEditPhoto} 
-                                setEditMode={setEditMode} 
-                                setEditText={setEditText}
-                                disabled={disabled} 
-                                loading={loading} 
-                            />
-                        </div>
-                        : ''
-                    }
                 </div>
             </CommentsBackground>
         </Layout>

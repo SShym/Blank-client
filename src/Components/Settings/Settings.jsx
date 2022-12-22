@@ -118,9 +118,7 @@ const Settings = ({ socket }) => {
             photo: authData?.result.avatar,
         } : {...form});
     }, [authData]); // eslint-disable-line
-
-    const page = localStorage.getItem('page');
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -132,13 +130,13 @@ const Settings = ({ socket }) => {
             lastName: form.lastName,
         }
 
-        dispatch(changeSettings(formData, socket, page));
+        dispatch(changeSettings(formData, socket));
     };
 
-    const formData = { id: user.result._id };
+    const formData = user.result._id ? { id: user.result._id } : { id: user.result.googleId}
 
     const handleDeleteProfile = () => {
-        dispatch(deleteSchema(formData, navigate))
+        dispatch(deleteSchema(formData, navigate, socket))
     }
 
     const handleOnChange = (e) => {
@@ -374,13 +372,11 @@ const Settings = ({ socket }) => {
                                         <span></span>
                                     </SwitchButton>
                                 </div>
-                                { !user.result.googleId &&
-                                    <div className='delete-profile-block'>
-                                        <Button variant="outlined" size="large" color="error" onClick={handleOpen}>
-                                            Delete profile
-                                        </Button>
-                                    </div>
-                                }
+                                <div className='delete-profile-block'>
+                                    <Button variant="outlined" size="large" color="error" onClick={handleOpen}>
+                                        Delete profile
+                                    </Button>
+                                </div>
                             </div>
                         }
                     </SettingsRightBlock>

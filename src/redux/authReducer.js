@@ -2,13 +2,15 @@ import {
     AUTH,
     LOGOUT,
     SET_AUTHDATA,
-    SET_PROFILE
+    SET_PROFILE,
+    SET_USERS_ONLINE
 } from './actions';
 
 
 const initialState = {
     authData: null,
-    profile: null
+    profile: null,
+    usersOnline: []
 }
 
 export const authReducer = (state = initialState, action) => {
@@ -39,6 +41,11 @@ export const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 profile: action.data
+            }
+        case SET_USERS_ONLINE:
+            return {
+                ...state,
+                usersOnline: action.data
             }
         
         default:

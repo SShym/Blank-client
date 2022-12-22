@@ -23,7 +23,7 @@ const theme = createTheme({
   },
 });
 
-const SignUp = () => {
+const SignUp = ({ socket }) => {
   const [form, setForm] = useState(initialState);
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -53,7 +53,7 @@ const SignUp = () => {
         console.log(error);
       }
     } else {
-      dispatch(signin(form, navigate));
+      dispatch(signin(form, navigate, socket));
     }
   };
 
@@ -67,7 +67,7 @@ const SignUp = () => {
     }
     
     try {
-      dispatch(googleAuth(formData, navigate));
+      dispatch(googleAuth(formData, navigate, socket));
     } catch (error) {
       console.log(error);
     }

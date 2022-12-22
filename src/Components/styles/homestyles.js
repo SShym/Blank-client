@@ -211,6 +211,10 @@ export const CommentsBackground = styled.div`
     z-index: 1;
     background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.2)'};
   }
+
+  .no-profile{
+    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'rgba(125, 125, 124 , 1)'};
+  }
 `;
 
 export const EmailVerifyBackground = styled.div`
@@ -431,16 +435,55 @@ export const LightDrope = styled.div`
   display: ${(props) => props.theme.theme === 'light' ? 'none' : 'block'};
 `
 
-export const UserNameAndAvatar = styled.div`
+export const ProfileCase = styled.div`
   border: 1px solid gray;
   background: ${(props) => props.theme.theme === 'light' ? 'rgb(222, 222, 222)' : 'rgb(0,90,90)'};
   padding: 5px;
   border-radius: 10px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 30px;
+  position: relative;
+
+  .profile-username{
+    font-size: 22px;
+    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'rgb(32, 32, 55)'};
+  }
+
+  .online-status{
+    font-style: italic;
+    letter-spacing: 1px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -13px;
+    right: 5px;
+    font-size: 11px;
+  }
+
+  .profile-message-button{
+    font-family: sans-serif;
+    position: absolute;
+    bottom: -20px;
+    right: -10px;
+    font-size: 15px;
+    margin-top: 15px;
+    background: ${(props) => props.theme.theme === 'light' ? 'rgb(222, 222, 222)' : 'rgb(0,90,90)'};
+    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};
+    border: 1px solid ${(props) => props.theme.theme === 'light' ? 'rgb(5, 5, 5, 0.8)' : 'gray'};
+    border-radius: 5px;
+    padding: 5px 20px;
+    &:hover{
+      transform: translate(0, -1px);
+      background: ${(props) => props.theme.theme === 'light' ? 'rgb(217, 217, 217)' : 'rgb(0,95,95)'}
+    }
+    &:active{
+      background: ${(props) => props.theme.theme === 'light' ? 'rgb(197, 197, 197)' : 'rgb(0,55,55)'}
+    }
+  }
 `
 
 export const PageAuth = styled.div`
