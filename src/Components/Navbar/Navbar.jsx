@@ -32,8 +32,7 @@ const Navbar = ({ socket }) => {
   const loading = useSelector(state => state.appReducer.loading);
   const error = useSelector(state => state.appReducer.error);
   const authData = useSelector(state => state.authReducer.authData);
-  const usersOnline = useSelector(state => state.authReducer.usersOnline);
-  console.log(usersOnline)
+
   useEffect(() => {
     (user && !user.result.googleId) && dispatch(loadAuthData({
         socket,
@@ -101,13 +100,9 @@ const Navbar = ({ socket }) => {
                     <Typography sx={{ fontSize:'17px', marginLeft:'15px', userSelect:'none' }}>
                       {authData ? authData.result.name.split(' ')[0] : user.result.name.split(' ')[0]}
                         <IconButton style={{position:'relative'}}>
-                          {user.result.googleId ?
-                            <Avatar className='navAvatar' src={user.result.imageUrl} sx={{ width: 30, height: 30 }}></Avatar>
-                            :
-                            <Avatar className='navAvatar' src={authData ? authData?.result.avatar : user.result.avatar} sx={{ width: 30, height: 30 }}>
-                              {authData ? authData?.result?.name.charAt(0) : user.result.name.charAt(0)}
-                            </Avatar>
-                          }
+                          <Avatar className='navAvatar' src={authData ? authData?.result.avatar : user.result.avatar} sx={{ width: 30, height: 30 }}>
+                            {authData ? authData?.result?.name.charAt(0) : user.result.name.charAt(0)}
+                          </Avatar>
                           <div className='block-navbar'></div>
                         </IconButton>
                     </Typography>

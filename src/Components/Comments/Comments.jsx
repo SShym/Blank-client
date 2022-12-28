@@ -54,7 +54,7 @@ export default function Comments({ socket, setTrackLocation }){
                 photo: photo.file || photo.photoBase64, 
                 photoSize,
                 name: user.result.name,
-                avatar: user.result.avatar ? user.result.avatar : user.result.imageUrl,
+                avatar: user.result.avatar,
                 timeCreate: date,
                 changed: false, 
             }
@@ -78,8 +78,8 @@ export default function Comments({ socket, setTrackLocation }){
                 comment: editText,
                 photo: (!(editPhoto.photoBase64.length > 0 ? editPhoto : photo) || (editPhoto.photoBase64.length > 0 ? editPhoto : photo)?.photoBase64?.length === 0) ? '' : (editPhoto.photoBase64.length > 0 ? editPhoto : photo).file,
                 photoSize,
-                name: user?.result?.name, 
-                avatar: user?.result.avatar ? user?.result.avatar : user?.result.imageUrl,
+                name: user.result.name, 
+                avatar: user.result.avatarl,
                 changed: true, 
                 timeChanged: date
             }

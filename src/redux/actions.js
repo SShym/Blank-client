@@ -81,7 +81,7 @@ export function commentCreate(formData, {socket, setTextComment, setEditText, se
     }
 }
 
-export function commentCreateDirect(formData, setComment, socket, room){ 
+export function commentCreateDirect(formData, setComment, socket, room, setOpen){ 
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
         API.post(`/commentsDirect/${room}`, formData, {
@@ -89,9 +89,10 @@ export function commentCreateDirect(formData, setComment, socket, room){
                 'Content-Type': 'multipart/form-data'
             }
         }).then((res) => {
-            socket.emit('add-direct-comment', res.data)
-            setComment({ commentText: '', photoFile: null })
+            socket.emit('add-direct-comment', res.data);
             dispatch({ type: SET_DISABLED_FALSE });
+            setOpen(false);
+            setComment({ commentText: '', photoFile: null })
             dispatch(errorOff());
         }).catch(err => {
             dispatch(errorOn(err.response.data.error));
@@ -282,7 +283,6 @@ export const verifyMailOnLoad = (formData, navigate, decode, setValidUrl) => asy
     try {
         await API.get(`/${formData.id}/verify/${formData.token}`)
         .then((res) => {
-            console.log('v', res)
             if (formData.token) {
                 const decodedToken = decode(formData.token);
             
@@ -338,12 +338,10 @@ export const getUsersOnline = (user, socket) => async (dispatch) => {
         });
 
         if(user){
-            if(user.result._id){
-                socket.emit('login', { id: user.result._id })
-            } else if(user.result.googleId){
+            if(user.result.googleId){
                 socket.emit('login', { id: user.result.googleId })
             } else {
-                socket.emit('login', { id: 'without' })
+                socket.emit('login', { id: user.result._id })
             }
         }
     } catch (error) {
@@ -353,6 +351,7 @@ export const getUsersOnline = (user, socket) => async (dispatch) => {
 
 export const deleteDirectChat = (socket, room, setChatSettings) => async (dispatch) => {
     try {
+        console.log('1')
         await API.post(`delete-direct-chat/${room}`).then(() => {
             socket.emit('delete-direct-chat', room);
             setChatSettings(false);

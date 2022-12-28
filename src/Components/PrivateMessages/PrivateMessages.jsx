@@ -19,7 +19,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 const PrivateMessages = ({ socket }) => {   
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -38,6 +38,7 @@ const PrivateMessages = ({ socket }) => {
     const profile = useSelector(state => state.authReducer.profile);
     const usersOnline = useSelector(state => state.authReducer.usersOnline);
     const commentsDirect = useSelector(state => state.commentReducer.commentsDirect);
+    const disabled = useSelector(state => state.appReducer.disabled);
 
     ///// modal with img ////
     useEffect(() => {
@@ -71,7 +72,7 @@ const PrivateMessages = ({ socket }) => {
         }
     }
     
-    const scrollToBottom = () => commentsDirectRef.current?.scrollIntoView({ behavior: "smooth" });
+    const scrollToBottom = () => commentsDirectRef.current?.scrollIntoView();
 
     const setFileToBase = (file) => {
         const reader = new FileReader();
@@ -105,16 +106,16 @@ const PrivateMessages = ({ socket }) => {
         
         const formData = {
             comment: comment.commentText, 
-            // photo: comment.photoFile,
+            photo: comment.photoFile,
             timeCreate: date,
             name: user.result.name,
-            avatar: user.result.avatar ? user.result.avatar : user.result.imageUrl,
+            avatar: user.result.avatar,
             changed: false, 
             creator: user.result._id ? user.result._id : user.result.googleId,
         }
 
         if(comment.commentText.length > 0){
-            dispatch(commentCreateDirect(formData, setComment, socket, room));
+            dispatch(commentCreateDirect(formData, setComment, socket, room, setOpen));
         }    
     }
 
@@ -129,54 +130,55 @@ const PrivateMessages = ({ socket }) => {
                         open={open}
                         onClick={() => {
                             setOpen(false);
-                            /// wait transition
-                            setTimeout(() => setComment({ 
+                            setComment({ 
                                 commentText: comment.commentText,
                                 photoFile: null
-                            }), 150)
+                            })   
                         }}>
-                        <div onClick={e => e.stopPropagation()} 
-                        style={{ display:'flex', margin:'10px', flexDirection:'column', alignItems:'flex-end', maxWidth:'550px', background:'#fff', padding:'10px', borderRadius:'8px' }}>
-                            <div style={{display:'flex', width:'100%', alignItems:'center'}}>
-                                <div style={{ color:'black', flexBasis:'90%', fontSize:'20px', fontWeight:'500', marginLeft:'10px'}}>
-                                    Send photo
-                                </div>
-                                <Button disabled onClick={handleSubmit} sx={{fontSize:'11px', mb:1}} size="large" variant="contained">
-                                    send
-                                </Button>
-                            </div>
-                            <div style={{display:'flex', alignItems:'center', justifyContent: 'center', width:'100%' }}>
-                                {isFileImage(comment?.photoFile)
-                                    ? <img style={{ width:'100%' }} src={previewPhoto} alt="" />
-                                    : <div style={{color:'black', margin:'15px', display:'flex', alignItems:'center'}}>
-                                        <div style={{width:'30px', height:'30px', marginRight:'10px', position:'relative'}}>
-                                            <FileMulticolor  />
-                                            <div style={{
-                                                position:'absolute',
-                                                transform:'translate(50%, 50%)',
-                                                left:'-1px',
-                                                top:'4px',
-                                                color:'black',
-                                                fontSize:'10px'
-                                            }}>
-                                                {comment?.photoFile && comment?.photoFile?.name.split('.')[1]}
-                                            </div>
-                                        </div>
-                                        {comment?.photoFile?.name.split('.')[0]}
+                        {disabled 
+                        ?   <CircularProgress color="inherit" />
+                        :   <div onClick={e => e.stopPropagation()} style={{ display: open ? 'flex' : 'none', margin:'10px', flexDirection:'column', alignItems:'flex-end', maxWidth:'550px', background: '#fff', padding:'10px', borderRadius:'8px' }}>
+                                <div style={{marginBottom:'8px', display:'flex', width:'100%', alignItems:'center', justifyContent:'center'}}>
+                                    <div style={{ color:'black', flexBasis:'90%', fontSize:'20px', fontWeight:'500', marginLeft:'10px'}}>
+                                        Send photo
                                     </div>
-                                }
+                                    <Button onClick={handleSubmit} sx={{fontSize:'10px'}} size="large" variant="contained">
+                                        Send
+                                    </Button>
+                                </div>
+                                <div style={{display:'flex', alignItems:'center', justifyContent: 'center', width:'100%' }}>
+                                    {isFileImage(comment?.photoFile)
+                                        ? <img style={{ width:'100%' }} src={previewPhoto} alt="" />
+                                        : <div style={{color:'black', margin:'15px', display:'flex', alignItems:'center'}}>
+                                            <div style={{width:'30px', height:'30px', marginRight:'10px', position:'relative'}}>
+                                                <FileMulticolor  />
+                                                <div style={{
+                                                    position:'absolute',
+                                                    transform:'translate(50%, 50%)',
+                                                    left:'-1px',
+                                                    top:'4px',
+                                                    color:'black',
+                                                    fontSize:'10px'
+                                                }}>
+                                                    {comment?.photoFile && comment?.photoFile?.name.split('.')[1]}
+                                                </div>
+                                            </div>
+                                            {comment?.photoFile?.name.split('.')[0]}
+                                        </div>
+                                    }
+                                </div>
+                                <input 
+                                    placeholder='Caption' 
+                                    style={{ border:'1px solid gray', borderRadius:'10px', marginTop:'10px', padding:' 8px 12px' }} 
+                                    type="text" 
+                                    value={comment.commentText} 
+                                    onChange={(e) => setComment({
+                                        photoFile: comment.photoFile,
+                                        commentText: e.target.value
+                                    })} 
+                                />
                             </div>
-                            <input 
-                                placeholder='Caption' 
-                                style={{ border:'1px solid gray', borderRadius:'10px', marginTop:'10px', padding:' 8px 12px' }} 
-                                type="text" 
-                                value={comment.commentText} 
-                                onChange={(e) => setComment({
-                                    photoFile: comment.photoFile,
-                                    commentText: e.target.value
-                                })} 
-                            />
-                        </div>
+                        }
                     </Backdrop>
                     <div className='user-header'>
                         <div style={{ flexBasis:'95%', display:'flex', alignItems:'center' }}>
@@ -185,7 +187,7 @@ const PrivateMessages = ({ socket }) => {
                             </div>
                             <div>
                             <div>{profile?.userName}</div>
-                            { usersOnline.map(user => user.socketId.includes(param.id))
+                            { usersOnline.some(user => user.userId === param.id)
                                 ? <div className='user-header-online'>online</div>
                                 : <div className='user-header-offline'>offline</div>
                             }

@@ -66,7 +66,7 @@ const style = {
 const initialState = { 
     firstName: '', 
     lastName: '', 
-    imageUrl: '',
+    photoUrl: '',
     photo: null,
 };
 
@@ -112,12 +112,13 @@ const Settings = ({ socket }) => {
     }
 
     useEffect(()=>{
-        !user.result.googleId && setForm(authData ? { ...form, 
-            firstName: authData?.result.name.split(' ')[0],
+        !user.result.googleId && setForm(authData ? { 
+            ...form, firstName: authData?.result.name.split(' ')[0],
             lastName: authData?.result.name.split(' ')[1],
-            imageUrl: authData?.result.avatar,
             photo: authData?.result.avatar,
-        } : {...form});
+            photoUrl: authData?.result.avatar,
+        } : 
+        { ...form });
     }, [authData]); // eslint-disable-line
     
     const handleSubmit = (e) => {
@@ -149,12 +150,12 @@ const Settings = ({ socket }) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setForm({...form, imageUrl: reader.result, photo: file});
+            setForm({...form, photoUrl: reader.result, photo: file});
         }
     }
 
     const handleDeleteAvatar = () => {
-        !disabled && setForm({...form, imageUrl: null, photo: null});
+        !disabled && setForm({...form, photoUrl: null, photo: null});
     }
     
     useEffect(()=>{
@@ -188,27 +189,15 @@ const Settings = ({ socket }) => {
                             }}>Settings</div>
                         </Black>
                     </div>
+
                     <SettingsRightBlock>
                         {one.status &&
                             <div className='settings-block-two-general'>
                                 <div className='settings-block-two-general-one'>
-                                    { user.result.imageUrl ?
-                                        <div style={{ display:'inline-flex', position:'relative' }}>
-                                            { user.result.imageUrl ?
-                                                <img className='settings-avatar' src={user.result.imageUrl} alt="" /> :
-                                                <img className='settings-avatar' src={profile} alt="" />
-                                            }
-                                            <div className='settings-block-avatar-black'></div>
-                                        </div>
-                                        :
-                                        <div style={{ 
-                                            display:'inline-block', 
-                                            position:'relative',
-                                        }}>
+                                        <div style={{  display:'inline-block', position:'relative' }}>
                                             <Avatar className='accountAvatar'src={authData ? authData?.result?.avatar : user.result.avatar}></Avatar>
                                             <div className='settings-block-avatar-black'></div>
                                         </div>
-                                    }
                                     <div className='settings-block-user-name'>{authData ? authData.result.name : user.result.name}</div>
                                     <div className='settings-block-user-email'>
                                         <Icon sx={{
@@ -296,12 +285,10 @@ const Settings = ({ socket }) => {
                                                 <div className='settings-changeAvatar'>
                                                     <div>
                                                         <img
-                                                            src={form.imageUrl ? form.imageUrl
-
-                                                                : !authData && user.result.avatar ? user.result.avatar
-                
+                                                            src={
+                                                                form.photoUrl ? form.photoUrl
+                                                                : (!authData && user.result.avatar) ? user.result.avatar
                                                                 : authData?.result?.avatar == null ? profileImg
-
                                                                 : profileImg
                                                             }
                                                             alt="" 

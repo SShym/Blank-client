@@ -55,7 +55,7 @@ const Profile = ({ socket }) => {
                                 </button>  
                             }
                             <div className='online-status'>
-                                {usersOnline.map(user => user.socketId.includes(param.id)) ?
+                                {usersOnline.some(user => user.userId === param.id) ?
                                     <div style={{color:'green'}}>online</div>
                                     : <div className='offline-status'>offline</div>
                                 }

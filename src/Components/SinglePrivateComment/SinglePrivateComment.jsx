@@ -17,7 +17,7 @@ const SinglePrivateComment = ({ comments }) => {
     return(
         <div>
             <div className='single-comment-wrap creator'>                    
-                    {comments.creator === (user.result._id ? user.result._id : user.result.googleId) 
+                    {comments.creator === (user.result.googleId ? user.result.googleId : user.result._id) 
                      ?  <div className='rightBlock'>
                         <form className='single-comment right'>
                             <div className='single-comment-block-BtnAndText'>
