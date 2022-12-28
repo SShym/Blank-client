@@ -24,6 +24,8 @@ const theme = createTheme({
 });
 
 const SignUp = ({ socket }) => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+
   const [form, setForm] = useState(initialState);
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);

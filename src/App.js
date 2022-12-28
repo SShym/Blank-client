@@ -2,13 +2,14 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { commentsLoad, getUsersOnline } from './redux/actions';
+import { commentsLoad } from './redux/actions';
 import Navbar from './Components/Navbar/Navbar';
 import Comments from './Components/Comments/Comments';
 import AuthPage from './Components/AuthPage/AuthPage';
 import Settings from './Components/Settings/Settings';
 import EmailVerify from './Components/EmailVerify/EmailVerify';
-import Profile from './Components/Profile/Profile'
+import Profile from './Components/Profile/Profile';
+import PrivateMessages from './Components/PrivateMessages/PrivateMessages';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import io from 'socket.io-client';
 
@@ -18,8 +19,8 @@ function App() {
   ////////////////////////////////////////////////////////////////
   //// Prevent re-render COMMENTS if SETTINGS haven't changed ////
   ////////////////////////////////////////////////////////////////
- 
-  const [trackLocation, setTrackLocation] = useState(null);   
+
+  const [trackLocation, setTrackLocation] = useState(null); 
                                                     
   const error = useSelector(state => state.appReducer.error); 
   const changes = useSelector(state => state.appReducer.changes);
@@ -57,6 +58,7 @@ function App() {
           <Route path="/:id/verify/:token" element={<EmailVerify />} />
           <Route path='/' element={<Navigate to={'/comments'} />} />
           <Route path='/comments' element={<Comments socket={socket} setTrackLocation={setTrackLocation} />} />
+          <Route path='/direct/:id' element={<PrivateMessages socket={socket} />} />
           <Route path='/profile/:id' element={<Profile socket={socket}/>} />
           <Route path='/settings' element={<Settings socket={socket} />} />
         </Routes>

@@ -4,6 +4,8 @@
   "private": true,
   "proxy": "https://sqmr.onrender.com/",
   "dependencies": {
+    "@emoji-mart/data": "^1.1.0",
+    "@emoji-mart/react": "^1.1.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@material-ui/core": "^4.12.4",
@@ -23,6 +25,8 @@
     "dotenv": "^16.0.3",
     "email-existence": "^0.1.6",
     "emailjs-com": "^3.2.0",
+    "emoji-mart": "^5.4.0",
+    "emoji-picker-react": "^4.4.7",
     "express": "^4.18.2",
     "gapi": "^0.0.3",
     "gapi-script": "^1.2.0",

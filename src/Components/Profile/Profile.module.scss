@@ -1,5 +1,4 @@
 .wrap{
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,12 +17,12 @@
     top: 0;
     left: 0;
     right: 0;
-    margin: -10px 0 0 0;
+    margin: -5px 0 0 0;
     padding: 0;
     pointer-events: none;
     height: 100%;
     width: 100%;
-  }
+}
   
   .lightrope li {
     position: relative;

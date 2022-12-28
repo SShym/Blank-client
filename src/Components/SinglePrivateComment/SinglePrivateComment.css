@@ -1,0 +1,17 @@
+.single-comment.right{
+    border: none;
+    background-color: #a1f18f;
+    box-shadow: 0px 0px 3px;
+}
+
+.single-comment.left{
+    border: none;
+    box-shadow: 0px 0px 3px;
+}
+
+.rightBlock{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}

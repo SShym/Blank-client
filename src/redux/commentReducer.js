@@ -1,22 +1,17 @@
 import { 
-    COMMENT_CREATE, 
     COMMENT_UPDATE, 
     COMMENT_DELETE, 
     COMMENTS_LOAD,
+    COMMENTS_LOAD_DIRECT
 } from "./actions";
 
 const initialState = {
     comments: [],
+    commentsDirect : [],
 }
 
 export const commentReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case COMMENT_CREATE: 
-            return { 
-                ...state, 
-                comments: [...state.comments, action.data]
-            };
-        
+    switch (action.type) {            
         case COMMENT_UPDATE:
             const itemIndex = state.comments.findIndex(res => res.id === action.data.id)
 
@@ -61,6 +56,12 @@ export const commentReducer = (state = initialState, action) => {
             return {
                 ...state,
                 comments: commentsNew,
+            }
+
+        case COMMENTS_LOAD_DIRECT:
+            return {
+                ...state,
+                commentsDirect: action.data
             }
 
         default:

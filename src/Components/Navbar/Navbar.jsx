@@ -32,7 +32,8 @@ const Navbar = ({ socket }) => {
   const loading = useSelector(state => state.appReducer.loading);
   const error = useSelector(state => state.appReducer.error);
   const authData = useSelector(state => state.authReducer.authData);
-
+  const usersOnline = useSelector(state => state.authReducer.usersOnline);
+  console.log(usersOnline)
   useEffect(() => {
     (user && !user.result.googleId) && dispatch(loadAuthData({
         socket,
@@ -41,7 +42,7 @@ const Navbar = ({ socket }) => {
             token: user.token
         }
     }));
-    dispatch(getUsersOnline(user, socket))
+    dispatch(getUsersOnline(user, socket));
   }, []); //eslint-disable-line 
 
   const matches = useMediaQuery('(max-width: 576px)');

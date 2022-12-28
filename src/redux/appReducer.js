@@ -8,7 +8,7 @@ import {
     SET_CHANGES_TRUE,
     SET_CHANGES_FALSE,
     SET_IMAGE_LOAD_FALSE,
-    SET_IMAGE_LOAD_TRUE
+    SET_IMAGE_LOAD_TRUE,
 } from './actions';
 
 
@@ -17,7 +17,8 @@ const initialState = {
     error: null,
     disabled: false,
     changes: false,
-    imageLoad: false
+    imageLoad: false,
+    roomId: null
 }
 
 export const appReducer = (state = initialState, action) => {

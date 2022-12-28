@@ -83,6 +83,7 @@ const Settings = ({ socket }) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const matches = useMediaQuery('(min-width: 576px)');
     const matchesSettings = useMediaQuery('(max-width: 575px)');
     const authData = useSelector(state => state.authReducer.authData);
@@ -109,7 +110,7 @@ const Settings = ({ socket }) => {
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value.length > 0 ? e.target.value : '' });
     }
-    
+
     useEffect(()=>{
         !user.result.googleId && setForm(authData ? { ...form, 
             firstName: authData?.result.name.split(' ')[0],
@@ -317,7 +318,7 @@ const Settings = ({ socket }) => {
                                                 <div className={(disabled || loading) ? 'settings-delete-avatar-loading' : 'settings-delete-avatar'} onClick={handleDeleteAvatar}>
                                                     <div>delete</div>
                                                 </div>
-                                                <input disabled={disabled || loading} onChange={handleOnChange} name="photo" id="file" className='comments-item-select-img' type="file" />
+                                                <input onClick={(e) => e.currentTarget.value = null} disabled={disabled || loading} onChange={handleOnChange} name="photo" id="file" className='comments-item-select-img' type="file" />
                                             </div>
                                             <div className='change-user-settings-two'>
                                                 <div className='change-user-settings-two-box'>

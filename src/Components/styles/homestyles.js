@@ -169,6 +169,27 @@ export const PageBackground = styled.div`
   }
 `;
 
+export const PrivateMessagesBackground = styled.div`
+  height: 600px;
+  margin: 0px 20px 0px 20px;
+  transition: all 0.5s;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background-image: url(${(props) => props.theme.pageBackground});
+  padding: 15px;
+  border: 1px solid ${(props) => props.theme.border};
+  position: relative;
+
+  @media (max-width: 576px) { 
+    height: calc(${window.innerHeight}px - 45px);
+    margin: 0px;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 0px;
+  }
+`
+
 export const CommentsBackground = styled.div`
   height: 600px;
   margin: 0px 20px 0px 20px;
@@ -352,12 +373,6 @@ export const FormComments = styled.div`
 `;
 
 export const CommentsPage = styled.div`
-  .single-comment-without-profileImg{
-    background-color: ${(props) => props.theme.theme === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(195, 195, 195, 0.7)'};
-    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'black'};
-    border: 1px solid black;
-  }
-
   .single-comment-avatar{
     position: relative;
   }
@@ -437,7 +452,7 @@ export const LightDrope = styled.div`
 
 export const ProfileCase = styled.div`
   border: 1px solid gray;
-  background: ${(props) => props.theme.theme === 'light' ? 'rgb(222, 222, 222)' : 'rgb(0,90,90)'};
+  background: ${(props) => props.theme.theme === 'light' ? 'rgb(222, 222, 222, 0.8)' : 'rgb(1,90,90, 0.7)'};
   padding: 5px;
   border-radius: 10px;
   display: flex;
@@ -447,6 +462,7 @@ export const ProfileCase = styled.div`
   position: relative;
 
   .profile-username{
+    margin-bottom: 5px;
     font-size: 22px;
     color: ${(props) => props.theme.theme === 'light' ? 'black' : 'rgb(32, 32, 55)'};
   }
@@ -472,8 +488,8 @@ export const ProfileCase = styled.div`
     font-size: 15px;
     margin-top: 15px;
     background: ${(props) => props.theme.theme === 'light' ? 'rgb(222, 222, 222)' : 'rgb(0,90,90)'};
-    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};
-    border: 1px solid ${(props) => props.theme.theme === 'light' ? 'rgb(5, 5, 5, 0.8)' : 'gray'};
+    color: black;
+    border: 1px solid gray;
     border-radius: 5px;
     padding: 5px 20px;
     &:hover{
@@ -484,26 +500,31 @@ export const ProfileCase = styled.div`
       background: ${(props) => props.theme.theme === 'light' ? 'rgb(197, 197, 197)' : 'rgb(0,55,55)'}
     }
   }
+
+  .offline-status{
+    color: ${(props) => props.theme.theme === 'light' ? 'red' : 'pink'};
+  }
 `
 
 export const PageAuth = styled.div`
   .authpage-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 80px 0px 80px 0px;
     background-image: url(${(props) => props.theme.pageBackground});
     margin: 0px 20px 20px 20px;
+    height: 600px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
 
     @media(min-width: 576px) {
       border: 1px solid ${(props) => props.theme.border};
-      borderBottomRightRadius: 3px;
-      borderBottomLeftRadius: 3px;
     }
 
     @media (max-width: 576px) { 
       border-top: 1px solid ${(props) => props.theme.border};
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       height: calc(${window.innerHeight}px - 45px);
       margin: 0px;
     } 

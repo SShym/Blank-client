@@ -1,6 +1,6 @@
-import '../SingleComment/SingleComment.css'
-import deleteSvg from '../../png/trash.svg'
-import editSvg from '../../png/edit.svg'
+import '../SingleComment/SingleComment.css';
+import deleteSvg from '../../png/trash.svg';
+import editSvg from '../../png/edit.svg';
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { commentDelete, SET_IMAGE_LOAD_TRUE } from "../../redux/actions";

@@ -1,0 +1,268 @@
+.wrap{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.messages-board{
+    margin-top: 45px;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    overflow-y: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 3px;
+}
+
+.create-message-wrap{
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.create-message{
+    position: relative;
+    border: 1px solid gray;
+    padding-left: 35px;
+    border-radius: 10px;
+    padding: 12px 35px;
+}
+
+.emoji-select-and-message{
+    position: relative;
+    flex-basis: 95%;
+    margin-right: 5px;
+}
+
+.emoji-svg{
+    transition: fill 0.3s;
+    cursor: pointer;
+    position: absolute;
+    fill: rgb(87, 87, 87);
+    z-index: 1;
+    bottom: 0;
+    transform: translate(8px, -50%);
+    left: 0;
+}
+
+.clip-svg{
+    fill: rgb(87, 87, 87);
+    transition: fill 0.3s;
+    cursor: pointer;
+    position: absolute;
+    transform: translate(-10px, -50%);
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 25px;
+}
+
+.clip-svg.active{
+    transition: fill 0.3s;
+    fill: rgb(0, 119, 199);}
+
+.block-private-message{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.block-private-message.active{
+    pointer-events: all;
+}
+
+.emoji-svg.active{
+    transition: fill 0.3s;
+    fill: rgb(0, 119, 199);
+}
+
+.voice-svg-wrap{
+    fill: rgb(87, 87, 87);
+    border: 1px solid gray;
+    cursor: pointer;
+    display: inline-flex;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.EmojiPickerWrap{
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0.3s;
+    animation: mainReverse;
+    animation-duration: 0.3s;
+    transform-origin: 0% 100%;
+    position: absolute;
+    bottom: 52px;
+    left: 0;
+}
+
+.EmojiPickerWrap.active{
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0.3s;
+    animation: main;
+    animation-duration: 0.3s;
+    transform-origin: 0% 100%;
+    position: absolute;
+    bottom: 52px;
+    left: 0;
+    z-index: 999;
+    pointer-events: all;
+}
+
+.fileuploadenable{
+    visibility: hidden;
+    transition: visibility 0.3s;
+    animation: mainReverse;
+    animation-duration: 0.3s;
+    transform-origin: 100% 100%;
+    position: absolute;
+    bottom: 52px;
+    right: 52px;
+}
+
+.fileuploadenable.active{
+    visibility: visible;
+    transition: visibility 0.3s;
+    animation: main;
+    animation-duration: 0.3s;
+    transform-origin: 100% 100%;
+    position: absolute;
+    bottom: 52px;
+    right: 52px;
+    z-index: 999;
+    pointer-events: all;
+}
+
+@keyframes main {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+}
+
+@keyframes mainReverse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+.photoOrFile-upload{
+    padding: 4px;
+    user-select: none;
+    background-color: #fff;
+    border-radius: 15px;
+    border: 1px solid gray;
+    display: flex;
+    flex-direction: column;
+}
+
+.photo, .file{
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 13px;
+    padding: 8px 25px;
+    border-radius: 10px;
+}
+
+.photo-svg{
+    width: 20px;
+    margin-right: 15px;
+}
+
+.file-svg{
+    width: 18px; 
+    margin-right: 15px;  
+}
+
+.file:hover{
+    background-color: rgba(0, 0, 0, 0.151);
+}
+
+.photo:hover{
+    background-color: rgba(0, 0, 0, 0.082);
+}
+
+.user-header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    display: flex;
+    font-size: 15px;
+    align-items: center;
+    padding: 5px 10px;
+    border: 1px solid;
+    margin: 5px;
+}
+
+.user-header-online{
+    color: rgba(0, 150, 32, 0.418);
+}
+
+.user-header-offline{
+    color: rgb(156, 0, 0, 0.5);
+}
+
+.chat-settings-svg{
+    cursor: pointer;
+}
+
+.chat-settings{
+    z-index: 999;
+    cursor: pointer;
+    user-select: none;
+    background-color: rgb(250, 250, 250);
+    padding: 10px 25px;
+    border-radius: 10px;
+    border: 1px solid;
+    right: 2px;
+    top: 50px;
+    position: absolute;
+    visibility: hidden;
+    transition: visibility 0.3s;
+    animation: mainReverse;
+    animation-duration: 0.3s;
+    transform-origin: 100% 0%;
+}
+
+.chat-settings-delete{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.chat-settings.active{
+    z-index: 999;
+    right: 2px;
+    top: 50px;
+    position: absolute;
+    visibility: visible;
+    transition: visibility 0.3s;
+    animation: main;
+    animation-duration: 0.3s;
+    transform-origin: 100% 0%;
+    pointer-events: all;
+}

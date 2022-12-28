@@ -140,7 +140,7 @@ export default function Comments({ socket, setTrackLocation }){
                             <FormComments>
                                 <form style={{position:'relative'}} onSubmit={handleUpdate}>
                                     <input disabled={disabled || user == null || error} type="text" value={editText} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} onChange={(e) => setEditText(e.target.value)}/>
-                                    <input disabled={disabled || user == null || error} name="file" id="file" className='comments-item-select-img' type="file" accept="image/png, image/gif, image/jpeg" onChange={handleOnChange} />
+                                    <input onClick={(e) => e.currentTarget.value = null} disabled={disabled || user == null || error} name="file" id="file" className='comments-item-select-img' type="file" accept="image/png, image/gif, image/jpeg" onChange={handleOnChange} />
                                     { (disabled || loading) &&
                                         <img className='comments-item-loader' src={loader} alt="" />
                                     } 
@@ -162,7 +162,7 @@ export default function Comments({ socket, setTrackLocation }){
                             <FormComments>
                                 <form style={{position:'relative'}} onSubmit={handleSubmit}>
                                     <input disabled={disabled || loading || user == null || error} value={textComment} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} placeholder={!disabled || !loading ? 'Message' : 'Loading...'} onChange={handleChange} type="text" />
-                                    <input disabled={disabled || loading || user == null || error} name="file" id="file" className='comments-item-select-img' type="file" accept="image/png, image/gif, image/jpeg" onChange={handleOnChange} />
+                                    <input onClick={(e) => e.currentTarget.value = null} disabled={disabled || loading || user == null || error} name="file" id="file" className='comments-item-select-img' type="file" accept="image/png, image/gif, image/jpeg" onChange={handleOnChange} />
                                     { (disabled || loading) &&
                                         <img className='comments-item-loader' src={loader} alt="" />
                                     } 
