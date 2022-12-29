@@ -56,7 +56,8 @@ export function errorOn(text){
 
 export function commentCreate(formData, {socket, setTextComment, setEditText, setPhoto}){ 
     return async dispatch => {
-        dispatch({ type: SET_DISABLED_TRUE })
+        dispatch({ type: SET_DISABLED_TRUE });
+        setTextComment('');
         API.post(`/comments/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -64,7 +65,6 @@ export function commentCreate(formData, {socket, setTextComment, setEditText, se
         }).then(() => {
             dispatch(commentsLoad(socket));
             setPhoto({ photoBase64: '', file: null });
-            setTextComment('');
             setEditText('');
             dispatch({ type: SET_DISABLED_FALSE });
         }).catch(res => {
@@ -302,6 +302,7 @@ export const getUsersOnline = (user, socket) => async (dispatch) => {
 export function commentCreateDirect(formData, setComment, socket, room, setOpen){ 
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE });
+        setComment({ commentText: '', photoFile: null });
         setOpen(false);
         API.post(`/commentsDirect/${room}`, formData, {
             headers: {
@@ -310,7 +311,6 @@ export function commentCreateDirect(formData, setComment, socket, room, setOpen)
         }).then((res) => {
             socket.emit('add-direct-comment', res.data);
         }).finally(() => {
-            setComment({ commentText: '', photoFile: null })
             dispatch({ type: SET_DISABLED_FALSE });
         }).catch(err => {
             dispatch(errorOn(err.response.data.error));

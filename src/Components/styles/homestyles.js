@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-export const theme = localStorage.getItem('theme');
-
 export const SwitchButton = styled.label`
   position: relative;
   display: inline-block;
@@ -203,19 +201,39 @@ export const PrivateMessagesBackground = styled.div`
     background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.6)'};
   }
   .photoOrFile-upload{
-    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.6)'};
+    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.9)'};
     color: ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};
 
     .photo, .file{
-      fill: ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};;
+      fill: ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};
     }
   }
   .chat-settings{
-    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.6)'};
+    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.9)'};
   }
   .user-header-offline{
     color: ${(props) => props.theme.theme === 'light' ? 'rgb(156, 0, 0, 0.5)' : 'rgb(156, 0, 0, 0.9)'};
   }
+`
+
+export const ProfileBackground = styled.div`
+  height: 600px;
+  margin: 0px 20px 0px 20px;
+  @media (max-width: 576px) { 
+    height: calc(${window.innerHeight}px - 45px);
+    margin: 0px;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 0px;
+  }
+  transition: all 0.5s;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background-image: url(${(props) => props.theme.pageBackground});
+  padding: 20px;
+  border: 1px solid ${(props) => props.theme.border};
+  position: relative;
 `
 
 export const CommentsBackground = styled.div`

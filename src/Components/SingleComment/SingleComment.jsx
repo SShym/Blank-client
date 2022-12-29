@@ -27,7 +27,7 @@ export default function SingleComment({socket, page, comments, photoSize, setId,
     const imageLoad = useSelector(state => state.appReducer.imageLoad);
     const matches = useMediaQuery('(min-width: 460px)');
     const mobileMatches = useMediaQuery('(min-width: 576px)');
-    
+
     useEffect(() => {
         gapi.load('client:auth2', ()=>{
           gapi.client.init({
@@ -48,8 +48,6 @@ export default function SingleComment({socket, page, comments, photoSize, setId,
     const handleInput = (e) => setCommentText(e.target.value);
 
     const handleClose = () => setOpenBackDrop(false);
-
-    const handleToggle = () => setOpenBackDrop(!openBackDrop);
     
     const handleDelete = (e) => {
         if(!disabled || !loading) {
@@ -59,9 +57,6 @@ export default function SingleComment({socket, page, comments, photoSize, setId,
     }
 
     const redirectToProfile = () => navigate(`/profile/${comments.creator}`);
-
-    console.log(fullScreenPhoto)
-
     return (
         <Layout>
             <CommentsPage photoSize={photoSize}>

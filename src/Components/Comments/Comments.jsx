@@ -186,26 +186,27 @@ export default function Comments({ socket, setTrackLocation }){
                             }
                         </div>   
                     </div>
-                    <div className='comments-block'>
-                        {comments.map(res => {
-                            return(
-                                <div>
-                                    <SingleComment 
-                                        socket={socket}
-                                        disabled={disabled}
-                                        loading={loading}
-                                        comments={res}
-                                        photoSize={res.photoSize} 
-                                        setId={setId} 
-                                        setEditText={setEditText} 
-                                        setEditMode={setEditMode}
-                                        setPhoto={setPhoto}
-                                        setEditPhoto={setEditPhoto}
-                                    />
-                                </div>
-                            )
-                        })}
-                    </div>
+                        <div className='comments-block'>
+                            {comments.map(res => {
+                                return(
+                                    <div>
+                                        <SingleComment 
+                                            socket={socket}
+                                            disabled={disabled}
+                                            loading={loading}
+                                            comments={res}
+                                            photoSize={res.photoSize} 
+                                            setId={setId} 
+                                            setEditText={setEditText} 
+                                            setEditMode={setEditMode}
+                                            setPhoto={setPhoto}
+                                            setEditPhoto={setEditPhoto}
+                                        />
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    
                 </div>
             </CommentsBackground>
         </Layout>

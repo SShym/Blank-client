@@ -90,6 +90,7 @@
 }
 
 .single-comment-text{
+  min-height: 35px;
   margin-left: 8px;
   margin-right: 20px;
   word-break: normal;

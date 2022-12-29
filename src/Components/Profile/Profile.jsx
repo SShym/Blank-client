@@ -1,15 +1,15 @@
-import x from './Profile.module.scss';
-import { useContext } from "react";
+import './Profile.css';
 import profileImg from '../../png/profile.webp'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserProfile, getUsersOnline } from '../../redux/actions';
-import { CommentsBackground, LightDrope, ProfileCase } from '../styles/homestyles';
-
+import { LightDrope, ProfileBackground, ProfileCase } from '../styles/homestyles';
 import Layout from '../styles/Layout';
+import { ReactComponent as Loader } from '../../png/loaderGear.svg';
 
 const Profile = ({ socket }) => {
+    const [timer, setTimer] = useState(false);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [validProfile, setValidProfile] = useState(false);
 
@@ -23,6 +23,11 @@ const Profile = ({ socket }) => {
     useEffect(() => {  
         dispatch(getUsersOnline(user, socket))
         dispatch(getUserProfile(param.id, setValidProfile));
+
+        // Set a delay to prevent flicker image (loader)
+        setTimeout(() => {
+            setTimer(true)
+        }, 1500)
     }, [])
 
     const redirect = () => {
@@ -35,38 +40,42 @@ const Profile = ({ socket }) => {
 
     return(
         <Layout>
-            <CommentsBackground>
-                    <LightDrope>
-                        <ul className={x.lightrope}>
-                            <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
-                        </ul>
-                    </LightDrope>
-                {validProfile &&
-                <div className={x.wrap}>
-                    <ProfileCase style={{display: profile ? 'flex' : 'none', userSelect:'none'}} className={x.profile}>
-                        <div>
-                            <div className='profile-username'>
-                                {profile?.userName}
+            <ProfileBackground>
+                
+                <LightDrope>
+                    <ul className="lightrope">
+                        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+                    </ul>
+                </LightDrope>
+                {validProfile ?
+                    <div className="wrap">
+                        <ProfileCase style={{display: profile ? 'flex' : 'none', userSelect:'none'}}>
+                            <div>
+                                <div className='profile-username'>
+                                    {profile?.userName}
+                                </div>
+                                <img style={{ objectFit:'cover', marginTop:'5px', width:'150px', height: '150px'}} src={profile?.userAvatar ? profile?.userAvatar : profileImg} alt="" />
                             </div>
-                            <img style={{ objectFit:'cover', marginTop:'5px', width:'150px', height: '150px'}} src={profile?.userAvatar ? profile?.userAvatar : profileImg} alt="" />
-                        </div>
-                        <div>
-                            {param.id !== (user?.result.googleId ? user?.result.googleId : user?.result._id) &&
-                                <button onClick={redirect} className='profile-message-button'>
-                                    message
-                                </button>  
-                            }
-                            <div className='online-status'>
-                                {usersOnline.some(user => user.userId === param.id) ?
-                                    <div style={{color:'green'}}>online</div>
-                                    : <div className='offline-status'>offline</div>
+                            <div>
+                                {param.id !== (user?.result.googleId ? user?.result.googleId : user?.result._id) &&
+                                    <button onClick={redirect} className='profile-message-button'>
+                                        message
+                                    </button>  
                                 }
+                                <div className='online-status'>
+                                    {usersOnline.some(user => user.userId === param.id) ?
+                                        <div style={{color:'green'}}>online</div>
+                                        : <div className='offline-status'>offline</div>
+                                    }
+                                </div>
                             </div>
-                        </div>
-                    </ProfileCase>
+                        </ProfileCase>
+                    </div>
+                : <div style={{display: timer ? 'block' : 'none'}} className='profile-loader'>
+                    <Loader className='profile-loader-svg' />
                 </div>
-                }
-            </CommentsBackground>
+            }
+            </ProfileBackground>
         </Layout>
     )
 }

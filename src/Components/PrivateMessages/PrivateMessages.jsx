@@ -40,6 +40,7 @@ const PrivateMessages = ({ socket }) => {
     const usersOnline = useSelector(state => state.authReducer.usersOnline);
     const commentsDirect = useSelector(state => state.commentReducer.commentsDirect);
     const disabled = useSelector(state => state.appReducer.disabled);
+    const loading = useSelector(state => state.appReducer.loading);
 
     ///// modal with img ////
     useEffect(() => {
@@ -48,7 +49,7 @@ const PrivateMessages = ({ socket }) => {
             setFileUploadEnable(false);
         }   
     }, [comment.photoFile])
-
+    
     useEffect(() => {
         dispatch(getUserProfile(param.id));
         dispatch(getUsersOnline(user, socket));
@@ -133,7 +134,7 @@ const PrivateMessages = ({ socket }) => {
             <PrivateMessagesBackground>
             { (profile && param.id !== (user.result.googleId ? user.result.googleId : user.result._id)) &&
             <>
-                <div className='wrap'>
+                <div className='profile-wrap'>
                     <Backdrop
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                         open={open}
@@ -161,7 +162,7 @@ const PrivateMessages = ({ socket }) => {
                                 </div>
                                 <div style={{display:'flex', alignItems:'center', justifyContent: 'center', width:'100%' }}>
                                     {isFileImage(comment?.photoFile)
-                                        ? <img onLoad={onImgLoad} style={{ width:'100%', maxWidth:'100%' }} src={previewPhoto} alt="" />
+                                        ? <img onLoad={onImgLoad} style={{ maxWidth:'100%', maxHeight:'75vh' }} src={previewPhoto} alt="" />
                                         : <div style={{color:'black', margin:'15px', display:'flex', alignItems:'center'}}>
                                             <div style={{ width:'30px', height:'30px', marginRight:'10px', position:'relative'}}>
                                                 <FileMulticolor  />
@@ -243,7 +244,7 @@ const PrivateMessages = ({ socket }) => {
                                     }
                                 }} 
                             />
-                            <input disabled={disabled}
+                            <input disabled={disabled || loading}
                                 value={open ? '' : comment.commentText} 
                                 onChange={(e) => setComment({
                                     photoFile: comment.photoFile,
@@ -272,7 +273,7 @@ const PrivateMessages = ({ socket }) => {
                             </div>
                             <div className={emojienable ? 'EmojiPickerWrap active' : 'EmojiPickerWrap'}>
                                 <Picker
-                                    theme={theme === 'light' ? 'light' : 'dark'}
+                                    theme={localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'}
                                     sheetSize="20"
                                     width="30px"
                                     emojiSize={20}
