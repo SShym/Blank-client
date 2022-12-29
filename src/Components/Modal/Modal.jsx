@@ -50,7 +50,9 @@ const Modal = ({ modal, setModal, matches, disabled, handleDelete }) => {
                                      variant="contained"
                                      theme={red}
                                     >
-                                    <CircularProgress sx={{ color:'white', display:'flex', flexDirection:'column', justifyContent:'center', mr: 1}} size={15} />
+                                    <div>
+                                        <CircularProgress sx={{ color:'white', display:'flex', flexDirection:'column', justifyContent:'center', mr: 1}} size={15} />
+                                    </div>
                                     delete
                                 </Button> 
                                 :
@@ -83,9 +85,9 @@ const Modal = ({ modal, setModal, matches, disabled, handleDelete }) => {
                                     variant="contained"
                                     theme={red}
                                 >
-                                    <CircularProgress sx={{ color:'white', display:'flex', flexDirection:'column', justifyContent:'center', mr: 1}} 
-                                        size={15} 
-                                    />
+                                    <div>
+                                        <CircularProgress sx={{ color:'white', display:'flex', flexDirection:'column', justifyContent:'center', mr: 1}} size={15} />
+                                    </div>
                                     delete
                                 </Button> 
                                 :

@@ -90,7 +90,6 @@
     display: inline-flex;
     padding: 10px;
     border-radius: 50%;
-    background-color: #fff;
 }
 
 .EmojiPickerWrap{
@@ -168,7 +167,6 @@
 .photoOrFile-upload{
     padding: 4px;
     user-select: none;
-    background-color: #fff;
     border-radius: 15px;
     border: 1px solid gray;
     display: flex;
@@ -209,7 +207,6 @@
     top: 0;
     left: 0;
     right: 0;
-    background-color: #fff;
     display: flex;
     font-size: 15px;
     align-items: center;
@@ -220,10 +217,6 @@
 
 .user-header-online{
     color: rgba(0, 150, 32, 0.418);
-}
-
-.user-header-offline{
-    color: rgb(156, 0, 0, 0.5);
 }
 
 .chat-settings-svg{

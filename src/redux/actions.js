@@ -54,12 +54,6 @@ export function errorOn(text){
     }
 }
 
-export function errorOff(){
-    return{
-        type: ERROR_DISPLAY_OFF,
-    }
-}
-
 export function commentCreate(formData, {socket, setTextComment, setEditText, setPhoto}){ 
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE })
@@ -73,50 +67,10 @@ export function commentCreate(formData, {socket, setTextComment, setEditText, se
             setTextComment('');
             setEditText('');
             dispatch({ type: SET_DISABLED_FALSE });
-            dispatch(errorOff());
         }).catch(res => {
             dispatch(errorOn(res.response.data.error));
             dispatch({ type: SET_DISABLED_FALSE })
         })
-    }
-}
-
-export function commentCreateDirect(formData, setComment, socket, room, setOpen){ 
-    return async dispatch => {
-        dispatch({ type: SET_DISABLED_TRUE })
-        API.post(`/commentsDirect/${room}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then((res) => {
-            socket.emit('add-direct-comment', res.data);
-            dispatch({ type: SET_DISABLED_FALSE });
-            setOpen(false);
-            setComment({ commentText: '', photoFile: null })
-            dispatch(errorOff());
-        }).catch(err => {
-            dispatch(errorOn(err.response.data.error));
-            dispatch({ type: SET_DISABLED_FALSE })
-        })
-    }
-}
-
-export function commentsLoadDirect(socket, room){
-    return async dispatch => {
-        try{
-            dispatch(loaderOn());
-            socket.emit("join-room", room);
-            socket.on("direct-comments", (comments) => {
-                dispatch({ type: COMMENTS_LOAD_DIRECT, data: comments });
-                dispatch(errorOff());
-                dispatch(loaderOff());
-                dispatch({type: SET_CHANGES_FALSE});
-            })
-        } catch(err){
-            console.log(err)
-            dispatch(errorOn(`${err.response.status} ${err.response.statusText}`));
-            dispatch(loaderOff());
-        }
     }
 }
 
@@ -211,7 +165,6 @@ export function commentsLoad(socket){
             socket.emit('comments:get');
             socket.on('comments', (messages) => {
                 dispatch({ type: COMMENTS_LOAD, data: messages });
-                dispatch(errorOff());
                 dispatch(loaderOff());
                 dispatch({type: SET_CHANGES_FALSE});
             })                
@@ -231,7 +184,6 @@ export const signin = (formData, navigate, socket) => async (dispatch) => {
         dispatch({ type: AUTH, data: res.data });
         dispatch({ type: SET_DISABLED_FALSE });
         navigate('/comments?page=1');
-        dispatch(errorOff());
       });
     } catch (error) {
         dispatch(errorOn(error.response.data.message));
@@ -239,11 +191,11 @@ export const signin = (formData, navigate, socket) => async (dispatch) => {
     }
 };
 
-export const signup = (formData, navigate, setVerifyStatus) => async (dispatch) => {
+export const signup = (formData, setVerifyStatus) => async (dispatch) => {
     try {
       dispatch({ type: SET_DISABLED_TRUE })
-      await API.post('/register', formData).then(() => {
-        dispatch(errorOff());
+      await API.post('/register', formData).then((res) => {
+        console.log(res)
         setVerifyStatus(true);
         dispatch({ type: SET_DISABLED_FALSE });
       })
@@ -260,7 +212,6 @@ export const googleAuth = (formData, navigate, socket) => async (dispatch) => {
         socket.emit('login', { id: res.data.result.googleId });
         dispatch({ type: AUTH, data: res.data });
         navigate('/comments');
-        dispatch(errorOff());
         dispatch({ type: SET_DISABLED_FALSE });
       })
     } catch (error) {
@@ -293,7 +244,7 @@ export const verifyMailOnLoad = (formData, navigate, decode, setValidUrl) => asy
                     setTimeout(() => {
                         dispatch(signin({
                             email: res.data.user.email,
-                            password: res.data.user.password,
+                            passwordVerify: res.data.user.password,
                         }, navigate));
                     }, 3000);
                 };
@@ -304,9 +255,10 @@ export const verifyMailOnLoad = (formData, navigate, decode, setValidUrl) => asy
     }
 };
 
-export const deleteSchema = (formData, navigate, socket) => async (dispatch) => {
+export const deleteSchema = (formData, user, navigate, socket) => async (dispatch) => {
     try {
-        await API.post(`/delete/${formData.id}`, formData).then((res) => {
+        await API.post(`/delete/${formData.id}`, formData).then(() => {
+            socket.emit('disconnectById', { id: user.result.googleId ? user.result.googleId : user.result._id });
             dispatch({type: LOGOUT});
             dispatch(commentsLoad(socket));
             navigate('/comments');
@@ -318,13 +270,9 @@ export const deleteSchema = (formData, navigate, socket) => async (dispatch) => 
 
 export const getUserProfile = (id, setValidProfile) => async (dispatch) => {
     try {
-        await API.post(`/profile`, id).then((res) => {
-            if(res.data.message === `User doesn't exist`){
-                setValidProfile &&setValidProfile('invalid');
-            } else {
-                setValidProfile && setValidProfile('valid');
-                dispatch({ type: SET_PROFILE, data: res.data });
-            }
+        await API.get(`/profile/${id}`).then((res) => {
+            setValidProfile && setValidProfile(true);
+            dispatch({ type: SET_PROFILE, data: res.data });
         })
     } catch (error) {
         dispatch(errorOn(error.response.data.message));
@@ -349,12 +297,52 @@ export const getUsersOnline = (user, socket) => async (dispatch) => {
     }
 }
 
+//////////////////////////////// DIRECT ////////////////////////////////////
+
+export function commentCreateDirect(formData, setComment, socket, room, setOpen){ 
+    return async dispatch => {
+        dispatch({ type: SET_DISABLED_TRUE });
+        setOpen(false);
+        API.post(`/commentsDirect/${room}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((res) => {
+            socket.emit('add-direct-comment', res.data);
+        }).finally(() => {
+            setComment({ commentText: '', photoFile: null })
+            dispatch({ type: SET_DISABLED_FALSE });
+        }).catch(err => {
+            dispatch(errorOn(err.response.data.error));
+            dispatch({ type: SET_DISABLED_FALSE })
+        })
+    }
+}
+
+export function commentsLoadDirect(socket, room){
+    return async dispatch => {
+        try{
+            dispatch(loaderOn());
+            socket.emit("join-room", room);
+            socket.on("direct-comments", (comments) => {
+                dispatch({ type: COMMENTS_LOAD_DIRECT, data: comments });
+                dispatch(loaderOff());
+                dispatch({type: SET_CHANGES_FALSE});
+            })
+        } catch(err){
+            dispatch(errorOn(`${err.response.status} ${err.response.statusText}`));
+        }
+    }
+}
+
 export const deleteDirectChat = (socket, room, setChatSettings) => async (dispatch) => {
     try {
-        console.log('1')
+        setChatSettings(false);
+        dispatch({ type: SET_DISABLED_TRUE });
         await API.post(`delete-direct-chat/${room}`).then(() => {
             socket.emit('delete-direct-chat', room);
-            setChatSettings(false);
+        }).finally(() => {
+            dispatch({ type: SET_DISABLED_FALSE });        
         })
     } catch (error) {
         dispatch(errorOn(error.response.data.message));

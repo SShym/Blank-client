@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as ImageSvg } from '../../png/image.svg';
-import { commentCreate, commentUpdate } from "../../redux/actions";
+import { commentCreate, commentUpdate, getUsersOnline } from "../../redux/actions";
 import { CommentsBackground, FormComments } from '../styles/homestyles';
 import loader from '../../png/loaderGear.svg';
 import Layout from '../styles/Layout';
@@ -42,7 +42,10 @@ export default function Comments({ socket, setTrackLocation }){
     const handleChange = (e) => setTextComment(e.target.value)
 
     // eslint-disable-next-line
-    useEffect(() => setTrackLocation(location.pathname), []);
+    useEffect(() => {
+        setTrackLocation(location.pathname);
+        dispatch(getUsersOnline(user, socket));
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();

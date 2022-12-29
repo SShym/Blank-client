@@ -188,6 +188,32 @@ export const PrivateMessagesBackground = styled.div`
     border-bottom: none;
     border-radius: 0px;
   }
+
+  .user-header{
+    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 82, 82, 0.6)'};
+  }
+
+  .create-message{
+    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.6)'};
+    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};
+  }
+  .voice-svg-wrap{
+    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.6)'};
+  }
+  .photoOrFile-upload{
+    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.6)'};
+    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};
+
+    .photo, .file{
+      fill: ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};;
+    }
+  }
+  .chat-settings{
+    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.6)'};
+  }
+  .user-header-offline{
+    color: ${(props) => props.theme.theme === 'light' ? 'rgb(156, 0, 0, 0.5)' : 'rgb(156, 0, 0, 0.9)'};
+  }
 `
 
 export const CommentsBackground = styled.div`
@@ -243,7 +269,7 @@ export const EmailVerifyBackground = styled.div`
   justify-content: center;
   align-items: center;
   transition: all 0.5s;
-  min-height: 550px;
+  min-height: 600px;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   background-image: url(${(props) => props.theme.pageBackground});
@@ -462,6 +488,8 @@ export const ProfileCase = styled.div`
   position: relative;
 
   .profile-username{
+    word-break: break-all;
+    max-width: 250px;
     margin-bottom: 5px;
     font-size: 22px;
     color: ${(props) => props.theme.theme === 'light' ? 'black' : 'rgb(32, 32, 55)'};
@@ -502,7 +530,7 @@ export const ProfileCase = styled.div`
   }
 
   .offline-status{
-    color: ${(props) => props.theme.theme === 'light' ? 'red' : 'pink'};
+    color: ${(props) => props.theme.theme === 'light' ? 'red' : 'rgb(156, 0, 0, 0.7)'};
   }
 `
 

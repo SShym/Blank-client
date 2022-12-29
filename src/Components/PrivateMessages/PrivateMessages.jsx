@@ -19,9 +19,10 @@ import Backdrop from '@mui/material/Backdrop';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import CircularProgress from '@mui/material/CircularProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const PrivateMessages = ({ socket }) => {   
+    const [theme] = useState(localStorage.getItem('theme'));
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     
     const [open, setOpen] = useState(false);
@@ -29,7 +30,8 @@ const PrivateMessages = ({ socket }) => {
     const [fileuploadenable, setFileUploadEnable] = useState(false);
     const [chatSettings, setChatSettings] = useState(false);
     const [previewPhoto, setPreviewPhoto] = useState('');
-    const [comment, setComment] = useState({ commentText: '', photoFile: null })
+    const [comment, setComment] = useState({ commentText: '', photoFile: null });
+    const [photoSize, setPhotoSize] = useState({width: '', height: ''});
 
     const param = useParams();
     const dispatch = useDispatch();
@@ -49,7 +51,7 @@ const PrivateMessages = ({ socket }) => {
     }, [comment.photoFile])
 
     useEffect(() => {
-        dispatch(getUserProfile({id: param.id}));
+        dispatch(getUserProfile(param.id));
         dispatch(getUsersOnline(user, socket));
         dispatch(commentsLoadDirect(socket, room));
         return () => {
@@ -107,16 +109,24 @@ const PrivateMessages = ({ socket }) => {
         const formData = {
             comment: comment.commentText, 
             photo: comment.photoFile,
+            photoSize: photoSize,
             timeCreate: date,
             name: user.result.name,
             avatar: user.result.avatar,
             changed: false, 
-            creator: user.result._id ? user.result._id : user.result.googleId,
+            creator: user.result.googleId ? user.result.googleId : user.result._id,
         }
 
         if(comment.commentText.length > 0){
             dispatch(commentCreateDirect(formData, setComment, socket, room, setOpen));
         }    
+    }
+
+    const onImgLoad = (e) => {
+        setPhotoSize({
+            width: e.target.offsetWidth,
+            height: e.target.offsetHeight
+        });
     }
 
     return(
@@ -135,9 +145,7 @@ const PrivateMessages = ({ socket }) => {
                                 photoFile: null
                             })   
                         }}>
-                        {disabled 
-                        ?   <CircularProgress color="inherit" />
-                        :   <div onClick={e => e.stopPropagation()} style={{ display: open ? 'flex' : 'none', margin:'10px', flexDirection:'column', alignItems:'flex-end', maxWidth:'550px', background: '#fff', padding:'10px', borderRadius:'8px' }}>
+                            <form onSubmit={handleSubmit} onClick={e => e.stopPropagation()} style={{ display: open ? 'flex' : 'none', margin:'10px', flexDirection:'column', alignItems:'flex-end', maxWidth:'550px', background: '#fff', padding:'10px', borderRadius:'8px' }}>
                                 <div style={{marginBottom:'8px', display:'flex', width:'100%', alignItems:'center', justifyContent:'center'}}>
                                     <div style={{ color:'black', flexBasis:'90%', fontSize:'20px', fontWeight:'500', marginLeft:'10px'}}>
                                         Send photo
@@ -148,7 +156,7 @@ const PrivateMessages = ({ socket }) => {
                                 </div>
                                 <div style={{display:'flex', alignItems:'center', justifyContent: 'center', width:'100%' }}>
                                     {isFileImage(comment?.photoFile)
-                                        ? <img style={{ width:'100%' }} src={previewPhoto} alt="" />
+                                        ? <img onLoad={onImgLoad} style={{ height: '300px' }} src={previewPhoto} alt="" />
                                         : <div style={{color:'black', margin:'15px', display:'flex', alignItems:'center'}}>
                                             <div style={{width:'30px', height:'30px', marginRight:'10px', position:'relative'}}>
                                                 <FileMulticolor  />
@@ -177,8 +185,8 @@ const PrivateMessages = ({ socket }) => {
                                         commentText: e.target.value
                                     })} 
                                 />
-                            </div>
-                        }
+                                <input type="submit" hidden />
+                            </form>
                     </Backdrop>
                     <div className='user-header'>
                         <div style={{ flexBasis:'95%', display:'flex', alignItems:'center' }}>
@@ -186,7 +194,12 @@ const PrivateMessages = ({ socket }) => {
                                 <Avatar src={profile?.userAvatar} sx={{ width:30, height:30, mr: 1 }} />
                             </div>
                             <div>
-                            <div>{profile?.userName}</div>
+                            <div>
+                                {profile?.userName.length > 25 
+                                    ? profile?.userName.slice(0, 25) + '...'
+                                    : profile?.userName
+                                }
+                            </div>
                             { usersOnline.some(user => user.userId === param.id)
                                 ? <div className='user-header-online'>online</div>
                                 : <div className='user-header-offline'>offline</div>
@@ -203,34 +216,39 @@ const PrivateMessages = ({ socket }) => {
                     </div>
                     <div className='messages-board'>
                     {commentsDirect.map(res => {
-                            return(
-                                <SinglePrivateComment 
-                                    comments={res}
-                                    setComment={setComment}
-                                />
-                            )
+                        return(
+                            <SinglePrivateComment
+                                photoSize={res.photoSize} 
+                                comments={res}
+                                setComment={setComment}
+                            />
+                        )
                     })}
                     <div ref={commentsDirectRef} />
                     </div>
                     <div className='create-message-wrap'>
                         <form onSubmit={handleSubmit} className='emoji-select-and-message'>
-                            <Emoji  
+                            <Emoji
                                 onClick={() => {
-                                    SetEmojiEnable(prev => !prev);
-                                    setChatSettings(false);
-                                    setFileUploadEnable(false)
+                                    if(!disabled){
+                                        SetEmojiEnable(prev => !prev);
+                                        setChatSettings(false);
+                                        setFileUploadEnable(false)
+                                    }
                                 }} 
                                 className={emojienable ? 'emoji-svg active' : 'emoji-svg'} 
                             />
                             <Clip 
                                 className={fileuploadenable ? "clip-svg active" : "clip-svg"} 
                                 onClick={() => {
-                                    setFileUploadEnable((prev) => !prev);
-                                    setChatSettings(false);
-                                    SetEmojiEnable(false)
+                                    if(!disabled){
+                                        setFileUploadEnable((prev) => !prev);
+                                        setChatSettings(false);
+                                        SetEmojiEnable(false)
+                                    }
                                 }} 
                             />
-                            <input 
+                            <input disabled={disabled}
                                 autoFocus
                                 value={open ? '' : comment.commentText} 
                                 onChange={(e) => setComment({
@@ -241,9 +259,9 @@ const PrivateMessages = ({ socket }) => {
                             />
                             <input type="submit" hidden/>
                         </form>
-                        <div className="voice-svg-wrap">
+                        <button className="voice-svg-wrap">
                             <Voice className="voice-svg" />
-                        </div>
+                        </button>
                             <div className={fileuploadenable ? 'fileuploadenable active' : 'fileuploadenable'}>
                                 <div className='photoOrFile-upload'>
                                     <label for="photo" className='photo'>
@@ -260,6 +278,7 @@ const PrivateMessages = ({ socket }) => {
                             </div>
                             <div className={emojienable ? 'EmojiPickerWrap active' : 'EmojiPickerWrap'}>
                                 <Picker
+                                    theme={theme === 'light' ? 'light' : 'dark'}
                                     sheetSize="20"
                                     width="30px"
                                     emojiSize={20}
@@ -276,9 +295,9 @@ const PrivateMessages = ({ socket }) => {
                     </div>
                 </div>
                 <div 
-                    className={
-                        emojienable || fileuploadenable || chatSettings 
-                        ? 'block-private-message active' : 'block-private-message'
+                    className={emojienable || fileuploadenable || chatSettings 
+                        ? 'block-private-message active' 
+                        : 'block-private-message'
                     } 
                     onClick={() => {
                         SetEmojiEnable(false);
@@ -287,6 +306,11 @@ const PrivateMessages = ({ socket }) => {
                     }}>
                 </div>
                 </>
+            }
+            {disabled && 
+                <div style={{position:'absolute', left:'3px', bottom:'2px', right:'3px'}}>
+                    <LinearProgress sx={{ borderRadius: '20px' }}/>
+                </div>
             }
             </PrivateMessagesBackground>
         </Layout>

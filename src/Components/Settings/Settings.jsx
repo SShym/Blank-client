@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { verifyMail, deleteSchema, changeSettings, errorOff, loadAuthData } from "../../redux/actions";
+import { verifyMail, deleteSchema, changeSettings, loadAuthData, getUsersOnline } from "../../redux/actions";
 import { GlobalContext } from '../styles/globalContext';
 import { SwitchButton } from "../styles/homestyles";
 import Layout from '../styles/Layout';
@@ -88,7 +88,7 @@ const Settings = ({ socket }) => {
     const matchesSettings = useMediaQuery('(max-width: 575px)');
     const authData = useSelector(state => state.authReducer.authData);
     const disabled = useSelector(state => state.appReducer.disabled)
-    
+
     useEffect(() => {
         !user.result.googleId && dispatch(loadAuthData({ 
             socket,
@@ -97,7 +97,7 @@ const Settings = ({ socket }) => {
                 token: user.token
             }
         }, setLoading));
-        dispatch(errorOff())
+        dispatch(getUsersOnline(user, socket));
     }, []); // eslint-disable-line
 
     useEffect(() => window.localStorage.setItem("theme", theme), [theme]);
@@ -126,7 +126,7 @@ const Settings = ({ socket }) => {
 
         const formData = {
             token: user.token,
-            id: user.result._id,
+            id: user.result.googleId ? user.result.googleId : user.result._id,
             photo: form.photo,
             firstName: form.firstName,
             lastName: form.lastName,
@@ -135,10 +135,10 @@ const Settings = ({ socket }) => {
         dispatch(changeSettings(formData, socket));
     };
 
-    const formData = user.result._id ? { id: user.result._id } : { id: user.result.googleId}
+    const formData = user.result.googleId ? { id: user.result.googleId } : { id: user.result._id }
 
     const handleDeleteProfile = () => {
-        dispatch(deleteSchema(formData, navigate, socket))
+        dispatch(deleteSchema(formData, user, navigate, socket))
     }
 
     const handleOnChange = (e) => {

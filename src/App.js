@@ -13,7 +13,7 @@ import PrivateMessages from './Components/PrivateMessages/PrivateMessages';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import io from 'socket.io-client';
 
-const socket = io.connect('https://sqmr.onrender.com/');
+const socket = io.connect('https://sqmr.onrender.com');
 
 function App() {
   ////////////////////////////////////////////////////////////////

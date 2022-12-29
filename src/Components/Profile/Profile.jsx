@@ -11,7 +11,7 @@ import Layout from '../styles/Layout';
 
 const Profile = ({ socket }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    const [validProfile, setValidProfile] = useState('');
+    const [validProfile, setValidProfile] = useState(false);
 
     const profile = useSelector(state => state.authReducer.profile);
     const usersOnline = useSelector(state => state.authReducer.usersOnline);
@@ -22,7 +22,7 @@ const Profile = ({ socket }) => {
 
     useEffect(() => {  
         dispatch(getUsersOnline(user, socket))
-        dispatch(getUserProfile({ id: param.id }, setValidProfile));
+        dispatch(getUserProfile(param.id, setValidProfile));
     }, [])
 
     const redirect = () => {
@@ -41,15 +41,17 @@ const Profile = ({ socket }) => {
                             <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
                         </ul>
                     </LightDrope>
-                {validProfile === 'valid' ?
+                {validProfile &&
                 <div className={x.wrap}>
                     <ProfileCase style={{display: profile ? 'flex' : 'none', userSelect:'none'}} className={x.profile}>
                         <div>
-                            <div className='profile-username'>{profile?.userName}</div>
+                            <div className='profile-username'>
+                                {profile?.userName}
+                            </div>
                             <img style={{ objectFit:'cover', marginTop:'5px', width:'150px', height: '150px'}} src={profile?.userAvatar ? profile?.userAvatar : profileImg} alt="" />
                         </div>
                         <div>
-                            {param.id !== (user.result.googleId ? user.result.googleId : user.result._id) &&
+                            {param.id !== (user?.result.googleId ? user?.result.googleId : user?.result._id) &&
                                 <button onClick={redirect} className='profile-message-button'>
                                     message
                                 </button>  
@@ -63,11 +65,6 @@ const Profile = ({ socket }) => {
                         </div>
                     </ProfileCase>
                 </div>
-                : validProfile === 'invalid' ?
-                    <div className={x.wrap}>
-                        <span className='no-profile'>The profile has been deleted <br/>or doesn't exist.</span>
-                    </div>
-                : ''
                 }
             </CommentsBackground>
         </Layout>

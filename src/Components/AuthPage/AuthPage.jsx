@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import Icon from './icon';
 import successSvg from '../../png/success.svg';
-import { signin, signup, errorOff, googleAuth } from '../../redux/actions';
+import { signin, signup, googleAuth } from '../../redux/actions';
 import useStyles from './styles';
 import Input from './Input';
 import Layout from '../styles/Layout';
@@ -24,8 +24,6 @@ const theme = createTheme({
 });
 
 const SignUp = ({ socket }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-
   const [form, setForm] = useState(initialState);
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +38,6 @@ const SignUp = ({ socket }) => {
   document.body.className = localStorage.getItem('theme');
 
   const switchMode = () => {
-    dispatch(errorOff())
     setIsSignup((prevIsSignup) => !prevIsSignup);
     setShowPassword(false);
   };
@@ -50,7 +47,7 @@ const SignUp = ({ socket }) => {
 
     if (isSignup) {
       try {
-        dispatch(signup(form, navigate, setVerifyStatus));
+        dispatch(signup(form, setVerifyStatus));
       } catch(error) {
         console.log(error);
       }
@@ -109,7 +106,9 @@ const SignUp = ({ socket }) => {
                         <button  type="submit" className="authpage-button">
                           {disabled ?
                             <div style={{display:'flex'}}>
-                              <CircularProgress theme={theme} sx={{ display:'flex', flexDirection:'column', justifyContent:'center', mr: 0.8 }} size={10} color="secondary"/>
+                              <div>
+                                <CircularProgress theme={theme} sx={{ display:'flex', flexDirection:'column', justifyContent:'center', mr: 0.8 }} size={10} color="secondary"/>
+                              </div>
                               <div>SIGN UP</div>
                             </div>
                             : <div>SIGN UP</div>
@@ -119,7 +118,9 @@ const SignUp = ({ socket }) => {
                         <button  type="submit" className="authpage-button">
                         {disabled ?
                           <div style={{display:'flex'}}>
-                            <CircularProgress theme={theme} sx={{ display:'flex', flexDirection:'column', justifyContent:'center', mr: 0.8 }} size={10} color="secondary"/>
+                            <div>
+                              <CircularProgress theme={theme} sx={{ display:'flex', flexDirection:'column', justifyContent:'center', mr: 0.8 }} size={10} color="secondary"/>
+                            </div>
                             <div>SIGN IN</div>
                           </div>
                           : <div>SIGN IN</div>

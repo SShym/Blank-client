@@ -1,11 +1,10 @@
 import './SinglePrivateComment.css';
 import { useDispatch, useSelector } from "react-redux";
-import deleteSvg from '../../png/trash.svg';
-import editSvg from '../../png/edit.svg';
+import { SET_IMAGE_LOAD_TRUE } from '../../redux/actions';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useState } from "react";
 
-const SinglePrivateComment = ({ comments }) => {
+const SinglePrivateComment = ({ comments, photoSize }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     
     const dispatch = useDispatch();
@@ -29,10 +28,44 @@ const SinglePrivateComment = ({ comments }) => {
                                 </div>
                             </div>
                             { comments.photo &&
-                                <div className='single-comment-img'>
-                                    <img style={{maxWidth:'400px'}} src={comments.photo} alt="" />
+                            <div className='single-comment-img'>
+                                <img style={{
+                                        display: imageLoad ? "block" : "none",
+                                        
+                                        height: `${
+                                            mobileMatches ? photoSize?.height*1.1
+                                            : matches ? photoSize?.height*1
+                                            : photoSize?.height*0.8
+                                        }px`,
+                                        
+                                        width: `${
+                                            mobileMatches ? photoSize?.width*1.1 
+                                            : matches ? photoSize?.width*1
+                                            : photoSize?.width*0.8
+                                        }px`,
+                                    }}
+                                    onLoad={() => dispatch({ type: SET_IMAGE_LOAD_TRUE })} 
+                                    src={comments.photo} 
+                                    alt="" 
+                                />
+                                <div className='skeleton' style={{
+                                    display: imageLoad ? "none" : "block",
+
+                                    height: `${
+                                        mobileMatches ? photoSize?.height*1.1
+                                        : matches ? photoSize?.height*1
+                                        : photoSize?.height*0.8
+                                    }px`,
+                                        
+                                    width: `${
+                                        mobileMatches ? photoSize?.width*1.1
+                                        : matches ? photoSize?.width*1
+                                        : photoSize?.width*0.8
+                                    }px`,
+                                }}>
                                 </div>
-                            }
+                            </div>
+                        }
                         </form> 
                         </div>
                      :  <form className='single-comment left'>
