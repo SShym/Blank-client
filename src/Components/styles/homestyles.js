@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+export const theme = localStorage.getItem('theme');
+
 export const SwitchButton = styled.label`
   position: relative;
   display: inline-block;
@@ -68,9 +70,6 @@ export const Black = styled.div`
 export const NavbarBlock = styled.div`
   height: 45px;
   margin: 20px 20px 0px 20px;
-  @media (max-width: 576px) { 
-    margin: 0px;
-  }
   transition: all 0.5s;
   background-color: ${(props) => props.theme.backgroundNavbar};
   @media(min-width: 576px){
@@ -79,6 +78,9 @@ export const NavbarBlock = styled.div`
     border-right: 1px solid ${(props) => props.theme.border};
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+  }
+  @media (max-width: 576px) { 
+    margin: 0px 
   }
   padding: 4px 4px;
   display: flex;

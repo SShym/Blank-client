@@ -11,11 +11,14 @@ import { CommentsPage } from '../styles/homestyles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import React from 'react';
 import Modal from '../Modal/Modal';
+import Backdrop from '@mui/material/Backdrop';
 
 export default function SingleComment({socket, page, comments, photoSize, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled, loading }){
+    const [openBackDrop, setOpenBackDrop] = useState(false);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [modal, setModal] = useState(false);
     const [commentText, setCommentText] = useState('');
+    const [fullScreenPhoto, setFullScreenPhoto] = useState('');
     
     const dispatch = useDispatch();
     const location = useLocation();
@@ -43,6 +46,10 @@ export default function SingleComment({socket, page, comments, photoSize, setId,
     }, [comments.comment])
 
     const handleInput = (e) => setCommentText(e.target.value);
+
+    const handleClose = () => setOpenBackDrop(false);
+
+    const handleToggle = () => setOpenBackDrop(!openBackDrop);
     
     const handleDelete = (e) => {
         if(!disabled || !loading) {
@@ -53,10 +60,19 @@ export default function SingleComment({socket, page, comments, photoSize, setId,
 
     const redirectToProfile = () => navigate(`/profile/${comments.creator}`);
 
+    console.log(fullScreenPhoto)
+
     return (
         <Layout>
             <CommentsPage photoSize={photoSize}>
                 <div className='single-comment-wrap'>
+                    <Backdrop transitionDuration={350}
+                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                        open={openBackDrop}
+                        onClick={handleClose}
+                    >
+                        <img style={{maxHeight:'70%', maxWidth:'70%'}} src={fullScreenPhoto} alt="" />
+                    </Backdrop>
                     <div style={{ cursor:'pointer' }} className="single-comment-avatar" onClick={redirectToProfile}>
                         <div>
                             {!comments.avatar 
@@ -120,7 +136,10 @@ export default function SingleComment({socket, page, comments, photoSize, setId,
                                     src={comments.photo} 
                                     alt="" 
                                 />
-                                <div className='single-comment-block-photo'></div>
+                                <div style={{cursor:'pointer'}} onClick={() => {
+                                    setFullScreenPhoto(comments.photo);
+                                    setOpenBackDrop(true);
+                                }} className='single-comment-block-photo'></div>
                                 <div className='skeleton' style={{
                                     display: imageLoad ? "none" : "block",
 

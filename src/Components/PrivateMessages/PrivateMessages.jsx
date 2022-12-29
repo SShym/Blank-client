@@ -5,7 +5,7 @@ import { ReactComponent as Clip } from '../../png/clip.svg';
 import { ReactComponent as Image } from '../../png/image.svg';
 import { ReactComponent as File } from '../../png/file.svg';
 import { ReactComponent as FileMulticolor } from '../../png/filemulticolor.svg';
-import { PrivateMessagesBackground } from '../styles/homestyles';
+import { PrivateMessagesBackground, theme } from '../styles/homestyles';
 import { commentCreateDirect, commentsLoadDirect, deleteDirectChat, getUserProfile, getUsersOnline } from '../../redux/actions';
 import SinglePrivateComment from '../SinglePrivateComment/SinglePrivateComment';
 import Layout from '../styles/Layout';
@@ -22,7 +22,6 @@ import { useDispatch, useSelector } from "react-redux";
 import LinearProgress from '@mui/material/LinearProgress';
 
 const PrivateMessages = ({ socket }) => {   
-    const [theme] = useState(localStorage.getItem('theme'));
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     
     const [open, setOpen] = useState(false);
@@ -147,31 +146,27 @@ const PrivateMessages = ({ socket }) => {
                         }}>
                             <form onSubmit={handleSubmit} onClick={e => e.stopPropagation()} style={{ display: open ? 'flex' : 'none', margin:'10px', flexDirection:'column', alignItems:'flex-end', maxWidth:'550px', background: '#fff', padding:'10px', borderRadius:'8px' }}>
                                 <div style={{marginBottom:'8px', display:'flex', width:'100%', alignItems:'center', justifyContent:'center'}}>
-                                    <div style={{ color:'black', flexBasis:'90%', fontSize:'20px', fontWeight:'500', marginLeft:'10px'}}>
-                                        Send photo
-                                    </div>
+                                    {isFileImage(comment?.photoFile) ?
+                                        <div style={{ color:'black', flexBasis:'90%', fontSize:'20px', fontWeight:'500', marginLeft:'10px'}}>
+                                            Send photo
+                                        </div>
+                                        :
+                                        <div style={{ color:'black', flexBasis:'90%', fontSize:'20px', fontWeight:'500', marginLeft:'10px'}}>
+                                            Send file
+                                        </div>
+                                    }
                                     <Button onClick={handleSubmit} sx={{fontSize:'10px'}} size="large" variant="contained">
                                         Send
                                     </Button>
                                 </div>
                                 <div style={{display:'flex', alignItems:'center', justifyContent: 'center', width:'100%' }}>
                                     {isFileImage(comment?.photoFile)
-                                        ? <img onLoad={onImgLoad} style={{ height: '300px' }} src={previewPhoto} alt="" />
+                                        ? <img onLoad={onImgLoad} style={{ width:'100%', maxWidth:'100%' }} src={previewPhoto} alt="" />
                                         : <div style={{color:'black', margin:'15px', display:'flex', alignItems:'center'}}>
-                                            <div style={{width:'30px', height:'30px', marginRight:'10px', position:'relative'}}>
+                                            <div style={{ width:'30px', height:'30px', marginRight:'10px', position:'relative'}}>
                                                 <FileMulticolor  />
-                                                <div style={{
-                                                    position:'absolute',
-                                                    transform:'translate(50%, 50%)',
-                                                    left:'-1px',
-                                                    top:'4px',
-                                                    color:'black',
-                                                    fontSize:'10px'
-                                                }}>
-                                                    {comment?.photoFile && comment?.photoFile?.name.split('.')[1]}
-                                                </div>
                                             </div>
-                                            {comment?.photoFile?.name.split('.')[0]}
+                                            {comment?.photoFile?.name.slice(0, 15)+ '...'}
                                         </div>
                                     }
                                 </div>
@@ -249,7 +244,6 @@ const PrivateMessages = ({ socket }) => {
                                 }} 
                             />
                             <input disabled={disabled}
-                                autoFocus
                                 value={open ? '' : comment.commentText} 
                                 onChange={(e) => setComment({
                                     photoFile: comment.photoFile,

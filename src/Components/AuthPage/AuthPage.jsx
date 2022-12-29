@@ -94,7 +94,7 @@ const SignUp = ({ socket }) => {
                   <Grid container spacing={1}>
                     { isSignup && (
                     <>
-                      <Input disabled={disabled} name="firstName" label="First Name" handleChange={handleChange} autoFocus half />
+                      <Input disabled={disabled} name="firstName" label="First Name" handleChange={handleChange} half />
                       <Input disabled={disabled} name="lastName" label="Last Name" handleChange={handleChange} half />
                     </>
                     )}
