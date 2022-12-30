@@ -1,5 +1,6 @@
 import './Profile.css';
 import profileImg from '../../png/profile.webp'
+import snowman from '../../png/snowman.gif';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -40,7 +41,6 @@ const Profile = ({ socket }) => {
     return(
         <Layout>
             <ProfileBackground>
-                
                 <LightDrope>
                     <ul className="lightrope">
                         <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
@@ -49,11 +49,14 @@ const Profile = ({ socket }) => {
                 {validProfile ?
                     <div className="wrap">
                         <ProfileCase style={{display: profile ? 'flex' : 'none', userSelect:'none'}}>
+                            {localStorage.getItem('theme') === "dark" && 
+                                <img className='snow-background' src={snowman} alt="" />
+                            }
                             <div>
                                 <div className='profile-username'>
                                     {profile?.userName}
                                 </div>
-                                <img style={{ objectFit:'cover', marginTop:'5px', width:'150px', height: '150px'}} src={profile?.userAvatar ? profile?.userAvatar : profileImg} alt="" />
+                                <img className='profile-avatar' src={profile?.userAvatar ? profile?.userAvatar : profileImg} alt="" />
                             </div>
                             <div>
                                 {param.id !== (user?.result.googleId ? user?.result.googleId : user?.result._id) &&

@@ -528,9 +528,11 @@ export const LightDrope = styled.div`
 `
 
 export const ProfileCase = styled.div`
-  border: 1px solid gray;
+  border: 1px solid ${(props) => props.theme.theme === 'light' ? 'gray' : 'rgb(32, 32, 55)'};
   background: ${(props) => props.theme.theme === 'light' ? 'rgb(222, 222, 222, 0.8)' : 'rgb(1,90,90, 0.7)'};
   padding: 5px;
+  width: 260px;
+  height: 150px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -539,11 +541,17 @@ export const ProfileCase = styled.div`
   position: relative;
 
   .profile-username{
+    position: absolute;
+    transform: translate(-50%, 50%);
     word-break: break-all;
     max-width: 250px;
     margin-bottom: 5px;
     font-size: 22px;
     color: ${(props) => props.theme.theme === 'light' ? 'black' : 'rgb(32, 32, 55)'};
+  }
+
+  .profile-avatar{
+    border: 1px solid ${(props) => props.theme.theme === 'light' ? 'gray' : 'rgb(32, 32, 55)'};
   }
 
   .online-status{
@@ -562,21 +570,21 @@ export const ProfileCase = styled.div`
   .profile-message-button{
     font-family: sans-serif;
     position: absolute;
-    bottom: -20px;
+    bottom: -15px;
     right: -10px;
     font-size: 15px;
     margin-top: 15px;
     background: ${(props) => props.theme.theme === 'light' ? 'rgb(222, 222, 222)' : 'rgb(0,90,90)'};
-    color: black;
-    border: 1px solid gray;
+    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'rgb(32, 32, 55)'};
+    border: 1px solid ${(props) => props.theme.theme === 'light' ? 'gray' : 'rgb(32, 32, 55)'};
     border-radius: 5px;
     padding: 5px 20px;
     &:hover{
       transform: translate(0, -1px);
-      background: ${(props) => props.theme.theme === 'light' ? 'rgb(217, 217, 217)' : 'rgb(0,95,95)'}
+      background: ${(props) => props.theme.theme === 'light' ? 'rgb(217, 217, 217)' : 'rgb(0,95,95)'};
     }
     &:active{
-      background: ${(props) => props.theme.theme === 'light' ? 'rgb(197, 197, 197)' : 'rgb(0,55,55)'}
+      background: ${(props) => props.theme.theme === 'light' ? 'rgb(197, 197, 197)' : 'rgb(0,55,55)'};
     }
   }
 

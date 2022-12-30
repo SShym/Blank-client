@@ -19,7 +19,7 @@
 
 .single-comment-wrap{
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .single-comment-profile-img{
