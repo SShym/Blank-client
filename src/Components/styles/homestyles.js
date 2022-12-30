@@ -529,7 +529,7 @@ export const LightDrope = styled.div`
 
 export const ProfileCase = styled.div`
   border: 1px solid ${(props) => props.theme.theme === 'light' ? 'gray' : 'rgb(32, 32, 55)'};
-  background: ${(props) => props.theme.theme === 'light' ? 'rgb(222, 222, 222, 0.8)' : 'rgb(1,90,90, 0.7)'};
+  background: ${(props) => props.theme.theme === 'light' ? 'rgb(210, 210, 210, 0.8)' : 'rgb(1,90,90, 0.7)'};
   padding: 5px;
   width: 260px;
   height: 150px;
@@ -542,16 +542,18 @@ export const ProfileCase = styled.div`
 
   .profile-username{
     position: absolute;
-    transform: translate(-50%, 50%);
-    word-break: break-all;
-    max-width: 250px;
-    margin-bottom: 5px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -15%);
+    top: 85px;
     font-size: 22px;
     color: ${(props) => props.theme.theme === 'light' ? 'black' : 'rgb(32, 32, 55)'};
   }
 
   .profile-avatar{
     border: 1px solid ${(props) => props.theme.theme === 'light' ? 'gray' : 'rgb(32, 32, 55)'};
+    background: ${(props) => props.theme.theme === 'light' ? 'rgb(166, 166, 166)' : 'gray'};
+    color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(32, 32, 45)'};
   }
 
   .online-status{

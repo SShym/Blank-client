@@ -118,7 +118,7 @@ const Navbar = ({ socket }) => {
                   PaperProps={{
                     elevation: 0,
                     sx: {
-                      backgroundColor: 'rgb(232, 232, 232)',
+                      bgcolor: localStorage.getItem('theme') === 'dark' ? 'rgb(170, 170, 170)' : '#fff',
                       overflow: 'visible',
                       marginLeft: matches ? '7px' : '-4px',
                       filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
@@ -139,7 +139,7 @@ const Navbar = ({ socket }) => {
                         right: 14,
                         width: 10,
                         height: 10,
-                        bgcolor: 'rgb(232, 232, 232)',
+                        bgcolor: localStorage.getItem('theme') === 'dark' ? 'rgb(170, 170, 170)' : '#fff',
                         transform: 'translateY(-50%) rotate(45deg)',
                         zIndex: 0,
                       },

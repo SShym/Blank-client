@@ -1,5 +1,4 @@
 import './Profile.css';
-import profileImg from '../../png/profile.webp'
 import snowman from '../../png/snowman.gif';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +7,7 @@ import { getUserProfile, getUsersOnline } from '../../redux/actions';
 import { LightDrope, ProfileBackground, ProfileCase } from '../styles/homestyles';
 import Layout from '../styles/Layout';
 import { ReactComponent as Loader } from '../../png/loaderGear.svg';
+import Avatar from '@mui/material/Avatar';
 
 const Profile = ({ socket }) => {
     const [timer, setTimer] = useState(false);
@@ -56,7 +56,9 @@ const Profile = ({ socket }) => {
                                 <div className='profile-username'>
                                     {profile?.userName}
                                 </div>
-                                <img className='profile-avatar' src={profile?.userAvatar ? profile?.userAvatar : profileImg} alt="" />
+                                <Avatar className='profile-avatar' src={profile?.userAvatar}>
+                                    
+                                </Avatar>
                             </div>
                             <div>
                                 {param.id !== (user?.result.googleId ? user?.result.googleId : user?.result._id) &&

@@ -26,19 +26,17 @@
 }
 
 .profile-avatar{
+  background: rgb(146, 146, 146);
   position: absolute;
-  width: 50px;
-  height: 50px;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -100%);
+  transform: translate(-50%, -52%);
 
   border-radius: 50%;
   box-shadow: 0px 0px 3px;
   object-fit: cover;
-  margin-top: 5px;
-  width: 150px;
-  height: 150px;
+  min-width: 150px;
+  min-height: 150px;
 }
 
 .profile-loader-svg{
