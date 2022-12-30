@@ -197,6 +197,10 @@ export const PrivateMessagesBackground = styled.div`
     background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.6)'};
     color: ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};
   }
+  .create-message:disabled{
+    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.6)'};
+    color: ${(props) => props.theme.theme === 'light' ? 'black' : 'gray'};
+  }
   .voice-svg-wrap{
     background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 12, 12, 0.6)'};
   }

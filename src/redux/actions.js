@@ -22,7 +22,7 @@ export const SET_USERS_ONLINE = 'SET_USERS_ONLINE';
 
 const API = axios.create({ 
     // baseURL: 'http://localhost:5000/'
-    baseURL: 'https://sqmr.onrender.com/'
+    baseURL: 'https://sqmr.onrender.com'
 });
 
 API.interceptors.request.use((req) => {
@@ -268,11 +268,12 @@ export const deleteSchema = (formData, user, navigate, socket) => async (dispatc
     }
 };
 
-export const getUserProfile = (id, setValidProfile) => async (dispatch) => {
+export const getUserProfile = (id, setValidProfile, setTimer) => async (dispatch) => {
     try {
         await API.get(`/profile/${id}`).then((res) => {
-            setValidProfile && setValidProfile(true);
             dispatch({ type: SET_PROFILE, data: res.data });
+        }).finally(() => {
+            setValidProfile && setValidProfile(true);
         })
     } catch (error) {
         dispatch(errorOn(error.response.data.message));
@@ -299,7 +300,7 @@ export const getUsersOnline = (user, socket) => async (dispatch) => {
 
 //////////////////////////////// DIRECT ////////////////////////////////////
 
-export function commentCreateDirect(formData, setComment, socket, room, setOpen){ 
+export function commentCreateDirect(formData, setComment, socket, room, setOpen, setTimer){ 
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE });
         setComment({ commentText: '', photoFile: null });
@@ -311,6 +312,7 @@ export function commentCreateDirect(formData, setComment, socket, room, setOpen)
         }).then((res) => {
             socket.emit('add-direct-comment', res.data);
         }).finally(() => {
+            setTimer(false);
             dispatch({ type: SET_DISABLED_FALSE });
         }).catch(err => {
             dispatch(errorOn(err.response.data.error));

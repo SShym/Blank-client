@@ -93,6 +93,11 @@
     border-radius: 50%;
 }
 
+.voice-svg-wrap:hover{
+    fill: rgb(95, 0, 0);
+    border: 1px solid rgb(95, 0, 0);
+}
+
 .EmojiPickerWrap{
     opacity: 0;
     visibility: hidden;
@@ -220,7 +225,24 @@
     color: rgba(0, 150, 32, 0.418);
 }
 
+.chat-settings-wrap{
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.chat-settings-wrap:hover{
+    background: gainsboro;
+}
+
+.chat-settings-wrap:active{
+    background: none;
+}
+
 .chat-settings-svg{
+    border-radius: 50%;
     cursor: pointer;
 }
 

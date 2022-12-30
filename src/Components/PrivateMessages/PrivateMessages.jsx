@@ -5,7 +5,7 @@ import { ReactComponent as Clip } from '../../png/clip.svg';
 import { ReactComponent as Image } from '../../png/image.svg';
 import { ReactComponent as File } from '../../png/file.svg';
 import { ReactComponent as FileMulticolor } from '../../png/filemulticolor.svg';
-import { PrivateMessagesBackground, theme } from '../styles/homestyles';
+import { PrivateMessagesBackground } from '../styles/homestyles';
 import { commentCreateDirect, commentsLoadDirect, deleteDirectChat, getUserProfile, getUsersOnline } from '../../redux/actions';
 import SinglePrivateComment from '../SinglePrivateComment/SinglePrivateComment';
 import Layout from '../styles/Layout';
@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LinearProgress from '@mui/material/LinearProgress';
 
 const PrivateMessages = ({ socket }) => {   
+    const [timer, setTimer] = useState(false);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     
     const [open, setOpen] = useState(false);
@@ -42,7 +43,7 @@ const PrivateMessages = ({ socket }) => {
     const disabled = useSelector(state => state.appReducer.disabled);
     const loading = useSelector(state => state.appReducer.loading);
 
-    ///// modal with img ////
+    ///// modal with (img/file) ////
     useEffect(() => {
         if(comment.photoFile){
             setOpen(true);
@@ -117,8 +118,12 @@ const PrivateMessages = ({ socket }) => {
             creator: user.result.googleId ? user.result.googleId : user.result._id,
         }
 
+        // don't show the LinearProgress if the Internet speed is normal
+        // to prevent flicker
+        setTimeout(() => setTimer(true), 1500) 
+
         if(comment.commentText.length > 0){
-            dispatch(commentCreateDirect(formData, setComment, socket, room, setOpen));
+            dispatch(commentCreateDirect(formData, setComment, socket, room, setOpen, setTimer));
         }    
     }
 
@@ -162,7 +167,7 @@ const PrivateMessages = ({ socket }) => {
                                 </div>
                                 <div style={{display:'flex', alignItems:'center', justifyContent: 'center', width:'100%' }}>
                                     {isFileImage(comment?.photoFile)
-                                        ? <img onLoad={onImgLoad} style={{ maxWidth:'100%', maxHeight:'75vh' }} src={previewPhoto} alt="" />
+                                        ? <img onLoad={onImgLoad} style={{ maxHeight:'50vh', maxWidth:'100%' }} src={previewPhoto} alt="" />
                                         : <div style={{color:'black', margin:'15px', display:'flex', alignItems:'center'}}>
                                             <div style={{ width:'30px', height:'30px', marginRight:'10px', position:'relative'}}>
                                                 <FileMulticolor  />
@@ -202,11 +207,15 @@ const PrivateMessages = ({ socket }) => {
                             }
                             </div>
                         </div>
-                        <MoreVertIcon sx={{width:20, height:20}} className='chat-settings-svg' onClick={() => setChatSettings((prev) => !prev)} />
-                        <div onClick={handleDeleteChat} className={chatSettings ? 'chat-settings active' : 'chat-settings'}>
-                            <div className='chat-settings-delete'>
-                                <DeleteIcon sx={{mr:1, fill:'red'}}/>
-                                <div style={{color:'red'}}>Delete chat</div>
+                        <div>
+                            <div className='chat-settings-wrap'>
+                                <MoreVertIcon sx={{width:20, height:20}} className='chat-settings-svg' onClick={() => setChatSettings((prev) => !prev)} />
+                            </div>
+                            <div onClick={handleDeleteChat} className={chatSettings ? 'chat-settings active' : 'chat-settings'}>
+                                <div className='chat-settings-delete'>
+                                    <DeleteIcon sx={{mr:1, fill:'red'}}/>
+                                    <div style={{color:'red'}}>Delete chat</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -302,7 +311,7 @@ const PrivateMessages = ({ socket }) => {
                 </div>
                 </>
             }
-            {disabled && 
+            {(timer && disabled) && 
                 <div style={{position:'absolute', left:'3px', bottom:'2px', right:'3px'}}>
                     <LinearProgress sx={{ borderRadius: '20px' }}/>
                 </div>

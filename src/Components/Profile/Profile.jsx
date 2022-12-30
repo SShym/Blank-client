@@ -24,10 +24,9 @@ const Profile = ({ socket }) => {
         dispatch(getUsersOnline(user, socket))
         dispatch(getUserProfile(param.id, setValidProfile));
 
-        // Set a delay to prevent flicker image (loader)
-        setTimeout(() => {
-            setTimer(true)
-        }, 1500)
+        // don't show the Loader if the Internet speed is normal
+        // to prevent flicker
+        setTimeout(() => setTimer(true), 1500)
     }, [])
 
     const redirect = () => {
