@@ -100,7 +100,7 @@ const Settings = ({ socket }) => {
         dispatch(getUsersOnline(user, socket));
     }, []); // eslint-disable-line
 
-    useEffect(() => window.localStorage.setItem("theme", theme), [theme]);
+    useEffect(() => localStorage.setItem("theme", theme), [theme]);
     document.body.className = localStorage.getItem('theme');
 
     const toggle = () => setColor(!color);

@@ -7,9 +7,9 @@ export const GlobalContext = React.createContext({
 
 const GlobalContextProvider = (props) => {
   const [currentTheme, setCurrentTheme] = useState(
-    window.localStorage.getItem("theme") == null
+    localStorage.getItem("theme") == null
       ? "light"
-      : window.localStorage.getItem("theme")
+      : localStorage.getItem("theme")
   );
 
   const themeSwitchHandler = (themeType) => {
