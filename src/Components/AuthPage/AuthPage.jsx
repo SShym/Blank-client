@@ -24,6 +24,7 @@ const theme = createTheme({
 });
 
 const SignUp = ({ socket }) => {
+  document.body.className = localStorage.getItem('theme');
   const [form, setForm] = useState(initialState);
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -34,8 +35,6 @@ const SignUp = ({ socket }) => {
   const classes = useStyles();
   const disabled = useSelector(state => state.appReducer.disabled);
   const handleShowPassword = () => setShowPassword(!showPassword);
-
-  document.body.className = localStorage.getItem('theme');
 
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);

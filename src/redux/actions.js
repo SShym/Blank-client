@@ -21,7 +21,7 @@ export const SET_PROFILE = 'SET_PROFILE';
 export const SET_USERS_ONLINE = 'SET_USERS_ONLINE';
 
 const API = axios.create({ 
-    // baseURL: 'http://localhost:5000/'
+    // baseURL: 'http://localhost:5000'
     baseURL: 'https://sqmr.onrender.com'
 });
 
@@ -300,7 +300,7 @@ export const getUsersOnline = (user, socket) => async (dispatch) => {
 
 //////////////////////////////// DIRECT ////////////////////////////////////
 
-export function commentCreateDirect(formData, setComment, socket, room, setOpen, setTimer){ 
+export function commentCreateDirect(formData, setComment, socket, room, setOpen){ 
     return async dispatch => {
         dispatch({ type: SET_DISABLED_TRUE });
         setComment({ commentText: '', photoFile: null });
@@ -312,7 +312,6 @@ export function commentCreateDirect(formData, setComment, socket, room, setOpen,
         }).then((res) => {
             socket.emit('add-direct-comment', res.data);
         }).finally(() => {
-            setTimer(false);
             dispatch({ type: SET_DISABLED_FALSE });
         }).catch(err => {
             dispatch(errorOn(err.response.data.error));

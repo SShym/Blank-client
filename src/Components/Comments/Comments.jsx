@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as ImageSvg } from '../../png/image.svg';
-import { commentCreate, commentUpdate, getUsersOnline } from "../../redux/actions";
+import { commentCreate, commentUpdate, getUsersOnline, COMMENTS_LOAD } from "../../redux/actions";
 import { CommentsBackground, FormComments } from '../styles/homestyles';
 import loader from '../../png/loaderGear.svg';
 import Layout from '../styles/Layout';

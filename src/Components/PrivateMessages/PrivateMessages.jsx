@@ -22,7 +22,6 @@ import { useDispatch, useSelector } from "react-redux";
 import LinearProgress from '@mui/material/LinearProgress';
 
 const PrivateMessages = ({ socket }) => {   
-    const [timer, setTimer] = useState(false);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     
     const [open, setOpen] = useState(false);
@@ -120,10 +119,9 @@ const PrivateMessages = ({ socket }) => {
 
         // don't show the LinearProgress if the Internet speed is normal
         // to prevent flicker
-        setTimeout(() => setTimer(true), 1500) 
 
         if(comment.commentText.length > 0){
-            dispatch(commentCreateDirect(formData, setComment, socket, room, setOpen, setTimer));
+            dispatch(commentCreateDirect(formData, setComment, socket, room, setOpen));
         }    
     }
 
@@ -150,7 +148,7 @@ const PrivateMessages = ({ socket }) => {
                                 photoFile: null
                             })   
                         }}>
-                            <form onSubmit={handleSubmit} onClick={e => e.stopPropagation()} style={{ display: open ? 'flex' : 'none', margin:'10px', flexDirection:'column', alignItems:'flex-end', maxWidth:'550px', background: '#fff', padding:'10px', borderRadius:'8px' }}>
+                            <form className='uploadImgFileForm' onSubmit={handleSubmit} onClick={e => e.stopPropagation()} style={{ display: open ? 'flex' : 'none' }}>
                                 <div style={{marginBottom:'8px', display:'flex', width:'100%', alignItems:'center', justifyContent:'center'}}>
                                     {isFileImage(comment?.photoFile) ?
                                         <div style={{ color:'black', flexBasis:'90%', fontSize:'20px', fontWeight:'500', marginLeft:'10px'}}>
@@ -167,7 +165,10 @@ const PrivateMessages = ({ socket }) => {
                                 </div>
                                 <div style={{display:'flex', alignItems:'center', justifyContent: 'center', width:'100%' }}>
                                     {isFileImage(comment?.photoFile)
-                                        ? <img onLoad={onImgLoad} style={{ maxHeight:'50vh', maxWidth:'100%' }} src={previewPhoto} alt="" />
+                                        ? <div style={{display:'flex', position:'relative'}}>
+                                            <div className='private-messages-black-image'></div>
+                                            <img onLoad={onImgLoad} style={{ maxHeight:'50vh', maxWidth:'100%' }} src={previewPhoto} alt="" />
+                                        </div>
                                         : <div style={{color:'black', margin:'15px', display:'flex', alignItems:'center'}}>
                                             <div style={{ width:'30px', height:'30px', marginRight:'10px', position:'relative'}}>
                                                 <FileMulticolor  />
@@ -178,7 +179,7 @@ const PrivateMessages = ({ socket }) => {
                                 </div>
                                 <input 
                                     placeholder='Caption' 
-                                    style={{ border:'1px solid gray', borderRadius:'10px', marginTop:'10px', padding:' 8px 12px' }} 
+                                    className='uploadImgFileInput'
                                     type="text" 
                                     value={comment.commentText} 
                                     onChange={(e) => setComment({
@@ -311,7 +312,7 @@ const PrivateMessages = ({ socket }) => {
                 </div>
                 </>
             }
-            {(timer && disabled) && 
+            {disabled && 
                 <div style={{position:'absolute', left:'3px', bottom:'2px', right:'3px'}}>
                     <LinearProgress sx={{ borderRadius: '20px' }}/>
                 </div>

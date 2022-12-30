@@ -189,8 +189,35 @@ export const PrivateMessagesBackground = styled.div`
     border-radius: 0px;
   }
 
+  .chat-settings-wrap:hover{
+    background: ${(props) => props.theme.theme === 'light' ? 'gainsboro' : 'rgb(0, 0, 0, 0.2)'};
+}
+
+  .private-messages-black-image{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.2)'};
+  }
+
+  .uploadImgFileForm{
+    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'gray'};
+  }
+
+  .uploadImgFileInput{
+    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(185,185,185)'};
+  }
+
   .user-header{
-    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 82, 82, 0.6)'};
+    background-color: ${(props) => props.theme.theme === 'light' ? 'white' : 'rgb(0, 82, 82, 0.8)'};
+  }
+
+  .file:hover{
+    background-color: ${(props) => props.theme.theme === 'light' ? 'rgba(0, 0, 0, 0.151)' : 'rgb(25, 0, 0, 0.7)'};
+  }
+
+  .photo:hover{
+    background-color: ${(props) => props.theme.theme === 'light' ? 'rgba(0, 0, 0, 0.151)' : 'rgb(25, 0, 0, 0.7)'};
   }
 
   .create-message{

@@ -14,10 +14,11 @@ import Modal from '../Modal/Modal';
 import Backdrop from '@mui/material/Backdrop';
 
 export default function SingleComment({socket, page, comments, photoSize, setId, setEditText, setEditMode, setEditPhoto, setPhoto, disabled, loading }){
+    document.body.className = localStorage.getItem('theme');
+    const [commentText, setCommentText] = useState(comments.comment);
     const [openBackDrop, setOpenBackDrop] = useState(false);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [modal, setModal] = useState(false);
-    const [commentText, setCommentText] = useState('');
     const [fullScreenPhoto, setFullScreenPhoto] = useState('');
     
     const dispatch = useDispatch();
@@ -39,9 +40,7 @@ export default function SingleComment({socket, page, comments, photoSize, setId,
         setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);
 
-    document.body.className = localStorage.getItem('theme');
-
-    useEffect(()=> {
+    useEffect(() => {
         comments.comment && setCommentText(comments.comment);
     }, [comments.comment])
 
@@ -57,6 +56,7 @@ export default function SingleComment({socket, page, comments, photoSize, setId,
     }
 
     const redirectToProfile = () => navigate(`/profile/${comments.creator}`);
+    
     return (
         <Layout>
             <CommentsPage photoSize={photoSize}>
