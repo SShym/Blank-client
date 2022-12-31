@@ -349,11 +349,8 @@ export const EmailVerifyBackground = styled.div`
 
 export const SingleCom = styled.div`
   .single-private-comment-block{
+    cursor: pointer;
     position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
     width: 100%;
     z-index: 999;
     height: 100%;
@@ -471,10 +468,6 @@ export const CommentsPage = styled.div`
     position: relative;
   }
 
-  .single-comment-img{
-    position: relative;
-  }
-
   .single-comment-block-photo{
     position: absolute;
     z-index: 1;
@@ -482,7 +475,7 @@ export const CommentsPage = styled.div`
   }
   
   @media(max-width: 460px){
-    .single-comment-block-photo{
+    .-photo{
       width: ${(props) => props.photoSize.width*1.2}px;
       height: ${(props) => props.photoSize.height*1.2}px;
     }
@@ -524,6 +517,15 @@ export const CommentsPage = styled.div`
 
   .single-comment-changed-status-true, .single-comment-time-create{
     color: ${(props) => props.theme.theme === 'light' ? 'rgba(73, 64, 64, 0.479)' : 'rgb(38, 38, 38)'};
+  }
+
+  .single-comment-block-black{
+    cursor: pointer;
+    position: absolute;
+    width: 100%;
+    z-index: 999;
+    height: 100%;
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.2)'};
   }
 `;
 

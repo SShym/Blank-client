@@ -67,6 +67,7 @@ export default function SingleComment({socket, page, comments, photoSize, setId,
                         onClick={handleClose}
                     >
                         <img style={{maxHeight:'70%', maxWidth:'70%'}} src={fullScreenPhoto} alt="" />
+                        <div className='single-comment-block-black'></div>
                     </Backdrop>
                     <div style={{ cursor:'pointer' }} className="single-comment-avatar" onClick={redirectToProfile}>
                         <div>

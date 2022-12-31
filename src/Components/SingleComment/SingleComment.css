@@ -125,13 +125,12 @@
 }
 
 .single-comment-img img{
-  margin-top: 5px;
   width: 100%;
 }
 
 .single-comment-img div{
-  margin-top: 5px;
-  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .skeleton {

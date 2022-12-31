@@ -21,8 +21,8 @@ export const SET_PROFILE = 'SET_PROFILE';
 export const SET_USERS_ONLINE = 'SET_USERS_ONLINE';
 
 const API = axios.create({ 
-    // baseURL: 'http://localhost:5000'
-    baseURL: 'https://sqmr.onrender.com'
+    baseURL: 'http://localhost:5000'
+    // baseURL: 'https://sqmr.onrender.com'
 });
 
 API.interceptors.request.use((req) => {
