@@ -3,9 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { SET_IMAGE_LOAD_TRUE } from '../../redux/actions';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useState } from "react";
+import { SingleCom } from '../styles/homestyles';
+import Backdrop from '@mui/material/Backdrop';
 
 const SinglePrivateComment = ({ comments, photoSize }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const [fullScreenPhoto, setFullScreenPhoto] = useState('');
+    const [openBackDrop, setOpenBackDrop] = useState(false);
     
     const dispatch = useDispatch();
     
@@ -13,13 +17,21 @@ const SinglePrivateComment = ({ comments, photoSize }) => {
     const matches = useMediaQuery('(min-width: 460px)');
     const mobileMatches = useMediaQuery('(min-width: 576px)');
 
+    const handleClose = () => setOpenBackDrop(false);
+
     return(
-        <div>
+        <SingleCom>
             <div className='single-comment-wrap creator'>                    
                     {comments.creator === (user.result.googleId ? user.result.googleId : user.result._id) 
                      ?  <div className='rightBlock'>
                         <form className='single-comment right'>
-                            <div className='single-comment-block-BtnAndText'>
+                                <Backdrop transitionDuration={350}
+                                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                                    open={openBackDrop}
+                                    onClick={handleClose}
+                                >
+                                    <img style={{maxHeight:'70%', maxWidth:'70%'}} src={fullScreenPhoto} alt="" />
+                                </Backdrop>                            <div className='single-comment-block-BtnAndText'>
                                 <div className='single-comment-text'>
                                     <div className='single-comment-message'>{comments.comment}</div>
                                     {comments.changed && <div className="single-comment-changed-status-true">изменено в {comments.timeChanged}</div>}
@@ -28,39 +40,47 @@ const SinglePrivateComment = ({ comments, photoSize }) => {
                                 </div>
                             </div>
                             { comments.photo &&
-                            <div className='single-comment-img'>
-                                <img style={{
-                                        display: imageLoad ? "block" : "none",
-                                        
-                                        height: `${
-                                            mobileMatches ? photoSize?.height*1.1
-                                            : matches ? photoSize?.height*1
-                                            : photoSize?.height*0.8
-                                        }px`,
-                                        
-                                        width: `${
-                                            mobileMatches ? photoSize?.width*1.1 
-                                            : matches ? photoSize?.width*1
-                                            : photoSize?.width*0.8
-                                        }px`,
-                                    }}
-                                    onLoad={() => dispatch({ type: SET_IMAGE_LOAD_TRUE })} 
-                                    src={comments.photo} 
-                                    alt="" 
-                                />
+                            <div className='single-comment-img' onClick={() => {
+                                if(matches){
+                                    setFullScreenPhoto(comments.photo);
+                                    setOpenBackDrop(true);
+                                }
+                            }}>
+                                <div style={{ position:'relative' }}>
+                                    <img style={{
+                                            display: imageLoad ? "block" : "none",
+                                            
+                                            height: `${
+                                                mobileMatches ? photoSize?.height*0.7
+                                                : matches ? photoSize?.height*0.6
+                                                : photoSize?.height*0.5
+                                            }px`,
+                                            
+                                            width: `${
+                                                mobileMatches ? photoSize?.width*0.7 
+                                                : matches ? photoSize?.width*0.6
+                                                : photoSize?.width*0.5
+                                            }px`,
+                                        }}
+                                        onLoad={() => dispatch({ type: SET_IMAGE_LOAD_TRUE })} 
+                                        src={comments.photo} 
+                                        alt="" 
+                                    />
+                                    <div className='single-private-comment-block'></div>
+                                </div>
                                 <div className='skeleton' style={{
                                     display: imageLoad ? "none" : "block",
 
                                     height: `${
-                                        mobileMatches ? photoSize?.height*1.1
-                                        : matches ? photoSize?.height*1
-                                        : photoSize?.height*0.8
+                                        mobileMatches ? photoSize?.height*0.7
+                                        : matches ? photoSize?.height*0.6
+                                        : photoSize?.height*0.5
                                     }px`,
-                                        
+                                    
                                     width: `${
-                                        mobileMatches ? photoSize?.width*1.1
-                                        : matches ? photoSize?.width*1
-                                        : photoSize?.width*0.8
+                                        mobileMatches ? photoSize?.width*0.7 
+                                        : matches ? photoSize?.width*0.6
+                                        : photoSize?.width*0.5
                                     }px`,
                                 }}>
                                 </div>
@@ -85,7 +105,7 @@ const SinglePrivateComment = ({ comments, photoSize }) => {
                         </form>
                     }
                 </div>
-        </div>
+        </SingleCom>
     )
 }
 

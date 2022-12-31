@@ -56,9 +56,7 @@ const Profile = ({ socket }) => {
                                 <div className='profile-username'>
                                     {profile?.userName}
                                 </div>
-                                <Avatar className='profile-avatar' src={profile?.userAvatar}>
-                                    
-                                </Avatar>
+                                <Avatar className='profile-avatar' src={profile?.userAvatar}></Avatar>
                             </div>
                             <div>
                                 {param.id !== (user?.result.googleId ? user?.result.googleId : user?.result._id) &&

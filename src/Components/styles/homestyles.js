@@ -347,6 +347,20 @@ export const EmailVerifyBackground = styled.div`
   }
 `;
 
+export const SingleCom = styled.div`
+  .single-private-comment-block{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 999;
+    height: 100%;
+    background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.2)'};
+  }
+`
+
 export const NavbarAvatar = styled.div`
   transition: all 0.5s;
   background-color: ${(props) => props.theme.avatarBackground};

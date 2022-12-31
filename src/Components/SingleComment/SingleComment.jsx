@@ -132,8 +132,10 @@ export default function SingleComment({socket, page, comments, photoSize, setId,
                                     alt="" 
                                 />
                                 <div style={{cursor:'pointer'}} onClick={() => {
-                                    setFullScreenPhoto(comments.photo);
-                                    setOpenBackDrop(true);
+                                    if(matches){
+                                        setFullScreenPhoto(comments.photo);
+                                        setOpenBackDrop(true);
+                                    }
                                 }} className='single-comment-block-photo'></div>
                                 <div className='skeleton' style={{
                                     display: imageLoad ? "none" : "block",
