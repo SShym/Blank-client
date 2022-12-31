@@ -299,7 +299,6 @@ export const CommentsBackground = styled.div`
 
   .comments-block-black{
     pointer-events: none;
-    transition: all 0.5s;
     position: absolute;
     left: 0;
     top: 0;
@@ -412,6 +411,10 @@ export const SettingsRightBlock = styled.div`
     }
   }
 
+  .settings-block-avatar-change { 
+    color: rgb(0,0,0,0.7) 
+  }
+
   .settings-block-black{
     pointer-events: none;
     transition: all 0.5s;
@@ -459,10 +462,8 @@ export const CommentsPage = styled.div`
   }
 
   .single-comment-block-photo{
-    transition: all 0.5s;
     position: absolute;
     z-index: 1;
-
     background: ${(props) => props.theme.theme === 'light' ? '' : 'rgb(0, 0, 0, 0.2)'};
   }
   
@@ -488,7 +489,6 @@ export const CommentsPage = styled.div`
   }
   
   .single-comment-block{
-    transition: all 0.5s;
     position: absolute;
     left: 0;
     top: 14px;

@@ -296,8 +296,8 @@ const Settings = ({ socket }) => {
                                                         <div className='settings-block-black'></div>
                                                     </div>
                                                     <label for="file">
-                                                        <div className='block'>
-                                                            <div>change photo</div>
+                                                        <div className='settings-block-avatar-change'>
+                                                            <div >change photo</div>
                                                             <UploadSvg style={{width:'30px', marginTop:'5px'}}/>
                                                         </div>
                                                     </label>

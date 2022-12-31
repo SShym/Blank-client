@@ -20,6 +20,7 @@ import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import LinearProgress from '@mui/material/LinearProgress';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const PrivateMessages = ({ socket }) => {   
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -32,6 +33,7 @@ const PrivateMessages = ({ socket }) => {
     const [comment, setComment] = useState({ commentText: '', photoFile: null });
     const [photoSize, setPhotoSize] = useState({width: '', height: ''});
 
+    const matches = useMediaQuery('(min-width: 576px)');
     const param = useParams();
     const dispatch = useDispatch();
     const commentsDirectRef = useRef(null);
@@ -286,8 +288,8 @@ const PrivateMessages = ({ socket }) => {
                                     theme={localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'}
                                     sheetSize="20"
                                     width="30px"
-                                    emojiSize={20}
-                                    emojiButtonSize={26} 
+                                    emojiSize={matches ? 20 : 17}
+                                    emojiButtonSize={matches ? 30 : 24} 
                                     previewPosition="none"
                                     skinTonePosition="none"
                                     data={data} 

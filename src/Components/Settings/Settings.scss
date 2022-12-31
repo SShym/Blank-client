@@ -148,7 +148,7 @@
     object-fit: cover;
 }
   
-.block{
+.settings-block-avatar-change{
     display: none;
     flex-direction: column;
     height: 150px;
@@ -226,7 +226,7 @@
 }
 
 .settings-changeAvatar:hover{
-    .block{
+    .settings-block-avatar-change{
         display: flex;
         background: rgb(192, 192, 192);
         opacity: 0.8;
