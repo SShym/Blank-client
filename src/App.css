@@ -28,7 +28,7 @@ input {
   flex-direction: column;
   justify-content: center;
   border: 1px solid black;
-  z-index: 10000;
+  z-index: 999;
   top: 100%;
   left: 50%;
   white-space: nowrap;
