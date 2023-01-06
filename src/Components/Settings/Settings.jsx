@@ -1,6 +1,5 @@
 import './Settings.scss';
 import { ReactComponent as Success } from '../../png/success.svg';
-import profile from '../../png/profile.svg';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -56,7 +55,18 @@ const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: 'translate(-50%, -100%)',
+    transform: 'translate(-50%, -50%)',
+    width: 300,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+};
+
+const styleMatches = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
     boxShadow: 24,
@@ -85,7 +95,6 @@ const Settings = ({ socket }) => {
     const navigate = useNavigate();
 
     const matches = useMediaQuery('(min-width: 576px)');
-    const matchesSettings = useMediaQuery('(max-width: 575px)');
     const authData = useSelector(state => state.authReducer.authData);
     const disabled = useSelector(state => state.appReducer.disabled)
 
@@ -246,11 +255,12 @@ const Settings = ({ socket }) => {
                                     onClose={handleClose}
                                     aria-labelledby="keep-mounted-modal-title"
                                     aria-describedby="keep-mounted-modal-description">
-                                    <Box sx={style}>
+                                    <Box sx={matches ? styleMatches : style}>
                                     <div style={{
                                         display:'flex', 
                                         alignItems:'center', 
                                         justifyContent:'center',
+                                        marginBottom:'5px'
                                     }}>
                                         <Typography style={{textAlign:'center'}} id="keep-mounted-modal-title" variant="h6" component="h2">
                                             Are you sure you want to delete your profile?
@@ -280,7 +290,7 @@ const Settings = ({ socket }) => {
                                         }}>
                                             Profile settings:
                                         </div>
-                                        <form autocomplete="off" onSubmit={handleSubmit} className={matchesSettings ? 'change-user-settings-wrap-media' : 'change-user-settings-wrap'}>
+                                        <form autocomplete="off" onSubmit={handleSubmit} className={!matches ? 'change-user-settings-wrap-media' : 'change-user-settings-wrap'}>
                                             <div className='change-user-settings-one'>
                                                 <div className='settings-changeAvatar'>
                                                     <div>

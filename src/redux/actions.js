@@ -18,11 +18,12 @@ export const SET_CHANGES_FALSE = 'SET_CHANGES_FALSE';
 export const SET_IMAGE_LOAD_FALSE = 'SET_IMAGE_LOAD_FALSE';
 export const SET_IMAGE_LOAD_TRUE = 'SET_IMAGE_LOAD_TRUE';
 export const SET_PROFILE = 'SET_PROFILE';
+export const SET_ALL_PROFILES = 'SET_ALL_PROFILES';
 export const SET_USERS_ONLINE = 'SET_USERS_ONLINE';
 
 const API = axios.create({ 
-    // baseURL: 'http://localhost:5000'
-    baseURL: 'https://sqmr.onrender.com'
+    baseURL: 'http://localhost:5000'
+    // baseURL: 'https://sqmr.onrender.com'
 });
 
 API.interceptors.request.use((req) => {
@@ -194,8 +195,7 @@ export const signin = (formData, navigate, socket) => async (dispatch) => {
 export const signup = (formData, setVerifyStatus) => async (dispatch) => {
     try {
       dispatch({ type: SET_DISABLED_TRUE })
-      await API.post('/register', formData).then((res) => {
-        console.log(res)
+      await API.post('/register', formData).then(() => {
         setVerifyStatus(true);
         dispatch({ type: SET_DISABLED_FALSE });
       })
@@ -257,7 +257,7 @@ export const verifyMailOnLoad = (formData, navigate, decode, setValidUrl) => asy
 
 export const deleteSchema = (formData, user, navigate, socket) => async (dispatch) => {
     try {
-        await API.post(`/delete/${formData.id}`, formData).then(() => {
+        await API.post(`/delete/${formData.id}`, formData).then((res) => {
             socket.emit('disconnectById', { id: user.result.googleId ? user.result.googleId : user.result._id });
             dispatch({type: LOGOUT});
             dispatch(commentsLoad(socket));
@@ -274,6 +274,16 @@ export const getUserProfile = (id, setValidProfile, setTimer) => async (dispatch
             dispatch({ type: SET_PROFILE, data: res.data });
         }).finally(() => {
             setValidProfile && setValidProfile(true);
+        })
+    } catch (error) {
+        dispatch(errorOn(error.response.data.message));
+    }
+}
+
+export const getAllUsers = () => async (dispatch) => {
+    try {
+        await API.get('/all-profiles').then((res) => {
+            dispatch({ type: SET_ALL_PROFILES, data: res.data });
         })
     } catch (error) {
         dispatch(errorOn(error.response.data.message));

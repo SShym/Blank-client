@@ -3,8 +3,6 @@ import { ReactComponent as Emoji } from '../../png/emoji.svg';
 import { ReactComponent as Voice } from '../../png/voice.svg';
 import { ReactComponent as Clip } from '../../png/clip.svg';
 import { ReactComponent as Image } from '../../png/image.svg';
-import { ReactComponent as File } from '../../png/file.svg';
-import { ReactComponent as FileMulticolor } from '../../png/filemulticolor.svg';
 import { PrivateMessagesBackground } from '../styles/homestyles';
 import { commentCreateDirect, commentsLoadDirect, deleteDirectChat, getUserProfile, getUsersOnline } from '../../redux/actions';
 import SinglePrivateComment from '../SinglePrivateComment/SinglePrivateComment';
@@ -63,7 +61,9 @@ const PrivateMessages = ({ socket }) => {
     }, []);
 
     useEffect(() => {
-        scrollToBottom();
+        setTimeout(() => {
+            commentsDirectRef.current?.scrollIntoView({ behavior: 'smooth' })
+        }, 0);
     }, [commentsDirect])
 
     const room = orderIds(user.result.googleId ? user.result.googleId : user.result._id, param.id);
@@ -76,8 +76,6 @@ const PrivateMessages = ({ socket }) => {
         }
     }
     
-    const scrollToBottom = () => commentsDirectRef.current?.scrollIntoView();
-
     const setFileToBase = (file) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -92,11 +90,6 @@ const PrivateMessages = ({ socket }) => {
 
     const handleDeleteChat = async () => {
         dispatch(deleteDirectChat(socket, room, setChatSettings))
-    }
-    
-    function isFileImage(file) {
-        const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
-        return file && acceptedImageTypes.includes(file['type'])
     }
 
     const handleOnChange = (e) => {
@@ -119,10 +112,7 @@ const PrivateMessages = ({ socket }) => {
             creator: user.result.googleId ? user.result.googleId : user.result._id,
         }
 
-        // don't show the LinearProgress if the Internet speed is normal
-        // to prevent flicker
-
-        if(comment.commentText.length > 0){
+        if(comment.commentText.length > 0 && !disabled && !loading){
             dispatch(commentCreateDirect(formData, setComment, socket, room, setOpen));
         }    
     }
@@ -137,7 +127,7 @@ const PrivateMessages = ({ socket }) => {
     return(
         <Layout>
             <PrivateMessagesBackground>
-            { (profile && param.id !== (user.result.googleId ? user.result.googleId : user.result._id)) &&
+            
             <>
                 <div className='profile-wrap'>
                     <Backdrop
@@ -152,42 +142,32 @@ const PrivateMessages = ({ socket }) => {
                         }}>
                             <form className='uploadImgFileForm' onSubmit={handleSubmit} onClick={e => e.stopPropagation()} style={{ display: open ? 'flex' : 'none' }}>
                                 <div style={{marginBottom:'8px', display:'flex', width:'100%', alignItems:'center', justifyContent:'center'}}>
-                                    {isFileImage(comment?.photoFile) ?
                                         <div style={{ color:'black', flexBasis:'90%', fontSize:'20px', fontWeight:'500', marginLeft:'10px'}}>
                                             Send photo
                                         </div>
-                                        :
-                                        <div style={{ color:'black', flexBasis:'90%', fontSize:'20px', fontWeight:'500', marginLeft:'10px'}}>
-                                            Send file
-                                        </div>
-                                    }
                                     <Button onClick={handleSubmit} sx={{fontSize:'10px'}} size="large" variant="contained">
                                         Send
                                     </Button>
                                 </div>
                                 <div style={{display:'flex', alignItems:'center', justifyContent: 'center', width:'100%' }}>
-                                    {isFileImage(comment?.photoFile)
-                                        ? <div style={{display:'flex', position:'relative'}}>
-                                            <div className='private-messages-black-image'></div>
-                                            <img onLoad={onImgLoad} style={{ maxHeight:'50vh', maxWidth:'100%' }} src={previewPhoto} alt="" />
-                                        </div>
-                                        : <div style={{color:'black', margin:'15px', display:'flex', alignItems:'center'}}>
-                                            <div style={{ width:'30px', height:'30px', marginRight:'10px', position:'relative'}}>
-                                                <FileMulticolor  />
-                                            </div>
-                                            {comment?.photoFile?.name.slice(0, 15)+ '...'}
-                                        </div>
-                                    }
+                                    <div style={{display:'flex', position:'relative'}}>
+                                        <div className='private-messages-black-image'></div>
+                                        <img onLoad={onImgLoad} style={{ maxHeight:'50vh', maxWidth:'100%' }} src={previewPhoto} alt="" />
+                                    </div>
                                 </div>
-                                <input 
+                                <input autoFocus
                                     placeholder='Caption' 
                                     className='uploadImgFileInput'
                                     type="text" 
                                     value={comment.commentText} 
-                                    onChange={(e) => setComment({
-                                        photoFile: comment.photoFile,
-                                        commentText: e.target.value
-                                    })} 
+                                    onChange={(e) => {
+                                        if(!disabled && !loading){
+                                            setComment({
+                                                photoFile: comment.photoFile,
+                                                commentText: e.target.value
+                                            })
+                                        }
+                                    }} 
                                 />
                                 <input type="submit" hidden />
                             </form>
@@ -199,9 +179,9 @@ const PrivateMessages = ({ socket }) => {
                             </div>
                             <div>
                             <div>
-                                {profile?.userName.length > 25 
+                                { profile 
                                     ? profile?.userName.slice(0, 25) + '...'
-                                    : profile?.userName
+                                    : <div>User</div>
                                 }
                             </div>
                             { usersOnline.some(user => user.userId === param.id)
@@ -256,12 +236,17 @@ const PrivateMessages = ({ socket }) => {
                                     }
                                 }} 
                             />
-                            <input disabled={disabled || loading}
+                            <input 
+                                autoFocus
                                 value={open ? '' : comment.commentText} 
-                                onChange={(e) => setComment({
-                                    photoFile: comment.photoFile,
-                                    commentText: e.target.value
-                                })} 
+                                onChange={(e) => {
+                                    if(!disabled && !loading){
+                                        setComment({
+                                            photoFile: comment.photoFile,
+                                            commentText: e.target.value
+                                        })} 
+                                    }
+                                }
                                 className='create-message' 
                             />
                             <input type="submit" hidden/>
@@ -275,11 +260,6 @@ const PrivateMessages = ({ socket }) => {
                                         <Image className="photo-svg" />
                                         <div>Photo</div>
                                         <input onClick={(e) => e.currentTarget.value = null} name="photo" id="photo" className='comments-item-select-img' type="file" accept="image/png, image/gif, image/jpeg" onChange={handleOnChange} />
-                                    </label>
-                                    <label for="file" className="file">
-                                        <File className="file-svg"/>
-                                        <div>File</div>
-                                        <input onClick={(e) => e.currentTarget.value = null} name="file" id="file" className='comments-item-select-img' type="file" onChange={handleOnChange} />
                                     </label>
                                 </div>
                             </div>
@@ -313,7 +293,7 @@ const PrivateMessages = ({ socket }) => {
                     }}>
                 </div>
                 </>
-            }
+            
             {disabled && 
                 <div style={{position:'absolute', left:'3px', bottom:'2px', right:'3px'}}>
                     <LinearProgress sx={{ borderRadius: '20px' }}/>

@@ -115,7 +115,6 @@
 .comments-block{
   display: flex;
   flex-direction: column;
-  height: 100%;
   flex-basis: 90%;
   margin-top: 10px;
   overflow: hidden;
@@ -127,4 +126,30 @@
   margin-top: 10px;
   overflow: hidden;
   overflow-y: auto;
+}
+
+.profilesIcon{
+  user-select: none;
+  border-radius: 18px;
+  border: 1px solid rgb(1, 68, 68);
+  padding: 3px 8px;
+  font-size: 13px;
+  font-weight: bold;
+  color: rgb(1, 68, 68);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+  right: 18px;
+  bottom: 15px;
+}
+
+.all-profiles-text{
+  margin-right: 10px;
+  margin-left: 5px;
+}
+
+.profilesIcon img{
+  width: 32px;
+  height: 32px;
 }

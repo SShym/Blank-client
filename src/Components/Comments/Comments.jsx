@@ -1,14 +1,19 @@
 import '../Comments/Comments.css';
 import { gapi } from 'gapi-script';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import profile from '../../png/user.svg'
 import { ReactComponent as ImageSvg } from '../../png/image.svg';
-import { commentCreate, commentUpdate, getUsersOnline } from "../../redux/actions";
+import { commentCreate, commentUpdate, getUsersOnline, getAllUsers } from "../../redux/actions";
 import { CommentsBackground, FormComments } from '../styles/homestyles';
 import loader from '../../png/loaderGear.svg';
 import Layout from '../styles/Layout';
 import SingleComment from "../SingleComment/SingleComment";
+import { useRef } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Backdrop from '@mui/material/Backdrop';
+import Avatar from '@mui/material/Avatar';
 
 export default function Comments({ socket, setTrackLocation }){
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -19,14 +24,26 @@ export default function Comments({ socket, setTrackLocation }){
     const [photoSize, setPhotoSize] = useState({width: '', height: ''});
     const [editPhoto, setEditPhoto] = useState({ photoBase64: '', file: null });
     const [editMode, setEditMode] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const location = useLocation();
-    
+    const commentsRef = useRef(null);
+    const matches = useMediaQuery('(max-width: 576px)');
+
+    const usersOnline = useSelector(state => state.authReducer.usersOnline);
     const comments = useSelector(state => state.commentReducer.comments);
+    const allProfiles = useSelector(state => state.authReducer.allProfiles);
     const disabled = useSelector(state => state.appReducer.disabled);
     const loading = useSelector(state => state.appReducer.loading);
     const error = useSelector(state => state.appReducer.error);
+
+    useEffect(() => {
+        setTimeout(() => {
+            commentsRef.current?.scrollIntoView({ behavior: 'smooth' })
+        }, 0);
+    }, [comments])
 
     useEffect(() => {
       gapi.load('client:auth2', ()=>{
@@ -39,17 +56,16 @@ export default function Comments({ socket, setTrackLocation }){
       setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);
 
-    const handleChange = (e) => setTextComment(e.target.value)
+    const handleChange = (e) => (!disabled && !loading) && setTextComment(e.target.value);
 
-    // eslint-disable-next-line
     useEffect(() => {
         setTrackLocation(location.pathname);
         dispatch(getUsersOnline(user, socket));
-    }, []);
+    }, []);  // eslint-disable-line
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(textComment.length >= 1){
+        if(textComment.length >= 1 && !disabled && !loading){
             const date = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
 
             const formData = {
@@ -164,7 +180,7 @@ export default function Comments({ socket, setTrackLocation }){
                             </FormComments> :
                             <FormComments>
                                 <form style={{position:'relative'}} onSubmit={handleSubmit}>
-                                    <input disabled={disabled || loading || user == null || error} value={textComment} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} placeholder={!disabled || !loading ? 'Message' : 'Loading...'} onChange={handleChange} type="text" />
+                                    <input autoFocus disabled={user == null} value={textComment} className={editPhoto || photo ? 'comments-item-create-input-border0' : 'comments-item-create-input'} placeholder={!disabled || !loading ? 'Message' : 'Loading...'} onChange={handleChange} type="text" />
                                     <input onClick={(e) => e.currentTarget.value = null} disabled={disabled || loading || user == null || error} name="file" id="file" className='comments-item-select-img' type="file" accept="image/png, image/gif, image/jpeg" onChange={handleOnChange} />
                                     { (disabled || loading) &&
                                         <img className='comments-item-loader' src={loader} alt="" />
@@ -186,28 +202,139 @@ export default function Comments({ socket, setTrackLocation }){
                             }
                         </div>   
                     </div>
-                        <div className='comments-block'>
-                            {comments.map(res => {
-                                return(
-                                    <div>
-                                        <SingleComment 
-                                            socket={socket}
-                                            disabled={disabled}
-                                            loading={loading}
-                                            comments={res}
-                                            photoSize={res.photoSize} 
-                                            setId={setId} 
-                                            setEditText={setEditText} 
-                                            setEditMode={setEditMode}
-                                            setPhoto={setPhoto}
-                                            setEditPhoto={setEditPhoto}
-                                        />
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    
+                    <div className='comments-block'>
+                        {comments.map(res => {
+                            return(
+                                <SingleComment 
+                                    socket={socket}
+                                    disabled={disabled}
+                                    loading={loading}
+                                    comments={res}
+                                    photoSize={res.photoSize} 
+                                    setId={setId} 
+                                    setEditText={setEditText} 
+                                    setEditMode={setEditMode}
+                                    setPhoto={setPhoto}
+                                    setEditPhoto={setEditPhoto}
+                                />
+                            )
+                        })}
+                            <div ref={commentsRef} />
+                    </div>
                 </div>
+                <div className='profilesIcon' onClick={() => {
+                    setOpen(!open);
+                    dispatch(getAllUsers());
+                }}>
+                    {!matches && <div className='all-profiles-text'>users</div>}
+                    <img src={profile} alt="" />
+                </div>
+                <Backdrop
+                    sx={{
+                        display:'flex',
+                        alignItems:'center',
+                        justifyContent:'center',
+                        color: '#fff', 
+                        zIndex: (theme) => theme.zIndex.drawer + 1,
+                        overflowY:'auto',
+                    }}
+                    open={open}
+                    onClick={() => setOpen(false)}
+                >
+                    {console.log((allProfiles?.length === 0 || allProfiles?.map(profile => profile?.id === (user?.result.googleId ? user?.result.googleId : user?.result._id))))}
+                    <div style={{ margin: 'auto' }}>
+                        {(allProfiles?.length === 0 || allProfiles?.map(profile => profile?.id === (user?.result.googleId ? user?.result.googleId : user?.result._id))[0]) &&
+                            <div>
+                                There are no other registered users
+                            </div>
+                        }
+                        {allProfiles?.map(profile => profile?.id !== (user?.result.googleId ? user?.result.googleId : user?.result._id) && 
+                            <div style={{
+                                    display:'flex', 
+                                    alignItems:'center', 
+                                    background:'rgb(0,0,0,0.5)', 
+                                    borderRadius:'20px',
+                                    margin:'10px'
+                                }}>
+                                <div style={{display:'flex', flexBasis:'80%',  alignItems:'center', margin:'10px'}}>
+                                    <div style={{
+                                        position:'relative', 
+                                        display:'flex', 
+                                        alignItems:'center',
+                                        justifyContent:'center'
+                                    }}>
+                                        <Avatar 
+                                            onClick={() => navigate(`/profile/${profile.id}`)} 
+                                            src={profile.avatar} 
+                                            sx={{ width: 50, height: 50, cursor:'pointer' }} 
+                                        />
+                                        {usersOnline.map(user => user.userId === profile.id 
+                                            ? <div style={{
+                                                position:'absolute',
+                                                right:'-2px',
+                                                bottom:'0',
+                                                borderRadius:'50%',
+                                                background:'green',
+                                                width:'12px',
+                                                height:'12px',
+                                                zIndex:'999',
+                                            }}></div>
+                                            : <div style={{
+                                                position:'absolute',
+                                                right:'-2px',
+                                                bottom:'0',
+                                                borderRadius:'50%',
+                                                background:'rgb(190, 0, 0)',
+                                                width:'12px',
+                                                height:'12px',
+                                                zIndex:'111',
+                                            }}></div>
+                                        )}
+                                        {usersOnline.length === 0 &&
+                                            <div style={{
+                                                position:'absolute',
+                                                right:'0',
+                                                bottom:'0',
+                                                borderRadius:'50%',
+                                                background:'rgb(190, 0, 0)',
+                                                width:'12px',
+                                                height:'12px',
+                                                zIndex:'999',
+                                            }}></div>
+                                        }
+                                    </div>
+                                    <div style={{ 
+                                        marginLeft:'8px', 
+                                        fontSize:'20px',
+                                        userSelect:'none',
+                                    }}> {profile.name.slice(0, 10) + '...'}
+                                    </div>
+                                </div>
+                                <div onClick={() => {
+                                    if(user){
+                                        navigate(`/direct/${profile.id}`)
+                                    } else {
+                                        navigate(`/auth`)
+                                    }
+                                }}>
+                                    <div style={{
+                                        border:'1px solid gray', 
+                                        margin:'0px 15px', 
+                                        whiteSpace:'nowrap', 
+                                        flexBasis:'20%', 
+                                        padding:'5px 10px', 
+                                        borderRadius:'12px',
+                                        cursor:'pointer',
+                                        userSelect:'none',
+                                        color: 'rgb(217, 217, 217)',
+                                    }}>
+                                        Send message
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </Backdrop>
             </CommentsBackground>
         </Layout>
     )

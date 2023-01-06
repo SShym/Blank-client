@@ -70,8 +70,6 @@ const SignUp = ({ socket }) => {
       console.log(error);
     }
   };
-
-  const googleError = (error) => console.log('error', error)
   
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -135,7 +133,6 @@ const SignUp = ({ socket }) => {
                       </button>
                     )}
                     onSuccess={googleSuccess}
-                    onFailure={googleError}
                     cookiePolicy="single_host_origin"
                   />
                   {/* <div>{error}</div> */}
