@@ -217,7 +217,11 @@ const Settings = ({ socket }) => {
                                             }} 
                                             component={MarkunreadOutlinedIcon}
                                         />
-                                        {user.result.email}
+                                        {/* If profile is Google Account */}
+                                        {user.result.email.includes('gmail:') 
+                                            ? user.result.email.slice(6).trim()
+                                            : user.result.email
+                                        }
                                     </div>
                                     { user.result.verified === false &&
                                     <div style={{marginTop: '10px'}}>

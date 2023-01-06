@@ -10,7 +10,6 @@ import Settings from './Components/Settings/Settings';
 import EmailVerify from './Components/EmailVerify/EmailVerify';
 import Profile from './Components/Profile/Profile';
 import PrivateMessages from './Components/PrivateMessages/PrivateMessages';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import io from 'socket.io-client';
 
 const socket = io.connect('https://sqmr.onrender.com');
@@ -24,7 +23,6 @@ function App() {
                                                     
   const error = useSelector(state => state.appReducer.error); 
   const changes = useSelector(state => state.appReducer.changes);
-  const matches = useMediaQuery('(max-width: 576px)');
   
   const location = useLocation();
   const dispatch = useDispatch();
@@ -47,11 +45,7 @@ function App() {
   return (
     <div className="app">
       <div className="app-wrap">
-        {error && 
-          <div className={matches && 'error-wrap-matches'}>
-            <div className={matches ? 'error-message-matches' : 'error-message'}>{error}</div>
-          </div>
-        }
+        {error && <div className='error-message'>{error}</div>}
         <Navbar socket={socket} />
         <Routes>
           <Route path='/auth' element={<AuthPage socket={socket} />} />
