@@ -243,7 +243,7 @@ export default function Comments({ socket, setTrackLocation }){
                 >
                     {console.log((allProfiles?.length === 0 || allProfiles?.map(profile => profile?.id === (user?.result.googleId ? user?.result.googleId : user?.result._id))))}
                     <div style={{ margin: 'auto' }}>
-                        {(allProfiles?.length === 0 || allProfiles?.map(profile => profile?.id === (user?.result.googleId ? user?.result.googleId : user?.result._id))[0]) &&
+                        {(allProfiles?.length === 0 || allProfiles?.every(profile => profile?.id === (user?.result.googleId ? user?.result.googleId : user?.result._id))) &&
                             <div>
                                 There are no other registered users
                             </div>
