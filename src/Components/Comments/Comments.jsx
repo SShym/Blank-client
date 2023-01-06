@@ -241,7 +241,6 @@ export default function Comments({ socket, setTrackLocation }){
                     open={open}
                     onClick={() => setOpen(false)}
                 >
-                    {console.log((allProfiles?.length === 0 || allProfiles?.map(profile => profile?.id === (user?.result.googleId ? user?.result.googleId : user?.result._id))))}
                     <div style={{ margin: 'auto' }}>
                         {(allProfiles?.length === 0 || allProfiles?.every(profile => profile?.id === (user?.result.googleId ? user?.result.googleId : user?.result._id))) &&
                             <div>
