@@ -7,7 +7,6 @@ body * {
 }
 
 .app-wrap {
-  max-width: 800px;
   margin: 0px auto;
   position: relative;
 }
@@ -20,7 +19,7 @@ input {
   resize: vertical;
 }
 
-.error-message {
+.error {
   letter-spacing: 2px;
   text-transform: uppercase;
   position: absolute;
