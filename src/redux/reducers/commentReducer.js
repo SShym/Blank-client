@@ -3,7 +3,7 @@ import {
     COMMENT_DELETE, 
     COMMENTS_LOAD,
     COMMENTS_LOAD_DIRECT
-} from "./actions";
+} from "../actions";
 
 const initialState = {
     comments: [],

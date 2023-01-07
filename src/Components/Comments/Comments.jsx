@@ -32,9 +32,9 @@ export default function Comments({ socket, setTrackLocation }){
     const commentsRef = useRef(null);
     const matches = useMediaQuery('(max-width: 576px)');
 
-    const usersOnline = useSelector(state => state.authReducer.usersOnline);
+    const usersOnline = useSelector(state => state.profileReducer.usersOnline);
     const comments = useSelector(state => state.commentReducer.comments);
-    const allProfiles = useSelector(state => state.authReducer.allProfiles);
+    const allProfiles = useSelector(state => state.profileReducer.allProfiles);
     const disabled = useSelector(state => state.appReducer.disabled);
     const loading = useSelector(state => state.appReducer.loading);
     const error = useSelector(state => state.appReducer.error);

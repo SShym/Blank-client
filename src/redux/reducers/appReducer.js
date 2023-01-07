@@ -9,7 +9,7 @@ import {
     SET_CHANGES_FALSE,
     SET_IMAGE_LOAD_FALSE,
     SET_IMAGE_LOAD_TRUE,
-} from './actions';
+} from '../actions';
 
 
 const initialState = {

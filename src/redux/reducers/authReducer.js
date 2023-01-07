@@ -2,17 +2,11 @@ import {
     AUTH,
     LOGOUT,
     SET_AUTHDATA,
-    SET_PROFILE,
-    SET_USERS_ONLINE,
-    SET_ALL_PROFILES
-} from './actions';
+} from '../actions';
 
 
 const initialState = {
     authData: null,
-    profile: null,
-    allProfiles: null,
-    usersOnline: []
 }
 
 export const authReducer = (state = initialState, action) => {
@@ -39,22 +33,7 @@ export const authReducer = (state = initialState, action) => {
                 ...state,
                 authData: action.data, 
             };
-        case SET_PROFILE:
-            return {
-                ...state,
-                profile: action.data
-            }
-        case SET_ALL_PROFILES: 
-            return {
-                ...state,
-                allProfiles: action.data
-            }
-        case SET_USERS_ONLINE:
-            return {
-                ...state,
-                usersOnline: action.data
-            }
-        
+
         default:
             return state;
     }

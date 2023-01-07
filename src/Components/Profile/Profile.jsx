@@ -14,8 +14,8 @@ const Profile = ({ socket }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [validProfile, setValidProfile] = useState(false);
 
-    const profile = useSelector(state => state.authReducer.profile);
-    const usersOnline = useSelector(state => state.authReducer.usersOnline);
+    const profile = useSelector(state => state.profileReducer.profile);
+    const usersOnline = useSelector(state => state.profileReducer.usersOnline);
 
     const param = useParams();
     const dispatch = useDispatch();

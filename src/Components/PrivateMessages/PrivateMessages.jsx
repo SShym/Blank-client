@@ -36,8 +36,8 @@ const PrivateMessages = ({ socket }) => {
     const dispatch = useDispatch();
     const commentsDirectRef = useRef(null);
 
-    const profile = useSelector(state => state.authReducer.profile);
-    const usersOnline = useSelector(state => state.authReducer.usersOnline);
+    const profile = useSelector(state => state.profileReducer.profile);
+    const usersOnline = useSelector(state => state.profileReducer.usersOnline);
     const commentsDirect = useSelector(state => state.commentReducer.commentsDirect);
     const disabled = useSelector(state => state.appReducer.disabled);
     const loading = useSelector(state => state.appReducer.loading);

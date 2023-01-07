@@ -12,7 +12,7 @@ import Profile from './Components/Profile/Profile';
 import PrivateMessages from './Components/PrivateMessages/PrivateMessages';
 import io from 'socket.io-client';
 
-const socket = io.connect('https://sqmr.onrender.com');
+const socket = io.connect('http://localhost:5000');
 
 function App() {
   ////////////////////////////////////////////////////////////////
@@ -48,13 +48,13 @@ function App() {
         {error && <div className='error-message'>{error}</div>}
         <Navbar socket={socket} />
         <Routes>
+          <Route path='/' element={<Navigate to={'/comments'} />} />
           <Route path='/auth' element={<AuthPage socket={socket} />} />
           <Route path="/:id/verify/:token" element={<EmailVerify />} />
-          <Route path='/' element={<Navigate to={'/comments'} />} />
-          <Route path='/comments' element={<Comments socket={socket} setTrackLocation={setTrackLocation} />} />
-          <Route path='/direct/:id' element={<PrivateMessages socket={socket} />} />
-          <Route path='/profile/:id' element={<Profile socket={socket}/>} />
           <Route path='/settings' element={<Settings socket={socket} />} />
+          <Route path='/profile/:id' element={<Profile socket={socket}/>} />
+          <Route path='/direct/:id' element={<PrivateMessages socket={socket} />} />
+          <Route path='/comments' element={<Comments socket={socket} setTrackLocation={setTrackLocation} />} />
         </Routes>
       </div>
     </div>
