@@ -12,7 +12,7 @@ import Profile from './Components/Profile/Profile';
 import PrivateMessages from './Components/PrivateMessages/PrivateMessages';
 import io from 'socket.io-client';
 
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect('https://sqmr.onrender.com');
 
 function App() {
   ////////////////////////////////////////////////////////////////
